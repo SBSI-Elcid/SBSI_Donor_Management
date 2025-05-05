@@ -1,0 +1,23 @@
+.report-table {
+    border-collapse: collapse; 
+    padding: 20px 200px; 
+    width: 100%; 
+}
+
+.report-mt20 {
+    margin-top: 20px;
+}
+
+.report-col {
+    border: 1px solid #dddddd; 
+    text-align: left; 
+    padding: 6px;
+}
+
+.report-p-td {
+    padding: 8px;
+}
+
+.report-test-block {
+    padding: 2px; padding-top: 10px
+}

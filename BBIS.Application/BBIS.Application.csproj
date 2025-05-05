@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="ClosedXML" Version="0.97.0" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="MailKit" Version="3.4.1" />
+    <PackageReference Include="MimeKit" Version="3.4.1" />
+    <PackageReference Include="NetCoreHTMLToPDF" Version="1.0.2.3" />
+    <PackageReference Include="NinjaNye.SearchExtensions" Version="3.0.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BBIS.Common\BBIS.Common.csproj" />
+    <ProjectReference Include="..\BBIS.Database\BBIS.Database.csproj" />
+    <ProjectReference Include="..\BBIS.Domain\BBIS.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
