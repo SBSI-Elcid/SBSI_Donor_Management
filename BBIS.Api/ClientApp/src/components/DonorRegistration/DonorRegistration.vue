@@ -7,25 +7,11 @@
           <small>(to be filled by the donor)</small>
         </v-stepper-step>
         <v-divider />
-        <v-stepper-step :complete="currentStep > 2" step="2" :editable="donorCanProceed">
-          Medical History
-        </v-stepper-step>
-        <v-divider />
-        <v-stepper-step :complete="currentStep > 3" step="3" :editable="donorCanProceed">
-          Donor's Informed Consent
-        </v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items> 
         <v-stepper-content step="1">
           <PersonalData :inReviewPage="false" @goToStep="goToStep" />
-        </v-stepper-content>
-
-        <v-stepper-content step="2">
-          <MedicalHistoryForm :inReviewPage="false" @goToStep="goToStep"/>
-        </v-stepper-content>
-        <v-stepper-content step="3">
-          <ConsentData :inReviewPage="false" @goToStep="goToStep" @submit="onSubmit" />
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -47,7 +33,7 @@ import LookupModule from '@/store/LookupModule';
 import moment from 'moment';
 
 @Component({
-   components: { PersonalData, MedicalHistoryForm, ConsentData }
+   components: { PersonalData }
 })
 export default class DonorRegistration extends VueBase { 
   protected donorModule: DonorModule = getModule(DonorModule, this.$store);
@@ -88,15 +74,15 @@ export default class DonorRegistration extends VueBase {
     this.donorModule.resetDonor();
   }
 
-  protected goToStep(step: number): void {
-    this.currentStep = step;
+  //protected goToStep(step: number): void {
+  //  this.currentStep = step;
 
-    if (step === 1) {
-      this.donorCanProceed = true;
-    }
+  //  if (step === 1) {
+  //    this.donorCanProceed = true;
+  //  }
     
-    window.scrollTo(0,0);
-  }
+  //  window.scrollTo(0,0);
+  //}
 
   public onSubmit(): void {
     this.confirm('Please make sure all entered data is correct, click Cancel to edit or Submit to continue.', '', 'Submit', 'Cancel', this.onSubmitConfirmation)
