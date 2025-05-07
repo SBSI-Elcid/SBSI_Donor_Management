@@ -7,27 +7,27 @@
           <small>(to be filled by the donor)</small>
         </v-stepper-step>
         <v-divider />
-        <v-stepper-step :complete="currentStep > 2" step="2" :editable="true">
+        <!--<v-stepper-step :complete="currentStep > 2" step="2" :editable="true">
           Medical History
         </v-stepper-step>
         <v-divider />
         <v-stepper-step :complete="currentStep > 3" step="3" :editable="true">
           Donor's Informed Consent
-        </v-stepper-step>
+        </v-stepper-step>-->
       </v-stepper-header>
 
       <v-stepper-items> 
         <v-stepper-content step="1">
-          <PersonalData :inReviewPage="inReviewPage" @goToStep="goToStep" />
+          <PersonalData :inReviewPage="inReviewPage" @goToStep="goToStep" @submit="onSubmit" :inProcess="true" />
         </v-stepper-content>
 
-        <v-stepper-content step="2">
+        <!--<v-stepper-content step="2">
           <MedicalHistoryForm :inReviewPage="inReviewPage" @goToStep="goToStep" />
         </v-stepper-content>
 
         <v-stepper-content step="3">
           <ConsentData :inReviewPage="inReviewPage" @goToStep="goToStep" @submit="onSubmit" :inProcess="true" />
-        </v-stepper-content>
+        </v-stepper-content>-->
       </v-stepper-items>
     </v-stepper>
   </div>

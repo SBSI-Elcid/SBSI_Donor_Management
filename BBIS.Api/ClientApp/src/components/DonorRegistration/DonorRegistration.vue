@@ -11,8 +11,15 @@
 
       <v-stepper-items> 
         <v-stepper-content step="1">
-          <PersonalData :inReviewPage="false" @goToStep="goToStep" />
+          <PersonalData :inReviewPage="false" @goToStep="goToStep" @submit="onSubmit" />
         </v-stepper-content>
+
+        <!--<v-stepper-content step="2">
+          <MedicalHistoryForm :inReviewPage="false" @goToStep="goToStep" />
+        </v-stepper-content>
+        <v-stepper-content step="3">
+          <ConsentData :inReviewPage="false" @goToStep="goToStep" @submit="onSubmit" />
+        </v-stepper-content>-->
       </v-stepper-items>
     </v-stepper>
   </div>
@@ -33,7 +40,7 @@ import LookupModule from '@/store/LookupModule';
 import moment from 'moment';
 
 @Component({
-   components: { PersonalData }
+   components: { PersonalData, MedicalHistoryForm, ConsentData }
 })
 export default class DonorRegistration extends VueBase { 
   protected donorModule: DonorModule = getModule(DonorModule, this.$store);
@@ -74,15 +81,15 @@ export default class DonorRegistration extends VueBase {
     this.donorModule.resetDonor();
   }
 
-  //protected goToStep(step: number): void {
-  //  this.currentStep = step;
+  protected goToStep(step: number): void {
+    this.currentStep = step;
 
-  //  if (step === 1) {
-  //    this.donorCanProceed = true;
-  //  }
+    if (step === 1) {
+      this.donorCanProceed = true;
+    }
     
-  //  window.scrollTo(0,0);
-  //}
+    window.scrollTo(0,0);
+  }
 
   public onSubmit(): void {
     this.confirm('Please make sure all entered data is correct, click Cancel to edit or Submit to continue.', '', 'Submit', 'Cancel', this.onSubmitConfirmation)

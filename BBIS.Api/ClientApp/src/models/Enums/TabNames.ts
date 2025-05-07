@@ -1,5 +1,6 @@
 export enum TabNames {
     DonorRegistration = "Donor Registration",
+    DonorVitalSigns = "Vital Signs",
     DonorInformation = "Donor Information",
     InitialScreening = "Initial Screening",
     PhysicalExam = "Physical Exam",

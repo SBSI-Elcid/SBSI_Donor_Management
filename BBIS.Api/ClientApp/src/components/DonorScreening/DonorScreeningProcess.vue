@@ -40,6 +40,13 @@ export default class BloodDonorProcess extends Vue {
       isDisabled: this.tabDisabled
     },
     {
+        name: TabNames.DonorVitalSigns,
+        icon: '',
+        route: this.tabRoutes(TabNames.DonorVitalSigns),
+        isShow: Common.hasValue(this.donorRegistrationId) && this.showTab([Roles.DonorAdmin, Roles.InitialScreener, Roles.PhysicalExamScreener, Roles.BloodCollector]),
+        isDisabled: this.tabDisabled
+    },
+    {
       name: TabNames.InitialScreening,
       icon: 'mdi-badge-account',
       route: this.tabRoutes(TabNames.InitialScreening),
@@ -62,22 +69,24 @@ export default class BloodDonorProcess extends Vue {
     }];
   }
 
-  protected get tabRoutes(): (tabName: string) => string {
-    return (tabName) => {
-      switch(tabName) {
-        case TabNames.DonorInformation:
-          return `/donor/info/${this.donorRegistrationId}`;
-        case TabNames.InitialScreening:
-          return `/donor/initialscreening/${this.donorRegistrationId}`;
-        case TabNames.PhysicalExam:
-          return `/donor/physicalexamination/${this.donorRegistrationId}`;
-        case TabNames.BloodCollection:
-          return `/donor/bloodcollection/${this.donorRegistrationId}`;
-        default:
-          return `/donor/info/${this.donorRegistrationId}`;
-      }
+    protected get tabRoutes(): (tabName: string) => string {
+        return (tabName) => {
+            switch (tabName) {
+                case TabNames.DonorInformation:
+                    return `/donor/info/${this.donorRegistrationId}`;
+                case TabNames.DonorVitalSigns:
+                    return `/donor/vitalsigns/${this.donorRegistrationId}`;
+                case TabNames.InitialScreening:
+                    return `/donor/initialscreening/${this.donorRegistrationId}`;
+                case TabNames.PhysicalExam:
+                    return `/donor/physicalexamination/${this.donorRegistrationId}`;
+                case TabNames.BloodCollection:
+                    return `/donor/bloodcollection/${this.donorRegistrationId}`;
+                default:
+                    return `/donor/info/${this.donorRegistrationId}`;
+            }
+        }
     }
-  }
 
   protected get showScreeningTabs(): boolean {
     return Common.hasValue(this.donorRegistrationId) && this.donorModule.hasDonorTransaction;
@@ -99,6 +108,7 @@ export default class BloodDonorProcess extends Vue {
     if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
       this.donorRegistrationId = this.$route.params.reg_id;
     }
+      console.log("tabDisabled:", this.tabDisabled);
   }
 }
 </script>

@@ -91,6 +91,12 @@ const routes: Array<RouteConfig> = [
             props: true//route => ({ params: route.params.donor_reg_id }) 
           },
           { 
+            path: 'vitalsigns/:reg_id', 
+            name: 'VitalSigns',
+            component: () => import('@/components/DonorScreening/ScreeningForms/VitalSigns.vue'),
+            props: true
+          },
+          { 
             path: 'initialscreening/:reg_id', 
             name: 'InitialScreening',
             component: () => import('@/components/DonorScreening/ScreeningForms/InitialScreeningForm.vue'),
