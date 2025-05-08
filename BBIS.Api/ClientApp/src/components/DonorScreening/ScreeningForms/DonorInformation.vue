@@ -76,7 +76,7 @@ export default class DonorInformation extends VueBase {
       try {
         let donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
         this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
-
+          
         if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) { 
           this.donorModule.setDonorStatus(donorInfo.DonorStatus);
         }
@@ -84,13 +84,16 @@ export default class DonorInformation extends VueBase {
         donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
         this.donorModule.setDonorInformation(donorInfo);
       }
+       
       catch (error) {
         console.log(error);
       }
       finally {
+         
         loader.hide();
       }
     }
+     
   }
 
   protected goToStep(step: number): void {

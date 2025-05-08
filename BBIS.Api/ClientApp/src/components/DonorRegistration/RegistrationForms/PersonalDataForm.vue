@@ -350,7 +350,7 @@ export default class PersonalData extends VueBase {
     protected checkForSubmit(): void {
         this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
         if (this.formValid) {
-            this.donorModule.setDonorInformation(this.newDonor);
+            //this.donorModule.setDonorInformation(this.newDonor);
             this.onSubmit();
         }
 
@@ -361,11 +361,13 @@ export default class PersonalData extends VueBase {
     public onSubmit(): void {
         //let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
         //this.newDonor.MedicalHistories = donorMedicalHistory;
-        this.donorModule.setDonorInformation(this.newDonor);
+        if (!this.inProcess) {
+            this.donorModule.setDonorInformation(this.newDonor);
+        }
     }
 
   protected mounted(): void {
-    this.calculateAge();
+      this.calculateAge();
   }
 
 }

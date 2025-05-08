@@ -61,6 +61,20 @@ export default class BloodDonorProcess extends Vue {
       isDisabled: this.tabDisabled
     },
     {
+      name: TabNames.Counseling,
+      icon: '',
+      route: this.tabRoutes(TabNames.Counseling),
+      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isDisabled: this.tabDisabled
+    },
+    {
+      name: TabNames.ConsentForm,
+      icon: '',
+      route: this.tabRoutes(TabNames.ConsentForm),
+      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isDisabled: this.tabDisabled
+    },
+    {
       name: TabNames.BloodCollection,
       icon: 'mdi-blood-bag',
       route: this.tabRoutes(TabNames.BloodCollection),
@@ -80,6 +94,10 @@ export default class BloodDonorProcess extends Vue {
                     return `/donor/initialscreening/${this.donorRegistrationId}`;
                 case TabNames.PhysicalExam:
                     return `/donor/physicalexamination/${this.donorRegistrationId}`;
+                case TabNames.Counseling:
+                    return `/donor/counseling/${this.donorRegistrationId}`;
+                case TabNames.ConsentForm:
+                    return `/donor/consentform/${this.donorRegistrationId}`;
                 case TabNames.BloodCollection:
                     return `/donor/bloodcollection/${this.donorRegistrationId}`;
                 default:
