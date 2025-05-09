@@ -121,9 +121,27 @@ const routes: Array<RouteConfig> = [
             props: true 
           },
           { 
+            path: 'methodofbloodcollection/:reg_id', 
+            name: 'ConsentForm',
+              component: () => import('@/components/DonorScreening/ScreeningForms/MethodOfBloodCollection.vue'), 
+            props: true 
+          },
+          { 
+            path: 'issuanceofbloodbag/:reg_id', 
+            name: 'ConsentForm',
+              component: () => import('@/components/DonorScreening/ScreeningForms/IssuanceOfBloodBag.vue'), 
+            props: true 
+          },
+          { 
             path: 'bloodcollection/:reg_id', 
             name: 'BloodCollection',
-            component: () => import('@/components/DonorScreening/ScreeningForms/BloodCollectionForm.vue'), 
+            component: () => import('@/components/DonorScreening/ScreeningForms/BloodCollection.vue'), 
+            props: true 
+          },
+          { 
+            path: 'postdonationcare/:reg_id', 
+            name: 'PostDonationCare',
+            component: () => import('@/components/DonorScreening/ScreeningForms/PostDonationCare.vue'), 
             props: true 
           }
         ]

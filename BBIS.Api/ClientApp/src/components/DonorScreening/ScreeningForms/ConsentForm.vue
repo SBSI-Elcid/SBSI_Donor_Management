@@ -198,7 +198,7 @@ export default class MedicalHistoryForm extends Vue {
     
     return questionnaires;
   }
-
+     
   protected get newDonor(): IDonorDto {
     return this.donorModule.getDonorInformation;
   }
@@ -208,7 +208,8 @@ export default class MedicalHistoryForm extends Vue {
   }
 
   protected get relationsOptions(): Array<{text: string, value: string}> {
-    let options = this.options(LookupKeys.RelationsToDonor  arguments);
+      /*let options = this.options(LookupKeys.RelationsToDonor  arguments);*/
+    let options = this.options(LookupKeys.RelationsToDonor);
     return options.map(x => { return { text: x.Text, value: x.Value} });
   } 
 

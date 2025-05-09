@@ -50,37 +50,59 @@ export default class BloodDonorProcess extends Vue {
       name: TabNames.InitialScreening,
       icon: 'mdi-badge-account',
       route: this.tabRoutes(TabNames.InitialScreening),
-      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.InitialScreener]),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.InitialScreener]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.PhysicalExam,
       icon: 'mdi-medical-bag',
       route: this.tabRoutes(TabNames.PhysicalExam),
-      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.Counseling,
       icon: '',
       route: this.tabRoutes(TabNames.Counseling),
-      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.ConsentForm,
       icon: '',
       route: this.tabRoutes(TabNames.ConsentForm),
-      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isDisabled: this.tabDisabled
+    },
+    {
+      name: TabNames.MethodOfBloodCollection,
+      icon: '',
+      route: this.tabRoutes(TabNames.MethodOfBloodCollection),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+      isDisabled: this.tabDisabled
+    },
+    {
+      name: TabNames.IssuanceOfBloodBag,
+      icon: '',
+      route: this.tabRoutes(TabNames.IssuanceOfBloodBag),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.BloodCollection,
       icon: 'mdi-blood-bag',
       route: this.tabRoutes(TabNames.BloodCollection),
-      isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
       isDisabled: this.tabDisabled
-    }];
+    },
+    {
+      name: TabNames.PostDonationCare,
+      icon: '',
+      route: this.tabRoutes(TabNames.PostDonationCare),
+      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
+      isDisabled: this.tabDisabled
+    }
+    ];
   }
 
     protected get tabRoutes(): (tabName: string) => string {
@@ -98,16 +120,23 @@ export default class BloodDonorProcess extends Vue {
                     return `/donor/counseling/${this.donorRegistrationId}`;
                 case TabNames.ConsentForm:
                     return `/donor/consentform/${this.donorRegistrationId}`;
+                case TabNames.MethodOfBloodCollection:
+                    return `/donor/methodofbloodcollection/${this.donorRegistrationId}`;
+                case TabNames.IssuanceOfBloodBag:
+                    return `/donor/issuanceofbloodbag/${this.donorRegistrationId}`;
                 case TabNames.BloodCollection:
                     return `/donor/bloodcollection/${this.donorRegistrationId}`;
+                case TabNames.PostDonationCare:
+                    return `/donor/postdonationcare/${this.donorRegistrationId}`;
                 default:
                     return `/donor/info/${this.donorRegistrationId}`;
             }
         }
     }
 
-  protected get showScreeningTabs(): boolean {
-    return Common.hasValue(this.donorRegistrationId) && this.donorModule.hasDonorTransaction;
+    protected get showScreeningTabs(): boolean {
+      return Common.hasValue(this.donorRegistrationId) && this.donorModule.hasDonorTransaction;
+    
   }
 
   protected get tabDisabled(): boolean {
@@ -126,7 +155,7 @@ export default class BloodDonorProcess extends Vue {
     if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
       this.donorRegistrationId = this.$route.params.reg_id;
     }
-      console.log("tabDisabled:", this.tabDisabled);
+      
   }
 }
 </script>
