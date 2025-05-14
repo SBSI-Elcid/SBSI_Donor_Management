@@ -7,6 +7,7 @@ namespace BBIS.Application.Contracts
         Task<PagedSearchResultDto<DonorListDto>> GetDonors(DonorPagedSearchDto searchDto, List<string> roles);
 
         Task<DonorInitialScreeningDto> GetInitialScreeningInfo(Guid transactionId);
+        Task<DonorVitalSignsDto> GetDonorVitalSignsInfo(Guid transactionId);
 
         Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id);
 
@@ -15,6 +16,7 @@ namespace BBIS.Application.Contracts
         Task<DonorBloodCollectionDto> GetBloodCollectionInfo(Guid transactionId);
         
         Task<Guid> CreateUpdateDonorInitialScreening(DonorInitialScreeningDto dto, Guid userId);
+        Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId);
 
         Task<Guid> CreateUpdateDonorPhysicalExamination(DonorPhysicalExaminationDto dto, Guid userId);
 

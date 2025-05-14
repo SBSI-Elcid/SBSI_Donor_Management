@@ -19,6 +19,7 @@ namespace BBIS.Api.MappingConfigurations
             CreateMap<UserAccount, UserAccountViewDto>();
             CreateMap<MedicalQuestionnaire, MedicalQuestionnaireDto>();
             CreateMap<DonorInitialScreeningDto, DonorInitialScreening>().ReverseMap();
+            CreateMap<DonorVitalSignsDto, DonorVitalSigns>().ReverseMap();
             CreateMap<DonorRecentDonationDto, DonorRecentDonation>().ReverseMap();
             CreateMap<DonorPhysicalExaminationDto, DonorPhysicalExamination>().ReverseMap();
             CreateMap<DonorBloodCollectionDto, DonorBloodCollection>().ReverseMap();

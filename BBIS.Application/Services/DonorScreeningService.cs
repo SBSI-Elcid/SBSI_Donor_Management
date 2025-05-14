@@ -143,6 +143,30 @@ namespace BBIS.Application.Services
 
             return dto;
         }
+        public async Task<DonorVitalSignsDto> GetDonorVitalSignsInfo(Guid id)
+        {
+            var dto = new DonorVitalSignsDto();
+
+            var query = await dbContext.DonorTransactions
+                .Include(x => x.DonorVitalSigns)
+                .Include(x => x.Donor)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
+
+            if (query == null)
+                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {id}");
+
+            if (query.DonorVitalSigns != null)
+            {
+                dto = mapper.Map<DonorVitalSignsDto>(query.DonorVitalSigns);
+            }
+
+            dto.DonorTransactionId = query.DonorTransactionId;
+            dto.DonorRegistrationId = id;
+            dto.DonorName = $"{query.Donor.Firstname} {query.Donor.Middlename?.FirstOrDefault()}. {query.Donor.Lastname}";
+
+            return dto;
+        }
 
         public async Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id)
         {
@@ -280,6 +304,34 @@ namespace BBIS.Application.Services
             {
                 throw;
             }
+        }
+
+        public async Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(
+                x => x.DonorRegistrationId == dto.DonorRegistrationId);
+
+            if (donorTransaction == null)
+                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {dto.DonorRegistrationId}");
+
+            var entity = mapper.Map<DonorVitalSigns>(dto);
+            entity.FacilitatedBy = userId;
+            entity.DateOfExamination = DateTime.UtcNow;
+            entity.DonorTransactionId = donorTransaction.DonorTransactionId;
+
+            if (dto.DonorVitalSignsId.HasValue)
+            {
+                repository.DonorVitalSigns.Update(entity);
+            }
+            else
+            {
+                repository.DonorVitalSigns.Create(entity);
+            }
+
+            await repository.SaveAsync();
+            return donorTransaction.DonorRegistrationId;
         }
 
         public async Task<Guid> CreateUpdateDonorPhysicalExamination(DonorPhysicalExaminationDto dto, Guid userId)

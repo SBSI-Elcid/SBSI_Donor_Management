@@ -94,6 +94,7 @@ namespace BBIS.Database
                 entity.HasKey(e => e.MedicalQuestionnaireId);
                 entity.Property(e => e.QuestionTagalogText).IsRequired().HasColumnType("varchar(500)");
                 entity.Property(e => e.QuestionEnglishText).HasColumnType("varchar(500)");
+                entity.Property(e => e.QuestionBisayaText).HasColumnType("varchar(500)");
                 entity.Property(e => e.HeaderText).HasColumnType("varchar(200)");
                 entity.Property(e => e.GenderOption).HasColumnType("varchar(10)");
 
@@ -237,15 +238,15 @@ namespace BBIS.Database
             {
                 entity.ToTable(nameof(DonorPhysicalExamination));
                 entity.HasKey(e => e.DonorPhysicalExaminationId);
-                entity.Property(e => e.BloodPressure).HasColumnType("varchar(10)");
+                //entity.Property(e => e.BloodPressure).HasColumnType("varchar(10)");
                 entity.Property(e => e.GeneralStatus).HasColumnType("varchar(50)");
                 entity.Property(e => e.Skin).HasColumnType("varchar(50)");
                 entity.Property(e => e.HEENT).HasColumnType("varchar(50)");
                 entity.Property(e => e.HeartAndLungs).HasColumnType("varchar(50)");
-                entity.Property(e => e.ResultStatus).HasColumnType("varchar(20)");
-                entity.Property(e => e.FailedRemarks).HasColumnType("varchar(200)");
-                entity.Property(e => e.BloodBagType).HasColumnType("varchar(15)");
-                entity.Property(e => e.DoctorName).HasColumnType("varchar(60)");
+               // entity.Property(e => e.ResultStatus).HasColumnType("varchar(20)");
+                //entity.Property(e => e.FailedRemarks).HasColumnType("varchar(200)");
+                //entity.Property(e => e.BloodBagType).HasColumnType("varchar(15)");
+                //entity.Property(e => e.DoctorName).HasColumnType("varchar(60)");
 
                 entity.HasOne(x => x.DonorTransaction).WithOne(x => x.DonorPhysicalExamination).OnDelete(DeleteBehavior.NoAction);
             });

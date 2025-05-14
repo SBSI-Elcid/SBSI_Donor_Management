@@ -11,6 +11,7 @@ namespace BBIS.Application.Repositories
         private IDonorTransactionRepository _donorTransaction;
         private IDonorMedicalHistoryRepository _donorMedicalHistory;
         private IDonorInitialScreeningRepository _donorInitialScreening;
+        private IDonorVitalSignsRepository _donorVitalSigns;
         private IDonorPhysicalExaminationRepository _donorPhysicalExamination;
         private IDonorRecentDonationRepository _donorRecentDonation;
         private IDonorBloodCollectionRepository _donorBloodCollection;
@@ -97,6 +98,18 @@ namespace BBIS.Application.Repositories
                     _donorInitialScreening = new DonorInitialScreeningRepository(_dbContext);
                 }
                 return _donorInitialScreening;
+            }
+        }
+
+        public IDonorVitalSignsRepository DonorVitalSigns
+        {
+            get
+            {
+                if (_donorVitalSigns == null)
+                {
+                    _donorVitalSigns = new DonorVitalSignsRepository(_dbContext);
+                }
+                return _donorVitalSigns;
             }
         }
 
