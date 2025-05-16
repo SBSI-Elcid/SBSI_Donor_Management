@@ -59,6 +59,27 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpGet("vitalsigns/{id}")]
+        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        public async Task<ActionResult<RequestResult<DonorVitalSignsDto>>> GetDonorVitalSignsInfo(Guid id)
+        {
+            try
+            {
+                var result = await this.donorScreeningService.GetDonorVitalSignsInfo(id);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("initialscreening/recentdonation/{id}")]
         [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<List<DonorRecentDonationDto>>>> GetDonorRecentDonations(Guid id)
@@ -144,6 +165,32 @@ namespace BBIS.Api.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"Something went wrong during initial screening: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost("upsert-vitalsigns")]
+        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorVitalSigns([FromBody] DonorVitalSignsDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.donorScreeningService.CreateUpdateDonorVitalSigns(dto, this.UserId);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong during vital signs screening: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong during vital signs screening: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
             }
         }

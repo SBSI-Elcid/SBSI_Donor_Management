@@ -206,7 +206,7 @@ export default class DonorsView extends VueBase {
     this.showError = false;
     
     try {
-      this.pagedResult = await this.donorScreeningService.getDonors(this.pagedSearchDto);
+      this.pagedResult = await this.donorScreeningService.getDon ors(this.pagedSearchDto);
       this.loading = false;
       this.records = this.pagedResult.Results;
       this.dataLoaded = true;
@@ -223,6 +223,12 @@ export default class DonorsView extends VueBase {
       case DonorStatus.ForInitialScreening:
         this.$router.push({ path: `/donor/initialscreening/${regId}` });
         break;
+        case DonorStatus.ForVitalSigns:
+         this.$router.push({ path: `/donor/vitalsigns/${regId}` });
+         break;
+         case DonorStatus.ForCounseling:
+         this.$router.push({ path: `/donor/counseling/${regId}` });
+         break;
       case DonorStatus.ForPhysicalExamination:
         this.$router.push({ path: `/donor/physicalexamination/${regId}` });
         break;

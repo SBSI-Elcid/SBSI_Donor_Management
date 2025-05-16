@@ -194,8 +194,14 @@ protected get donorMedicalHistories(): Array<{ header: string, question: string,
     return;
   }
 
-  this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
-}
+  this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
+  }
+
+    public onSubmit(): void {
+        let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
+        this.newDonor.MedicalHistories = donorMedicalHistory;
+        this.donorModule.setDonorInformation(this.newDonor);
+    }
 
     //@Emit('goToStep')
   //public onBack(): number {

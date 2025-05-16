@@ -1,16 +1,18 @@
 <template>
     <div>
-        <v-form class="form-container" ref="form"  lazy-validation>
+        <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
             <v-row>
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Body Weight (kgs)</label>
                     <v-text-field type="number"
+                                  v-model ="donorVitalSigns.BodyWeight"
                                   dense outlined />
                 </v-col>
 
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Temperature</label>
                     <v-text-field type="number"
+                                  v-model ="donorVitalSigns.Temperature"
                                   dense outlined />
                 </v-col>
 
@@ -20,12 +22,14 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Blood Pressure</label>
                     <v-text-field type="number"
+                                  v-model ="donorVitalSigns.BloodPressure"
                                   dense outlined />
                 </v-col>
 
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Pulse Rate</label>
                     <v-text-field type="number"
+                                  v-model ="donorVitalSigns.PulseRate"
                                   dense outlined />
                 </v-col>
 
@@ -35,48 +39,29 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Respiratory Rate</label>
                     <v-text-field type="number"
+                                  v-model ="donorVitalSigns.RespiratoryRate"
                                   dense outlined />
                 </v-col>
 
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Oxygen Saturation</label>
                     <v-text-field type="number"
+                                  v-model ="donorVitalSigns.OxygenSaturation"
                                   dense outlined />
                 </v-col>
 
             </v-row>
 
-            <!--<v-row>
-                <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <label class="label-container">Type of Donation:</label>
-                    <v-radio-group class="radio-container-row" v-model="donorInitialScreening.DonationType"
-                                   @change="onDonationTypeChange" :disabled="isDisabled" row>
-                        <v-radio v-for="(type, index) in donationTypesOptions" :key="index" :label="type.text" :value="type.value" />
-                    </v-radio-group>
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <v-radio-group v-if="showInHouseOptions" class="radio-container-row" v-model="donorInitialScreening.InHouseTypeValue"
-                                   @change="onInHouseTypeChange" :disabled="isDisabled">
-                        <v-radio v-for="(type, index) in inHouseTypesOptions" :key="index" :label="type.text" :value="type.value" />
-                    </v-radio-group>
-                </v-col>
-            </v-row>-->
-
-
             <div class="section-outer-container mt-3">
                 <div class="text-right">
-                    <v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>
-                    <v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
-                    <v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
+                    <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
+                    <!--v-btn color="default" large tile class="mr-2" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>-->
                 </div>
             </div>
         </v-form>
     </div>
 </template>
-<<!--script>
+<script lang="ts">
     import VueBase from '@/components/VueBase';
     import { Component, Watch } from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
@@ -84,11 +69,128 @@
     import LookupModule from '@/store/LookupModule';
     import DonorScreeningService from '@/services/DonorScreeningService';
     import Common from '@/common/Common';
-    import { DonorInitialScreeningDto, IDonorInitialScreeningDto } from '@/models/DonorScreening/DonorInitialScreeningDto';
-    import { IDonorRecentDonationDto } from '@/models/DonorScreening/DonorRecentDonationDto';
+    import { DonorVitalSignsDto, IDonorVitalSigns } from '@/models/DonorScreening/DonorVitalSignsDto';
     import { ILookupOptions } from '@/models/Lookups/LookupOptions';
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
-    import RecentDonationTable from '@/components/DonorScreening/ScreeningForms/RecentDonationTable.vue';
+    //import RecentDonationTable from '@/components/DonorScreening/ScreeningForms/RecentDonationTable.vue';
+    @Component
+    export default class VitalSigns extends VueBase {
+        protected donorModule: DonorModule = getModule(DonorModule, this.$store);
+        protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
+        protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
 
-</script>-->
+        protected formValid: boolean = true;
+        protected rules: any = { ...Common.ValidationRules }
+        protected errorMessage: string = '';
+        protected showInHouseOptions: boolean = false;
+        protected showRecentDonations: boolean = false;
+        protected showPatientDirectedFields: boolean = false;
+        protected showMobileBloodDonationFields: boolean = false;
+        protected donorVitalSigns: IDonorVitalSigns = new DonorVitalSignsDto();
+        protected isEditingValue: boolean = false;
+        protected isDisabled: boolean = true;
+
+        public async created(): Promise<void> {
+
+            let loader = this.showLoader();
+
+            try {
+                
+                await this.getDonorVitalSignsInfo();
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                loader.hide();
+            }
+        }
+
+        protected async getDonorVitalSignsInfo(): Promise<void> {
+            if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
+                let regId = this.$route.params.reg_id;
+                this.donorVitalSigns = await this.donorScreeningService.getDonorVitalSignsInfo(regId);
+                console.log(this.donorVitalSigns);
+
+                this.donorModule.setTransactionId(this.donorVitalSigns.DonorTransactionId);
+            }
+        }
+
+        //public onChangeLog(records: Array<IDonorRecentDonationDto>): void {
+        //    this.recentDonations = records.map(x => { return { DonorRecentDonationId: null, Agency: x.Agency, NumberOfDonation: x.NumberOfDonation, DateOfRecentDonation: x.DateOfRecentDonation, PlaceOfRecentDonation: x.PlaceOfRecentDonation }; });
+        //}
+
+        //protected onDeferred(): void {
+        //    this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+        //    if (this.formValid === false) {
+        //        return;
+        //    }
+
+        //    this.mark_deferred(`Are you sure you want to tag this donor as deffered?`, 'Mark Donor as Deferred', 'Mark as Deferred', 'Cancel', this.onDeferralConfirmation);
+        //}
+
+        //public async onDeferralConfirmation(confirm: boolean, result: any): Promise<void> {
+        //    if (confirm) {
+        //        this.donorInitialScreening.DonorStatus = DonorStatus.Deferred;
+        //        this.donorInitialScreening.DeferralStatus = result[0].DeferralStatus;
+        //        this.donorInitialScreening.Remarks = result[0].Remarks;
+        //        await this.onSubmit();
+        //    }
+        //}
+
+        protected onApprove = (): void => {
+            
+            const form = this.$refs.form as any;
+
+            if (!form) {
+                this.notify_error('Form is not ready yet.');
+                return;
+            }
+
+            this.formValid = form.validate();
+            if (this.formValid === false) {
+                return;
+            }
+
+            this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
+        };
+
+        //protected onApprove(): void {
+        //    this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+        //    if (this.formValid === false) {
+        //        return;
+        //    }
+
+        //    this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
+        //}
+
+        public async onApprovalConfirmation(confirm: boolean): Promise<void> {
+            if (confirm) {
+                this.donorVitalSigns.DonorStatus = DonorStatus.ForPhysicalExamination;
+                await this.onSubmit();
+            }
+        }
+        
+        public async onSubmit(): Promise<void> {
+            console.log(this.donorVitalSigns);
+            let loader = this.showLoader();
+            try {
+                //this.donorVitalSigns.RecentDonations = this.recentDonations;
+                await this.donorScreeningService.upsertVitalSignsScreening(this.donorVitalSigns);
+                this.notify_success('Form successfully submitted.');
+
+                this.$router.push({ path: '/donors' });
+            }
+            catch (error: any) {
+                if (error.StatusCode != 500) {
+                    let errorMessage = error.Message ?? "An error occured while processing your request.";
+                    this.notify_error(errorMessage);
+                }
+            }
+            finally {
+                loader.hide();
+            }
+        }
+    }
+ </script>

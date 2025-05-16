@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BBIS.Application.DTOs.DonorScreening
+﻿namespace BBIS.Application.DTOs.DonorScreening
 {
-    public class DonorPhysicalExaminationDto
+    public class DonorPhysicalExaminationDtoOld
     {
         public Guid? DonorPhysicalExaminationId { get; set; }
         public Guid DonorTransactionId { get; set; }

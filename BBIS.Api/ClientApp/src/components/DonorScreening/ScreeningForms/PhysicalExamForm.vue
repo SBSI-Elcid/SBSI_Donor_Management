@@ -5,6 +5,7 @@
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">Skin</label>
                     <v-text-field 
+                                  v-model ="donorPhysicalExam.Skin"
                                   :rules="[rules.maxLength(10)]"
                                   :disabled="isDisabled"
                                   dense outlined />
@@ -13,6 +14,7 @@
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">HEENT</label>
                     <v-text-field type="number"
+                                  v-model ="donorPhysicalExam.HEENT"
                                   :disabled="isDisabled"
                                   dense outlined />
                 </v-col>
@@ -20,6 +22,7 @@
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">HEART and Lungs</label>
                     <v-text-field type="number"
+                                  v-model ="donorPhysicalExam.HeartAndLungs"
                                   :disabled="isDisabled"
                                   dense outlined />
                 </v-col>
@@ -29,6 +32,7 @@
                 <v-col cols="12" lg="12" md="10" sm="12" class="py-0">
                     <label class="label-container">General appearance</label>
                     <v-text-field :rules="[rules.maxLength(50)]"
+                                  v-model ="donorPhysicalExam.GeneralStatus"
                                   :disabled="isDisabled"
                                   dense outlined />
                 </v-col>
@@ -39,8 +43,8 @@
                     <!--<v-btn color="default" large tile class="mr-2" v-if="isEditingValue && !isDisabled" @click="submit"><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>
                     <v-btn color="default" large tile class="mr-2" v-if="!isEditingValue && isPassed && !isDisabled" @click="approveOrMarkDeferred"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
                     <v-btn color="default" large tile class="mr-2" v-if="!isEditingValue && !isPassed && !isDisabled" @click="approveOrMarkDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>-->
-                    <v-btn color="default" large tile class="mr-2" v-if="isEditingValue && !isDisabled" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>
-                    <v-btn color="default" large tile class="mr-2" v-if="!isEditingValue && !isDisabled" @click=""><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
+                    <!--<v-btn color="default" large tile class="mr-2" v-if="isEditingValue && !isDisabled" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
+                    <v-btn color="default" large tile class="mr-2" v-if="!isEditingValue && !isDisabled" @click="approveOrMarkDeferred"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
                     <v-btn color="default" large tile class="mr-2" v-if="!isEditingValue && !isDisabled" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
                 </div>
             </div>
@@ -90,9 +94,9 @@ export default class PhysicalExamForm extends VueBase {
     return options.map(x => { return { text: x.Text, value: x.Value} });
   }
 
-  protected get isPassed(): boolean {
-    return this.donorPhysicalExam.ResultStatus == PhysicalExamResultStatus.Passed;
-  }
+  //protected get isPassed(): boolean {
+  // return this.donorPhysicalExam.ResultStatus == PhysicalExamResultStatus.Passed;
+  //}
 
   protected async created(): Promise<void> {
     let loader = this.showLoader();
@@ -123,35 +127,35 @@ export default class PhysicalExamForm extends VueBase {
         }
       }
 
-      this.onRemarksChanged();
+      /*this.onRemarksChanged();*/
     }
   }
 
-  protected onRemarksChanged(): void {
-    if (this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.TemporaryDeferral || this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.PermanentDeferral || this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.SelfDeferral || this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.IndefiniteDeferral) {
-      this.canAddReason = true;
-      this.donorPhysicalExam.FailedRemarks = null;
-    }
-    else {
-      this.canAddReason = false;
-      this.donorPhysicalExam.FailedRemarks = null;
-    }
-  }
+  //protected onRemarksChanged(): void {
+  /*  if (this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.TemporaryDeferral || this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.PermanentDeferral || this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.SelfDeferral || this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.IndefiniteDeferral) {*/
+  //    this.canAddReason = true;
+  //    this.donorPhysicalExam.FailedRemarks = null;
+  //  }
+  //  else {
+  //    this.canAddReason = false;
+  //    this.donorPhysicalExam.FailedRemarks = null;
+  //  }
+  //}
 
   protected async approveOrMarkDeferred(): Promise<void> {
     this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
     if(this.formValid === false) {
       return;
     }
-
-    if (this.isPassed) {
-      this.donorPhysicalExam.DonorStatus = DonorStatus.ForBloodCollection;
-    }
-    else {
-      this.donorPhysicalExam.DonorStatus = DonorStatus.Deferred;
-      this.donorPhysicalExam.DeferralStatus = this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.PermanentDeferral ? 'Permanent' :  'Temporary';
-      this.donorPhysicalExam.Remarks = this.donorPhysicalExam.FailedRemarks;
-    }
+      this.donorPhysicalExam.DonorStatus = DonorStatus.ForCounseling;
+    //if (this.isPassed) {
+    //  this.donorPhysicalExam.DonorStatus = DonorStatus.ForBloodCollection;
+    //}
+    //else {
+    //  this.donorPhysicalExam.DonorStatus = DonorStatus.Deferred;
+    //  this.donorPhysicalExam.DeferralStatus = this.donorPhysicalExam.ResultStatus === PhysicalExamResultStatus.PermanentDeferral ? 'Permanent' :  'Temporary';
+    //  this.donorPhysicalExam.Remarks = this.donorPhysicalExam.FailedRemarks;
+    //}
 
     await this.submit();
   }

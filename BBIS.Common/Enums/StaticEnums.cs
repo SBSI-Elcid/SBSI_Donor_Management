@@ -56,6 +56,9 @@
         public static readonly string Success = nameof(Success);
         public static readonly string Deferred = nameof(Deferred);
         public static readonly string Inventory = nameof(Inventory);
+        public static readonly string ForCounseling = nameof(ForCounseling);
+        public static readonly string ForVitalSigns = nameof(ForVitalSigns);
+        public static readonly string ForConsent = nameof(ForConsent);
     }
 
     public static class BloodBagCollectionTypes

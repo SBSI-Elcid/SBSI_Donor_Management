@@ -20,5 +20,7 @@ namespace BBIS.Application.DTOs.DonorScreening
         public Guid FacilitatedBy { get; set; }
         public DateTime DateOfExamination { get; set; }
         public string DonorName { get; set; }
+
+        public string DonorStatus { get; set; }
     }
 }

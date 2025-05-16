@@ -18,6 +18,9 @@ namespace BBIS.Common.Extensions
                     DonorStatus.ForBloodCollection,
                     DonorStatus.ForLaboratoryTest,
                     DonorStatus.Success,
+                    DonorStatus.ForCounseling,
+                    DonorStatus.ForVitalSigns,
+                    DonorStatus.ForConsent,
                     DonorStatus.Deferred,
                 };
             }
@@ -25,6 +28,9 @@ namespace BBIS.Common.Extensions
             if (roles.Contains(Roles.InitialScreener))
             {
                 statuses.Add(DonorStatus.ForInitialScreening);
+                statuses.Add(DonorStatus.ForVitalSigns);
+                statuses.Add(DonorStatus.ForCounseling);
+                statuses.Add(DonorStatus.ForConsent);
             }
 
             if (roles.Contains(Roles.PhysicalExamScreener))

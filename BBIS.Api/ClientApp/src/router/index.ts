@@ -105,7 +105,7 @@ const routes: Array<RouteConfig> = [
           { 
             path: 'physicalexamination/:reg_id', 
             name: 'PhysicalExam',
-            component: () => import('@/components/DonorScreening/ScreeningForms/PhysicalExamFormOld.vue'), 
+            component: () => import('@/components/DonorScreening/ScreeningForms/PhysicalExamForm.vue'), 
             props: true 
           },
           { 

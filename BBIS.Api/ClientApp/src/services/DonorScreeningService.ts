@@ -6,6 +6,7 @@ import { PagedSearchResultDto } from "@/models/PagedSearchDto";
 import { IDonorListDto } from "@/models/DonorScreening/IDonorListDto";
 import { DonorPagedSearchDto } from "@/models/DonorScreening/DonorPagedSearchDto";
 import { IDonorRecentDonationDto } from "@/models/DonorScreening/DonorRecentDonationDto";
+import { IDonorVitalSigns } from "../models/DonorScreening/DonorVitalSignsDto";
 
 export default class DonorScreeningService {
 	baseUrl: string = 'api/donorscreening/';
@@ -23,6 +24,9 @@ export default class DonorScreeningService {
 		return this.apiClient.get<IDonorInitialScreeningDto>(`initialscreening/${id}`);
 	}
 
+	async getDonorVitalSignsInfo(id: Guid): Promise<IDonorVitalSigns> {
+		return this.apiClient.get<IDonorVitalSigns>(`vitalsigns/${id}`);
+	}
 	async getRecentDonations(id: Guid): Promise<Array<IDonorRecentDonationDto>> {
 		return this.apiClient.get<Array<IDonorRecentDonationDto>>(`initialscreening/recentdonation/${id}`);
 	}
@@ -38,6 +42,10 @@ export default class DonorScreeningService {
 	async upsertInitialScreening(dto: IDonorInitialScreeningDto): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-initialscreening`, dto);
 		return response.Data as Guid; 
+	}
+	async upsertVitalSignsScreening(dto: IDonorVitalSigns): Promise<Guid> {
+		let response = await this.apiClient.postJson(`upsert-vitalsigns`, dto);
+		return response.Data as Guid;
 	}
 
 	async upsertPhysicalExamination(dto: IDonorPhysicalExaminationDto): Promise<Guid> {

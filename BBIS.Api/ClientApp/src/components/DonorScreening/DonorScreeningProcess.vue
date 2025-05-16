@@ -41,7 +41,7 @@ export default class BloodDonorProcess extends Vue {
     },
     {
         name: TabNames.DonorVitalSigns,
-        icon: '',
+        icon: 'mdi-badge-account',
         route: this.tabRoutes(TabNames.DonorVitalSigns),
         isShow: Common.hasValue(this.donorRegistrationId) && this.showTab([Roles.DonorAdmin, Roles.InitialScreener, Roles.PhysicalExamScreener, Roles.BloodCollector]),
         isDisabled: this.tabDisabled
