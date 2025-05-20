@@ -47,13 +47,14 @@
       <!-- BUTTONS -->
       <div class="section-outer-container text-right pt-3 pb-2">
         <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
-        <v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
+        <v-btn color="default" large tile class="mr-2" v-if="" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
         <v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
       </div>
     </v-form>
   </div>
 </template>
 <script lang="ts">
+import VueBase from '@/components/VueBase';
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import DonorModule from '@/store/DonorModule';
@@ -62,161 +63,139 @@ import { DonorMedicalHistoryDto, IDonorMedicalHistoryDto } from '@/models/DonorR
 import { IDonorDto } from '@/models/DonorRegistration/DonorDto';
 import Common from '@/common/Common';
 import DonorRegistrationService from '@/services/DonorRegistrationService';
+import DonorScreeningService from '@/services/DonorScreeningService';
 import moment from 'moment';
 import { DonorStatus } from '@/models/Enums/DonorStatus';
+import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScreening/DonorCounselingDto';
 
-@Component
-export default class MedicalHistoryForm extends Vue {
-  //@Prop({ required: true, default: false })
-  //public inReviewPage!: boolean;
-  protected formValid: boolean = true;
-  protected rules: any = {...Common.ValidationRules }
-  protected donorRegistrationId: Guid = '';
-  protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
-  //@Prop({ required: false, default: false })
-    //public inProcess!: boolean;
+    @Component
+    export default class MedicalHistoryForm extends VueBase {
 
-  protected donorInfo?: IDonorDto;
-
-  protected donorModule: DonorModule = getModule(DonorModule, this.$store);
+        protected formValid: boolean = true;
+        protected rules: any = { ...Common.ValidationRules }
+        protected donorRegistrationId: Guid = '';
+        protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
+        protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
 
 
+        protected donorCounseling: IDonorCounseling = new DonorCounselingDto();
 
-  protected get medicalQuestionnaires(): Array<IMedicalQuestionnaireDto> {
-    let questionnaires = this.donorModule.getMedicalQuestionnaire;
-    
-    if (this.newDonor.Gender === "Male") {
-      questionnaires = questionnaires.filter(x => x.GenderOption != "Female");
-    }
-    return questionnaires;
-  }
+        protected donorInfo?: IDonorDto;
 
-//  protected async newDonor(): Promise<IDonorDto | undefined> {
-//  if (this.$route.params.reg_id && typeof this.$route.params.reg_id === 'string') {
-//    this.donorRegistrationId = this.$route.params.reg_id;
+        protected donorModule: DonorModule = getModule(DonorModule, this.$store);
 
-//    try {
-//      const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
-//      this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
 
-//      if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) {
-//        this.donorModule.setDonorStatus(donorInfo.DonorStatus);
-//      }
+        protected get medicalQuestionnaires(): Array<IMedicalQuestionnaireDto> {
+            let questionnaires = this.donorModule.getMedicalQuestionnaire;
 
-//      donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
-//      this.donorModule.setDonorInformation(donorInfo);
+            if (this.newDonor.Gender === "Male") {
+                questionnaires = questionnaires.filter(x => x.GenderOption != "Female");
+            }
+            return questionnaires;
+        }
 
-//      return this.donorModule.getDonorInformation;
-//    } catch (error) {
-//      console.error(error);
-//    }
-//  }
+        protected async created() {
+            await this.loadDonorInfo(); // Load donor info before mounting
+            await this.donorModule.loadMedicalQuestionnaire(); // Fetch medical questionnaires
+        }
 
-//  return undefined;
-    //}
-     protected async created() {
-    await this.loadDonorInfo(); // Load donor info before mounting
-    await this.donorModule.loadMedicalQuestionnaire(); // Fetch medical questionnaires
-  }
+        protected async loadDonorInfo(): Promise<void> {
+            if (this.$route.params.reg_id && typeof this.$route.params.reg_id === 'string') {
+                this.donorRegistrationId = this.$route.params.reg_id;
 
-    //protected async mounted() {
-    //    try {
-    //        await this.loadDonorInfo();  // Wait until donor info is fully loaded
-    //        await this.donorModule.loadMedicalQuestionnaire(); // Wait for medical questionnaires
-    //    } catch (error) {
-    //        console.error("Error loading data: ", error);
-    //    }
-    //}
-    protected async loadDonorInfo(): Promise<void> {
-        if (this.$route.params.reg_id && typeof this.$route.params.reg_id === 'string') {
-            this.donorRegistrationId = this.$route.params.reg_id;
+                try {
+                    const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
 
-            try {
-                const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
+                    this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
 
-                this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
+                    if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) {
+                        this.donorModule.setDonorStatus(donorInfo.DonorStatus);
+                    }
+                    console.log(donorInfo);
+                    donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
+                    this.donorModule.setDonorInformation(donorInfo);
 
-                if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) {
-                    this.donorModule.setDonorStatus(donorInfo.DonorStatus);
+                } catch (error) {
+                    console.error(error);
                 }
 
-                donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
-                this.donorModule.setDonorInformation(donorInfo);
-
-            } catch (error) {
-                console.error(error);
+             
             }
         }
-    }
 
-  protected get newDonor(): IDonorDto {
-    return this.donorModule.getDonorInformation;
-  }
+        protected get newDonor(): IDonorDto {
+            return this.donorModule.getDonorInformation;
+        }
 
-protected get donorMedicalHistories(): Array<{ header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto, hasHistory: boolean }> {
-    let medicalQuestions: Array<{ header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto, hasHistory: boolean }> = [];
-    this.medicalQuestionnaires.forEach(question => {
-        let donorMedicalHistory: DonorMedicalHistoryDto = this.newDonor.MedicalHistories.find(x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId) ?? new DonorMedicalHistoryDto();
-        let hasHistory = this.newDonor.MedicalHistories.some(
-            x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId
-        );
-        let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
-            header: question.HeaderText,
-            question: question.QuestionTagalogText,
-            donorMedHistory: {
-                MedicalQuestionnaireId: question.MedicalQuestionnaireId,
-                Answer: donorMedicalHistory.Answer,
-                Remarks: donorMedicalHistory.Remarks,
-                HeaderText: question.HeaderText,
-                QuestionText: question.QuestionTagalogText
-            },
-            hasHistory: hasHistory
-        };
+        protected get donorMedicalHistories(): Array<{ header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto, hasHistory: boolean }> {
+            let medicalQuestions: Array<{ header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto, hasHistory: boolean }> = [];
+            this.medicalQuestionnaires.forEach(question => {
+                let donorMedicalHistory: DonorMedicalHistoryDto = this.newDonor.MedicalHistories.find(x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId) ?? new DonorMedicalHistoryDto();
+                let hasHistory = this.newDonor.MedicalHistories.some(
+                    x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId
+                );
+                let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
+                    header: question.HeaderText,
+                    question: question.QuestionTagalogText,
+                    donorMedHistory: {
+                        MedicalQuestionnaireId: question.MedicalQuestionnaireId,
+                        Answer: donorMedicalHistory.Answer,
+                        Remarks: donorMedicalHistory.Remarks,
+                        HeaderText: question.HeaderText,
+                        QuestionText: question.QuestionTagalogText
+                    },
+                    hasHistory: hasHistory
+                };
 
-        medicalQuestions.push(medicalQuestion);
-    });
+                medicalQuestions.push(medicalQuestion);
+            });
 
-    return medicalQuestions;
-}
+            return medicalQuestions;
+        }
 
-  protected checkForNext(): void {
-    this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
-    if (this.formValid) {
-      this.onNext();
-    }
+        protected checkForNext(): void {
+            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            if (this.formValid) {
+                this.onNext();
+            }
 
-    return;
-  }
+            return;
+        }
 
-  protected onApprove(): void {
-  this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
-  if(this.formValid === false) {
-    return;
-  }
+        protected onApprove(): void {
+            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            if (this.formValid === false) {
+                return;
+            }
 
-  this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
-  }
+            this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
+        }
 
-    public onSubmit(): void {
-        let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
-        this.newDonor.MedicalHistories = donorMedicalHistory;
-        this.donorModule.setDonorInformation(this.newDonor);
-    }
+        public async onSubmit(): Promise<void> {
+            let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
+            this.newDonor.MedicalHistories = donorMedicalHistory;
+            this.donorModule.setDonorInformation(this.newDonor);
+            await this.insertData();
+        }
 
-    //@Emit('goToStep')
-  //public onBack(): number {
-  //  return 1;
-  //}
+        public async insertData(): Promise<void> {
 
-  //@Emit('goToStep')
-  //public onNext(): number | void {
-
-  //  let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
-  //  this.newDonor.MedicalHistories = donorMedicalHistory;
-  //  this.donorModule.setDonorInformation(this.newDonor);
-    
-  //  return 3;
-  //}
+            this.donorCounseling.DonorStatus = DonorStatus.ForConsent;
+            this.donorCounseling.medicalHistories = this.newDonor.MedicalHistories;
+            this.donorCounseling.DonorRegistrationId = this.$route.params.reg_id;
+           try {
+                await this.donorScreeningService.upsertCounselingScreening(this.donorCounseling);
+                //this.$notify({ type: "success", text: "Donor counseling saved successfully." });
+            } catch (error) {
+                console.error("Insert failed", error);
+                //this.$notify({ type: "error", text: "Failed to save donor counseling." });
+            }
+            
+            //for (const history of this.newDonor.MedicalHistories) {
+            //    /*console.log(this.newDonor.MedicalHistories);*/
+            //    await this.donorScreeningService.upsertCounselingScreening(history);
+            //}
+        }
 }
 </script>
 

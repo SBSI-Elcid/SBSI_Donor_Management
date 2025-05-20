@@ -74,7 +74,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td v-if="newDonor.Age > 18">
+                    <td v-if="DonorInfo.Age > 18">
                     </td>
                     <td v-else>
                         <label class="subtitle-1 pa-2">
@@ -91,19 +91,19 @@
                                 </v-row>
                                 <v-row>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
-                                        <v-text-field v-model="newDonor.Firstname"
+                                        <v-text-field v-model="DonorInfo.Firstname"
                                                       :rules="[rules.required, rules.maxLength(90)]"
                                                       :disabled="true"
                                                       dense outlined />
                                     </v-col>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
-                                        <v-text-field v-model="newDonor.Middlename"
+                                        <v-text-field v-model="DonorInfo.Middlename"
                                                       :rules="[rules.maxLength(90)]"
                                                       :disabled="true"
                                                       dense outlined />
                                     </v-col>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
-                                        <v-text-field v-model="newDonor.Lastname"
+                                        <v-text-field v-model="DonorInfo.Lastname"
                                                       :rules="[rules.required, rules.maxLength(90)]"
                                                       :disabled="true"
                                                       dense outlined />
@@ -162,100 +162,96 @@
     </div>
 </template>
 <script lang="ts">
-import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
-import { getModule } from 'vuex-module-decorators';
-import DonorModule from '@/store/DonorModule';
-import { IMedicalQuestionnaireDto } from '@/models/DonorRegistration/MedicalQuestionnaireDto';
-import { DonorMedicalHistoryDto, IDonorMedicalHistoryDto } from '@/models/DonorRegistration/DonorMedicalHistoryDto';
-import { IDonorDto } from '@/models/DonorRegistration/DonorDto';
-import Common from '@/common/Common';
-import { ILookupOptions } from '@/models/Lookups/LookupOptions';
-import { LookupKeys } from '@/models/Enums/LookupKeys';
-import LookupModule from '@/store/LookupModule';
-@Component
-export default class MedicalHistoryForm extends Vue {
-  //@Prop({ required: true, default: false })
-  //public inReviewPage!: boolean;
-  protected formValid: boolean = true;
-  protected rules: any = {...Common.ValidationRules }
+    import VueBase from '@/components/VueBase';
+    import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+    import { getModule } from 'vuex-module-decorators';
+    import DonorModule from '@/store/DonorModule';
+    import { IMedicalQuestionnaireDto } from '@/models/DonorRegistration/MedicalQuestionnaireDto';
+    import { DonorMedicalHistoryDto, IDonorMedicalHistoryDto } from '@/models/DonorRegistration/DonorMedicalHistoryDto';
+    import { IDonorDto } from '@/models/DonorRegistration/DonorDto';
+    import Common from '@/common/Common';
+    import { ILookupOptions } from '@/models/Lookups/LookupOptions';
+    import { LookupKeys } from '@/models/Enums/LookupKeys';
+    import LookupModule from '@/store/LookupModule';
+    import DonorRegistrationService from '@/services/DonorRegistrationService';
+    @Component
+    export default class MedicalHistoryForm extends VueBase {
+        //@Prop({ required: true, default: false })
+        //public inReviewPage!: boolean;
+        protected formValid: boolean = true;
+        protected rules: any = { ...Common.ValidationRules }
+        protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
+        //@Prop({ required: false, default: false })
+        //public inProcess!: boolean;
 
-  //@Prop({ required: false, default: false })
-  //public inProcess!: boolean;
+        protected donorModule: DonorModule = getModule(DonorModule, this.$store);
+        protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
+        protected donorInfo?: IDonorDto;
 
-  protected donorModule: DonorModule = getModule(DonorModule, this.$store);
-  protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
+        protected async created() {
 
-  protected get submitLabel(): string {
-    return this.inProcess ? "Update and Set for Screening" : "I Agree and Submit";
-  }
+            try {
+                const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
 
-  protected get medicalQuestionnaires(): Array<IMedicalQuestionnaireDto> {
-    let questionnaires = this.donorModule.getMedicalQuestionnaire;
-    
-    if (this.newDonor.Gender === "Male") {
-      questionnaires = questionnaires.filter(x => x.GenderOption != "Female");
-    }
-    
-    return questionnaires;
-  }
-     
-  protected get newDonor(): IDonorDto {
-    return this.donorModule.getDonorInformation;
-  }
+                this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
 
-  public get options(): (key: string) => Array<ILookupOptions> {
-    return (key) => this.lookupModule.getOptionsByKey(key);
-  }
+                if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) {
+                    this.donorModule.setDonorStatus(donorInfo.DonorStatus);
+                }
 
-  protected get relationsOptions(): Array<{text: string, value: string}> {
-      /*let options = this.options(LookupKeys.RelationsToDonor  arguments);*/
-    let options = this.options(LookupKeys.RelationsToDonor);
-    return options.map(x => { return { text: x.Text, value: x.Value} });
-  } 
-
-  protected get donorMedicalHistories(): Array<{header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto}> {
-    let medicalQuestions: Array<{header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto}> = [];
-    this.medicalQuestionnaires.forEach(question => {
-      let donorMedicalHistory: DonorMedicalHistoryDto = this.newDonor.MedicalHistories.find(x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId) ?? new DonorMedicalHistoryDto();
-      let medicalQuestion: {header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto} = {
-        header: question.HeaderText,
-        question: question.QuestionTagalogText,
-        donorMedHistory: {
-          MedicalQuestionnaireId: question.MedicalQuestionnaireId,
-          Answer: donorMedicalHistory.Answer,
-          Remarks: donorMedicalHistory.Remarks,
-          HeaderText: question.HeaderText,
-          QuestionText: question.QuestionTagalogText
+                donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
+                this.donorModule.setDonorInformation(donorInfo);
+                console.log(this.donorInfo);
+            } catch (error) {
+                console.error(error);
+            }
+       
+            
+            await this.loadDonorInfo(); // Load donor info before mounting
+            // Fetch medical questionnaires
         }
-      };
 
-      medicalQuestions.push(medicalQuestion);
-    });
+        protected async loadDonorInfo(): Promise<void> {
+            try {
+                this.donorInfo = await this.donorModule.getDonorInformation; // assuming this is an async function
+            } catch (error) {
+                console.error('Failed to load donor info:', error);
+            }
 
-    return medicalQuestions;
-  }
+            console.log(this.donorInfo);
+        }
 
-  protected checkForSubmit(): void {
-    this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
-    if (this.formValid) {
-      this.onSubmit();
+        protected get submitLabel(): string {
+            return "I Agree and Submit";
+        }
+
+        protected get DonorInfo(): IDonorDto {
+            return this.donorModule.getDonorInformation;
+        }
+        public get options(): (key: string) => Array<ILookupOptions> {
+            return (key) => this.lookupModule.getOptionsByKey(key);
+        }
+
+
+        protected get relationsOptions(): Array<{ text: string, value: string }> {
+            /*let options = this.options(LookupKeys.RelationsToDonor  arguments);*/
+            let options = this.options(LookupKeys.RelationsToDonor);
+            return options.map(x => { return { text: x.Text, value: x.Value } });
+        }
+
+
+        //@Emit('goToStep')
+        //public onBack(): number {
+        //  return 2;
+        //}
+
+        //  @Emit('submit')
+        //  public onSubmit(): void {
+        //    let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
+        //    this.newDonor.MedicalHistories = donorMedicalHistory;
+        //    this.donorModule.setDonorInformation(this.newDonor);
+        //  }
     }
-
-    return;
-  }
-
-  //@Emit('goToStep')
-  //public onBack(): number {
-  //  return 2;
-  //}
-
-  @Emit('submit')
-  public onSubmit(): void {      
-    let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
-    this.newDonor.MedicalHistories = donorMedicalHistory;
-    this.donorModule.setDonorInformation(this.newDonor);
-  }
-}
 </script>
 
 <style lang="scss" scoped>

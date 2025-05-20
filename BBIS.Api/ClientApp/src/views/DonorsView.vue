@@ -206,7 +206,7 @@ export default class DonorsView extends VueBase {
     this.showError = false;
     
     try {
-      this.pagedResult = await this.donorScreeningService.getDon ors(this.pagedSearchDto);
+      this.pagedResult = await this.donorScreeningService.getDonors(this.pagedSearchDto);
       this.loading = false;
       this.records = this.pagedResult.Results;
       this.dataLoaded = true;

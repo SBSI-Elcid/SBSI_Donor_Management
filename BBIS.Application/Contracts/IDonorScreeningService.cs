@@ -1,4 +1,5 @@
 ﻿using BBIS.Application.DTOs.Common;
+using BBIS.Application.DTOs.DonorRegistration;
 using BBIS.Application.DTOs.DonorScreening;
 namespace BBIS.Application.Contracts
 {
@@ -8,6 +9,8 @@ namespace BBIS.Application.Contracts
 
         Task<DonorInitialScreeningDto> GetInitialScreeningInfo(Guid transactionId);
         Task<DonorVitalSignsDto> GetDonorVitalSignsInfo(Guid transactionId);
+
+        Task<DonorCounselingDto> GetDonorCounselingInfo(Guid transactionId);
 
         Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id);
 
@@ -19,6 +22,8 @@ namespace BBIS.Application.Contracts
         Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId);
 
         Task<Guid> CreateUpdateDonorPhysicalExamination(DonorPhysicalExaminationDto dto, Guid userId);
+
+        Task<Guid> CreateUpdateDonorCounseling(DonorCounselingDto dto, Guid userId);
 
         Task<Guid> CreateUpdateDonorBloodCollection(DonorBloodCollectionDto dto, Guid userId);
 

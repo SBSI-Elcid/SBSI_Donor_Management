@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.Common;
+using BBIS.Application.DTOs.DonorRegistration;
 using BBIS.Application.DTOs.DonorScreening;
 using BBIS.Common;
 using BBIS.Common.Enums;
@@ -164,6 +165,36 @@ namespace BBIS.Application.Services
             dto.DonorTransactionId = query.DonorTransactionId;
             dto.DonorRegistrationId = id;
             dto.DonorName = $"{query.Donor.Firstname} {query.Donor.Middlename?.FirstOrDefault()}. {query.Donor.Lastname}";
+
+            return dto;
+        }
+
+        public async Task<DonorCounselingDto> GetDonorCounselingInfo(Guid id)
+        {
+            var dto = new DonorCounselingDto();
+
+            // Step 1: Load donor transaction by RegistrationId
+            var donorTransaction = await dbContext.DonorTransactions
+                .Include(x => x.Donor)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
+
+            if (donorTransaction == null)
+                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {id}");
+
+            // Step 2: Get medical histories linked to the registration
+            var histories = await dbContext.DonorMedicalHistories
+                .Where(x => x.DonorRegistrationId == id)
+                .AsNoTracking()
+                .ToListAsync();
+
+            dto.MedicalHistories = mapper.Map<List<DonorMedicalQuestionnaireDto>>(histories);
+
+            // Step 3: Set remaining fields
+            dto.DonorRegistrationId = donorTransaction.DonorRegistrationId;
+            dto.DonorTransactionId = donorTransaction.DonorTransactionId;
+            dto.DonorStatus = donorTransaction.DonorStatus;
+            
 
             return dto;
         }
@@ -377,6 +408,59 @@ namespace BBIS.Application.Services
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<Guid> CreateUpdateDonorCounseling(DonorCounselingDto dto, Guid regid)
+        {
+            try
+            {
+                
+                if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+                var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(x => x.DonorRegistrationId == dto.DonorRegistrationId);
+                if (donorTransaction == null) throw new RecordNotFoundException($"Donor transaction does not exist for Id: {dto.DonorRegistrationId}");
+
+                var counseling = mapper.Map<List<DonorMedicalHistory>>(dto.MedicalHistories);
+
+
+                foreach (var item in counseling)
+                {
+                    item.DonorRegistrationId = donorTransaction.DonorRegistrationId;
+                }
+
+                if (dto.DonorMedicalHistoryID != Guid.Empty)
+                {
+                    // Update each item individually
+                    foreach (var item in counseling)
+                    {
+                        repository.DonorMedicalHistory.Update(item);
+                    }
+                }
+                else
+                {
+                    // Add all items at once
+                    repository.DonorMedicalHistory.AddRange(counseling);
+                }
+                //if (dto.DonorStatus == DonorStatus.Deferred)
+                //{
+                //    await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
+                //    donorTransaction.BloodIsSafeToTransfuse = false;
+                //    donorTransaction.DateOfDonation = DateTime.UtcNow;
+                //}
+
+                donorTransaction.DonorStatus = dto.DonorStatus;
+               
+                repository.DonorTransaction.Update(donorTransaction);
+
+                await repository.SaveAsync();
+
+                return donorTransaction.DonorRegistrationId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in CreateUpdateDonorCounseling: {ex.Message}");
                 throw;
             }
         }
