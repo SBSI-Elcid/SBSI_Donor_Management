@@ -128,7 +128,7 @@ namespace BBIS.Application.Services
                 DonorTestOrderId = testOrder.DonorTestOrderId,
                 DonorTransactionId = transactionId,
                 TestCompleted = testOrder.TestCompleted,
-                FinalBloodType = string.IsNullOrEmpty(query.FinalBloodType) ? query.DonorInitialScreening?.BloodType : query.FinalBloodType,
+                //FinalBloodType = string.IsNullOrEmpty(query.FinalBloodType) ? query.DonorInitialScreening?.BloodType : query.FinalBloodType,
                 BloodRh = query.BloodRh,
                 TestTypes = testOrder.DonorTestOrderTestTypes
                     .Select(x => new DonorTestOrderTypesDto
@@ -233,7 +233,7 @@ namespace BBIS.Application.Services
             if (!string.IsNullOrEmpty(dto.FinalBloodType))
             {
                 donorTransaction.FinalBloodType = dto.FinalBloodType;
-                donorTransaction.DonorInitialScreening.BloodType = dto.FinalBloodType;
+                //donorTransaction.DonorInitialScreening.BloodType = dto.FinalBloodType;
             }
 
             if (!string.IsNullOrEmpty(dto.BloodRh))

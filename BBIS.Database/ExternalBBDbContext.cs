@@ -219,17 +219,17 @@ namespace BBIS.Database
             {
                 entity.ToTable(nameof(DonorInitialScreening));
                 entity.HasKey(e => e.DonorInitialScreeningId);
-                entity.Property(e => e.BloodType).HasColumnType("varchar(10)");
-                entity.Property(e => e.DonationType).HasColumnType("varchar(25)");
-                entity.Property(e => e.InHouseTypeValue).HasColumnType("varchar(20)");
-                entity.Property(e => e.MobileBloodDonationPlace).HasColumnType("varchar(100)");
-                entity.Property(e => e.MobileBloodDonationOrganizer).HasColumnType("varchar(50)");
-                entity.Property(e => e.NameOfPatient).HasColumnType("varchar(100)");
-                entity.Property(e => e.PatientHospital).HasColumnType("varchar(100)");
-                entity.Property(e => e.PatientBloodType).HasColumnType("varchar(5)");
-                entity.Property(e => e.PatientWBOrComponent).HasColumnType("varchar(10)");
-                entity.Property(e => e.PatientNoOfUnits).HasColumnType("varchar(10)");
-                entity.Property(e => e.PrcOffice).HasColumnType("varchar(70)");
+                //entity.Property(e => e.BloodType).HasColumnType("varchar(10)");
+                //entity.Property(e => e.DonationType).HasColumnType("varchar(25)");
+                //entity.Property(e => e.InHouseTypeValue).HasColumnType("varchar(20)");
+                //entity.Property(e => e.MobileBloodDonationPlace).HasColumnType("varchar(100)");
+                //entity.Property(e => e.MobileBloodDonationOrganizer).HasColumnType("varchar(50)");
+                //entity.Property(e => e.NameOfPatient).HasColumnType("varchar(100)");
+                //entity.Property(e => e.PatientHospital).HasColumnType("varchar(100)");
+                //entity.Property(e => e.PatientBloodType).HasColumnType("varchar(5)");
+                //entity.Property(e => e.PatientWBOrComponent).HasColumnType("varchar(10)");
+                //entity.Property(e => e.PatientNoOfUnits).HasColumnType("varchar(10)");
+                //entity.Property(e => e.PrcOffice).HasColumnType("varchar(70)");
 
                 entity.HasOne(x => x.DonorTransaction).WithOne(x => x.DonorInitialScreening).OnDelete(DeleteBehavior.NoAction);
             });

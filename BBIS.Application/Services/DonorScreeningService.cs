@@ -55,8 +55,8 @@ namespace BBIS.Application.Services
                     .Containing(searchDto.Name)
                 .Search(t => t.DonorRegistration.RegistrationNumber)
                     .Containing(searchDto.RegistrationNumber)
-                .Search(t => t.DonorInitialScreening.BloodType)
-                    .Containing(searchDto.BloodType)
+                //.Search(t => t.DonorInitialScreening.BloodType)
+                //    .Containing(searchDto.BloodType)
                 .Search(t => t.DonorStatus)
                     .Containing(searchDto.DonorStatus);
 
@@ -80,7 +80,7 @@ namespace BBIS.Application.Services
                         Gender = x.Donor.Gender,
                         BirthDate = x.Donor.BirthDate,
                         ContactNo = string.IsNullOrEmpty(x.Donor.MobileNo) ? x.Donor.TelNo : x.Donor.MobileNo,
-                        BloodType = string.IsNullOrEmpty(x.FinalBloodType) ? x.DonorInitialScreening.BloodType : x.FinalBloodType,
+                        //BloodType = string.IsNullOrEmpty(x.FinalBloodType) ? x.DonorInitialScreening.BloodType : x.FinalBloodType,
                         DonorStatus = x.DonorStatus,
                         HasTestOrder = x.DonorTestOrder != null,
                         TestOrderCompleted = x.DonorTestOrder != null ? x.DonorTestOrder.TestCompleted : false,
