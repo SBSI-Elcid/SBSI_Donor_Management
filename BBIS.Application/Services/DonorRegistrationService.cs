@@ -309,7 +309,7 @@ namespace BBIS.Application.Services
                 DonorRegistrationId = model.DonorRegistrationId,
                 BloodIsSafeToTransfuse = true,
                 DOHNBBNetsBarcode = "",
-                DonorStatus = DonorStatus.ForInitialScreening,
+                DonorStatus = DonorStatus.ForVitalSigns,
                 IsOffline = isOffline,
                 IsSync = !isOffline,
                 PRCBloodDonorNumber = "",

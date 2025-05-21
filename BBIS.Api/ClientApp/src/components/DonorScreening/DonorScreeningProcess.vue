@@ -46,44 +46,44 @@ export default class BloodDonorProcess extends Vue {
         isShow: Common.hasValue(this.donorRegistrationId) && this.showTab([Roles.DonorAdmin, Roles.InitialScreener, Roles.PhysicalExamScreener, Roles.BloodCollector]),
         isDisabled: this.tabDisabled
     },
-    {
-      name: TabNames.InitialScreening,
-      icon: 'mdi-badge-account',
-      route: this.tabRoutes(TabNames.InitialScreening),
-      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.InitialScreener]),
-      isDisabled: this.tabDisabled
-    },
+    //{
+    //  name: TabNames.InitialScreening,
+    //  icon: 'mdi-badge-account',
+    //  route: this.tabRoutes(TabNames.InitialScreening),
+    //  isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.InitialScreener]),
+    //  isDisabled: this.tabDisabled
+    //},
     {
       name: TabNames.PhysicalExam,
-      icon: 'mdi-medical-bag',
+      icon: 'mdi-doctor',
       route: this.tabRoutes(TabNames.PhysicalExam),
       isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.Counseling,
-      icon: '',
+      icon: 'mdi-clipboard-pulse',
       route: this.tabRoutes(TabNames.Counseling),
       isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.ConsentForm,
-      icon: '',
+      icon: 'mdi-clipboard',
       route: this.tabRoutes(TabNames.ConsentForm),
       isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
     },
     {
-      name: TabNames.MethodOfBloodCollection,
-      icon: '',
-      route: this.tabRoutes(TabNames.MethodOfBloodCollection),
-      isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+        name: TabNames.MethodBloodCollection,
+        icon: 'mdi-medical-bag',
+        route: this.tabRoutes(TabNames.MethodBloodCollection),
+        isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
       isDisabled: this.tabDisabled
     },
     {
       name: TabNames.IssuanceOfBloodBag,
-      icon: '',
+        icon: 'mdi-blood-bag',
       route: this.tabRoutes(TabNames.IssuanceOfBloodBag),
       isShow: /*this.showScreeningTabs &&*/ this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
       isDisabled: this.tabDisabled
@@ -120,8 +120,8 @@ export default class BloodDonorProcess extends Vue {
                     return `/donor/counseling/${this.donorRegistrationId}`;
                 case TabNames.ConsentForm:
                     return `/donor/consentform/${this.donorRegistrationId}`;
-                case TabNames.MethodOfBloodCollection:
-                    return `/donor/methodofbloodcollection/${this.donorRegistrationId}`;
+                case TabNames.MethodBloodCollection:
+                    return `/donor/methodbloodcollection/${this.donorRegistrationId}`;
                 case TabNames.IssuanceOfBloodBag:
                     return `/donor/issuanceofbloodbag/${this.donorRegistrationId}`;
                 case TabNames.BloodCollection:

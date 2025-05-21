@@ -336,6 +336,22 @@ namespace BBIS.Application.Services
                 throw;
             }
         }
+        public async Task<Guid> UpdateDonorTransactionForBloodCollection(RegisteredDonorDto dto){
+
+            var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(
+                x => x.DonorRegistrationId == dto.DonorRegistrationId);
+
+            if (donorTransaction == null)
+                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {dto.DonorRegistrationId}");
+
+
+            donorTransaction.DonorStatus = DonorStatus.ForMethodBloodCollection;
+            repository.DonorTransaction.Update(donorTransaction);
+
+            await repository.SaveAsync();
+
+            return donorTransaction.DonorRegistrationId;
+        }
 
         public async Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId)
         {

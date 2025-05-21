@@ -6,7 +6,7 @@ export enum TabNames {
     PhysicalExam = "Physical Exam",
     Counseling = "Counseling",
     ConsentForm = "Consent Form",
-    MethodOfBloodCollection = "Method of Blood Collection",
+    MethodBloodCollection = "Method Blood Collection",
     IssuanceOfBloodBag = "Issuance of Blood Bag",
     BloodCollection = "Blood Collection",
     PostDonationCare = "Post Donation Care",

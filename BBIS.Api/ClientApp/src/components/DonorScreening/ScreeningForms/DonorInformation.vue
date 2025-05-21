@@ -74,7 +74,8 @@ export default class DonorInformation extends VueBase {
 
       let loader = this.showLoader();
       try {
-        let donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
+          let donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
+          console.log(donorInfo);
         this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
           
         if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) { 
@@ -121,7 +122,7 @@ export default class DonorInformation extends VueBase {
         this.notify_success('Donor is now ready For Initial Screening.');
 
         if (this.hasAccess([Roles.InitialScreener, Roles.DonorAdmin])) {
-          this.$router.push({ path: `/donor/initialscreening/${this.donorRegistrationId}` });
+          this.$router.push({ path: `/donor/vitalsigns/${this.donorRegistrationId}` });
         }
         else {
           this.$router.push({ path: `/donors` });

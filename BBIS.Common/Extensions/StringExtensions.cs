@@ -21,6 +21,7 @@ namespace BBIS.Common.Extensions
                     DonorStatus.ForCounseling,
                     DonorStatus.ForVitalSigns,
                     DonorStatus.ForConsent,
+                    DonorStatus.ForMethodBloodCollection,
                     DonorStatus.Deferred,
                 };
             }
@@ -40,6 +41,7 @@ namespace BBIS.Common.Extensions
 
             if (roles.Contains(Roles.BloodCollector))
             {
+                statuses.Add(DonorStatus.ForMethodBloodCollection);
                 statuses.Add(DonorStatus.ForBloodCollection);
             }
 

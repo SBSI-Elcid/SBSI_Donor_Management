@@ -52,6 +52,7 @@
         public static readonly string ForInitialScreening = nameof(ForInitialScreening);
         public static readonly string ForPhysicalExamination = nameof(ForPhysicalExamination);
         public static readonly string ForBloodCollection = nameof(ForBloodCollection);
+        public static readonly string ForMethodBloodCollection = nameof(ForMethodBloodCollection);
         public static readonly string ForLaboratoryTest = nameof(ForLaboratoryTest);
         public static readonly string Success = nameof(Success);
         public static readonly string Deferred = nameof(Deferred);

@@ -61,6 +61,7 @@ import DonorModule from '@/store/DonorModule';
 import { IMedicalQuestionnaireDto } from '@/models/DonorRegistration/MedicalQuestionnaireDto';
 import { DonorMedicalHistoryDto, IDonorMedicalHistoryDto } from '@/models/DonorRegistration/DonorMedicalHistoryDto';
 import { IDonorDto } from '@/models/DonorRegistration/DonorDto';
+import { IRegisteredDonorInfoDto } from '@/models/DonorRegistration/IRegisteredDonorInfoDto';
 import Common from '@/common/Common';
 import DonorRegistrationService from '@/services/DonorRegistrationService';
 import DonorScreeningService from '@/services/DonorScreeningService';

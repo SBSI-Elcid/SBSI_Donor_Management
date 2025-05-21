@@ -218,28 +218,34 @@ export default class DonorsView extends VueBase {
     }
   }
 
-  protected onRegNumberClick(regId: Guid, donorStatus: string): void {
-    switch(donorStatus) {
-      case DonorStatus.ForInitialScreening:
-        this.$router.push({ path: `/donor/initialscreening/${regId}` });
-        break;
-        case DonorStatus.ForVitalSigns:
-         this.$router.push({ path: `/donor/vitalsigns/${regId}` });
-         break;
-         case DonorStatus.ForCounseling:
-         this.$router.push({ path: `/donor/counseling/${regId}` });
-         break;
-      case DonorStatus.ForPhysicalExamination:
-        this.$router.push({ path: `/donor/physicalexamination/${regId}` });
-        break;
-      case DonorStatus.ForBloodCollection:
-        this.$router.push({ path: `/donor/bloodcollection/${regId}` });
-        break;
-      default:
-        this.$router.push({ path: `/donor/info/${regId}` });
-        break;
+    protected onRegNumberClick(regId: Guid, donorStatus: string): void {
+        switch (donorStatus) {
+            case DonorStatus.ForInitialScreening:
+                this.$router.push({ path: `/donor/initialscreening/${regId}` });
+                break;
+            case DonorStatus.ForVitalSigns:
+                this.$router.push({ path: `/donor/vitalsigns/${regId}` });
+                break;
+            case DonorStatus.ForCounseling:
+                this.$router.push({ path: `/donor/counseling/${regId}` });
+                break;
+            case DonorStatus.ForPhysicalExamination:
+                this.$router.push({ path: `/donor/physicalexamination/${regId}` });
+                break;
+            case DonorStatus.ForConsent:
+                this.$router.push({ path: `/donor/consentform/${regId}` });
+                break;
+            case DonorStatus.ForMethodBloodCollection:
+                this.$router.push({ path: `/donor/methodbloodcollection/${regId}` });
+                break;
+            case DonorStatus.ForBloodCollection:
+                this.$router.push({ path: `/donor/bloodcollection/${regId}` });
+                break;
+            default:
+                this.$router.push({ path: `/donor/info/${regId}` });
+                break;
+        }
     }
-  }
 
   protected statusColor(donorStatus: string): string {
     let color: string = 'primary';

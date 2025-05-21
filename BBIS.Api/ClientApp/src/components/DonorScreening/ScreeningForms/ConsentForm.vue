@@ -74,7 +74,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td v-if="DonorInfo.Age > 18">
+                    <td v-if="DonorInformation.Age > 18">
                     </td>
                     <td v-else>
                         <label class="subtitle-1 pa-2">
@@ -91,19 +91,19 @@
                                 </v-row>
                                 <v-row>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
-                                        <v-text-field v-model="DonorInfo.Firstname"
+                                        <v-text-field v-model="DonorInformation.Firstname"
                                                       :rules="[rules.required, rules.maxLength(90)]"
                                                       :disabled="true"
                                                       dense outlined />
                                     </v-col>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
-                                        <v-text-field v-model="DonorInfo.Middlename"
+                                        <v-text-field v-model="DonorInformation.Middlename"
                                                       :rules="[rules.maxLength(90)]"
                                                       :disabled="true"
                                                       dense outlined />
                                     </v-col>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
-                                        <v-text-field v-model="DonorInfo.Lastname"
+                                        <v-text-field v-model="DonorInformation.Lastname"
                                                       :rules="[rules.required, rules.maxLength(90)]"
                                                       :disabled="true"
                                                       dense outlined />
@@ -156,14 +156,14 @@
 
             <!-- BUTTONS -->
             <div class="section-outer-container text-right pt-3 pb-2"> 
-                <v-btn v-if="" color="primary" large class="mr-2" @click=""><v-icon size="25" left>mdi-content-save</v-icon> {{ submitLabel }}</v-btn>
+                <v-btn v-if="" color="primary" large class="mr-2" @click="onApprove"><v-icon size="25" left>mdi-content-save</v-icon> {{ submitLabel }}</v-btn>
             </div>
         </v-form>
     </div>
 </template>
 <script lang="ts">
     import VueBase from '@/components/VueBase';
-    import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+    import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import DonorModule from '@/store/DonorModule';
     import { IMedicalQuestionnaireDto } from '@/models/DonorRegistration/MedicalQuestionnaireDto';
@@ -174,6 +174,10 @@
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import LookupModule from '@/store/LookupModule';
     import DonorRegistrationService from '@/services/DonorRegistrationService';
+    import { IRegisteredDonorInfoDto } from '@/models/DonorRegistration/IRegisteredDonorInfoDto';
+    import { DonorStatus } from '@/models/Enums/DonorStatus';
+    import moment from 'moment';
+    import DonorScreeningService from '../../../services/DonorScreeningService';
     @Component
     export default class MedicalHistoryForm extends VueBase {
         //@Prop({ required: true, default: false })
@@ -181,52 +185,55 @@
         protected formValid: boolean = true;
         protected rules: any = { ...Common.ValidationRules }
         protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
+        protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
         //@Prop({ required: false, default: false })
         //public inProcess!: boolean;
 
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
-        protected donorInfo?: IDonorDto;
+        /*protected donorInfo?: IDonorDto;*/
 
         protected async created() {
 
             try {
-                const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
+                const RegisteredDonorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
+                console.log(RegisteredDonorInfo);
 
-                this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
+                this.donorModule.setTransactionId(RegisteredDonorInfo.DonorTransactionId);
 
-                if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) {
-                    this.donorModule.setDonorStatus(donorInfo.DonorStatus);
+                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus === DonorStatus.Deferred) {
+                    this.donorModule.setDonorStatus(RegisteredDonorInfo.DonorStatus);
                 }
 
-                donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
-                this.donorModule.setDonorInformation(donorInfo);
-                console.log(this.donorInfo);
+                
+                this.donorModule.setDonorInformation(RegisteredDonorInfo);
+                
             } catch (error) {
                 console.error(error);
             }
        
             
-            await this.loadDonorInfo(); // Load donor info before mounting
+            //await this.loadDonorInfo(); // Load donor info before mounting
             // Fetch medical questionnaires
         }
-
-        protected async loadDonorInfo(): Promise<void> {
-            try {
-                this.donorInfo = await this.donorModule.getDonorInformation; // assuming this is an async function
-            } catch (error) {
-                console.error('Failed to load donor info:', error);
-            }
-
-            console.log(this.donorInfo);
-        }
-
+      
         protected get submitLabel(): string {
             return "I Agree and Submit";
         }
 
-        protected get DonorInfo(): IDonorDto {
+        @Watch('DonorInformation.BirthDate')
+        protected onChangeModelBirthDate(): void {
+            this.calculateAge();
+        }
+
+        protected calculateAge(): void {
+            let years = moment().diff(moment(this.DonorInformation.BirthDate, 'YYYY-MM-DD'), 'years');
+            this.DonorInformation.Age = years;
+        }
+
+        protected get DonorInformation(): IDonorDto {
             return this.donorModule.getDonorInformation;
+
         }
         public get options(): (key: string) => Array<ILookupOptions> {
             return (key) => this.lookupModule.getOptionsByKey(key);
@@ -237,6 +244,21 @@
             /*let options = this.options(LookupKeys.RelationsToDonor  arguments);*/
             let options = this.options(LookupKeys.RelationsToDonor);
             return options.map(x => { return { text: x.Text, value: x.Value } });
+        }
+
+        protected async onApprove(): void {
+            console.log(this.DonorInformation.Age)
+
+            let dto: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
+            let transactionId = await this.donorScreeningService.uMethodBloodCollection(dto);
+
+            this.notify_success('Donor is now ready For Blood Collection.');
+            //this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            //if (this.formValid === false) {
+            //    return;
+            //}
+
+            //this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
         }
 
 

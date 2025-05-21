@@ -121,7 +121,7 @@ const routes: Array<RouteConfig> = [
             props: true 
           },
           { 
-            path: 'methodofbloodcollection/:reg_id', 
+            path: 'methodbloodcollection/:reg_id', 
             name: 'ConsentForm',
               component: () => import('@/components/DonorScreening/ScreeningForms/MethodOfBloodCollection.vue'), 
             props: true 

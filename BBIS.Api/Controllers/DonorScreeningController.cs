@@ -271,6 +271,32 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpPost("u-methodbloodcollection")]
+        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        public async Task<ActionResult<RequestResult<Guid>>> UpdateDonorTransactionForBloodCollection([FromBody] RegisteredDonorDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.donorScreeningService.UpdateDonorTransactionForBloodCollection(dto);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong during vital signs screening: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong during vital signs screening: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpPost("upsert-physicalexamination")]
         [Authorize(Policy = ApplicationRoles.PhysicalExaminationPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdatePhysicalExamination([FromBody] DonorPhysicalExaminationDto dto)

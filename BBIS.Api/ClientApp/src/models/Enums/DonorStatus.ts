@@ -5,6 +5,8 @@ export enum DonorStatus {
     ForConsent = "ForConsent",
     ForPhysicalExamination = "ForPhysicalExamination",
     ForBloodCollection = "ForBloodCollection",
+    ForMethodBloodCollection = "ForMethodBloodCollection",
+    ForBloodIssuance = "ForBloodIssuance",
     ForLaboratoryTest = "ForLaboratoryTest",
     Success = "Success",
     Deferred = "Deferred",

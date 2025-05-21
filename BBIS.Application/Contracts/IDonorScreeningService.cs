@@ -20,6 +20,7 @@ namespace BBIS.Application.Contracts
         
         Task<Guid> CreateUpdateDonorInitialScreening(DonorInitialScreeningDto dto, Guid userId);
         Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId);
+        Task<Guid> UpdateDonorTransactionForBloodCollection(RegisteredDonorDto dto);
 
         Task<Guid> CreateUpdateDonorPhysicalExamination(DonorPhysicalExaminationDto dto, Guid userId);
 

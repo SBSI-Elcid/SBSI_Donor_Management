@@ -9,6 +9,8 @@ import { IDonorRecentDonationDto } from "@/models/DonorScreening/DonorRecentDona
 import { IDonorVitalSigns } from "../models/DonorScreening/DonorVitalSignsDto";
 import { IDonorCounseling } from "../models/DonorScreening/DonorCounselingDto";
 import { IDonorMedicalHistoryDto } from "../models/DonorRegistration/DonorMedicalHistoryDto";
+import { IRegisteredDonorDto } from "../models/DonorRegistration/IRegisteredDonorDto";
+import { IRegisteredDonorInfoDto } from "../models/DonorRegistration/IRegisteredDonorInfoDto";
 
 export default class DonorScreeningService {
 	baseUrl: string = 'api/donorscreening/';
@@ -54,6 +56,10 @@ export default class DonorScreeningService {
 		return response.Data as Guid;
 	}
 
+	async uMethodBloodCollection(dto: IRegisteredDonorInfoDto): Promise<Guid> {
+		let response = await this.apiClient.postJson(`u-methodbloodcollection`, dto);
+		return response.Data as Guid;
+	}
 	async upsertCounselingScreening(dto: IDonorCounseling): Promise<Guid> {
 		console.log(dto);
 		let response = await this.apiClient.postJson(`upsert-counseling`, dto);
