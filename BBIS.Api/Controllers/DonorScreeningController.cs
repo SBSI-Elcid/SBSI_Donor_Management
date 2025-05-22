@@ -81,6 +81,27 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpGet("issuanceofbloodbag/{id}")]
+        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        public async Task<ActionResult<RequestResult<DonorBloodBagIssuanceDto>>> getDonorBloodBagIssuance(Guid id)
+        {
+            try
+            {
+                var result = await this.donorScreeningService.GetDonorBloodBagIssuance(id);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("counseling/{id}")]
         [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<DonorCounselingDto>>> GetDonorCounselingInfo(Guid id)
@@ -262,6 +283,32 @@ namespace BBIS.Api.Controllers
             catch (RecordNotFoundException ex)
             {
                 logger.LogError($"Something went wrong during vital signs screening: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong during vital signs screening: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost("upsert-bloodbagissuance")]
+        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorBloodBagIssuance([FromBody] DonorBloodBagIssuanceDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.donorScreeningService.CreateUpdateDonorBloodBagIssuance(dto, this.UserId);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong during bloodIssuance signs screening: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
             }
             catch (Exception ex)

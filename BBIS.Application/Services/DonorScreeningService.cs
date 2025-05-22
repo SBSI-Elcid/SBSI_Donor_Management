@@ -199,6 +199,31 @@ namespace BBIS.Application.Services
             return dto;
         }
 
+        public async Task<DonorBloodBagIssuanceDto> GetDonorBloodBagIssuance(Guid id)
+        {
+            var dto = new DonorBloodBagIssuanceDto();
+
+            var query = await dbContext.DonorTransactions
+                .Include(x => x.DonorBloodBagIssuance)
+                .Include(x => x.Donor)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
+
+            if (query == null)
+                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {id}");
+
+            if (query.DonorBloodBagIssuance != null)
+            {
+                dto = mapper.Map<DonorBloodBagIssuanceDto>(query.DonorBloodBagIssuance);
+            }
+
+            dto.DonorTransactionId = query.DonorTransactionId;
+            dto.DonorRegistrationId = id;
+            
+
+            return dto;
+        }
+
         public async Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id)
         {
             var dto = new List<DonorRecentDonationDto>();
@@ -375,6 +400,37 @@ namespace BBIS.Application.Services
             else
             {
                 repository.DonorVitalSigns.Create(entity);
+            }
+
+            donorTransaction.DonorStatus = dto.DonorStatus;
+            repository.DonorTransaction.Update(donorTransaction);
+
+            await repository.SaveAsync();
+            return donorTransaction.DonorRegistrationId;
+        }
+
+        public async Task<Guid> CreateUpdateDonorBloodBagIssuance(DonorBloodBagIssuanceDto dto, Guid userId)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(
+                x => x.DonorRegistrationId == dto.DonorRegistrationId);
+
+            if (donorTransaction == null)
+                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {dto.DonorRegistrationId}");
+
+            var entity = mapper.Map<DonorBloodBagIssuance>(dto);
+            entity.IssuedBy = userId;
+            entity.IssuedDate = DateTime.UtcNow;
+            entity.DonorTransactionId = donorTransaction.DonorTransactionId;
+
+            if (dto.DonorBloodBagIssuanceId.HasValue)
+            {
+                repository.DonorBloodBagIssuance.Update(entity);
+            }
+            else
+            {
+                repository.DonorBloodBagIssuance.Create(entity);
             }
 
             donorTransaction.DonorStatus = dto.DonorStatus;

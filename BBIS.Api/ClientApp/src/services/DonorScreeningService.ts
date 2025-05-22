@@ -43,6 +43,10 @@ export default class DonorScreeningService {
 		return this.apiClient.get<IDonorPhysicalExaminationDto>(`physicalexam/${id}`);
 	}
 
+	async getBloodBagIssuance(id: Guid): Promise<IDonorBloodCollectionDto> {
+		return this.apiClient.get<IDonorBloodCollectionDto>(`issuanceofbloodbag/${id}`);
+	}
+
 	async getBloodCollectionInfo(id: Guid): Promise<IDonorBloodCollectionDto> {
 		return this.apiClient.get<IDonorBloodCollectionDto>(`bloodcollection/${id}`);
 	}
@@ -69,6 +73,11 @@ export default class DonorScreeningService {
 	async upsertPhysicalExamination(dto: IDonorPhysicalExaminationDto): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-physicalexamination`, dto);
 		return response.Data as Guid; 
+	}
+
+	async upsertBloodBagIssuance(dto: IDonorBloodCollectionDto): Promise<Guid> {
+		let response = await this.apiClient.postJson(`upsert-bloodbagissuance`, dto);
+		return response.Data as Guid;
 	}
 
 	async upsertBloodColllection(dto: IDonorBloodCollectionDto): Promise<Guid> {

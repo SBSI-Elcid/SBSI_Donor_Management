@@ -8,6 +8,7 @@
         IDonorMedicalHistoryRepository DonorMedicalHistory { get; }
         IDonorInitialScreeningRepository DonorInitialScreening { get; }
         IDonorVitalSignsRepository DonorVitalSigns { get; }
+        IDonorBloodBagIssuanceRepository DonorBloodBagIssuance { get; }
         IDonorPhysicalExaminationRepository DonorPhysicalExamination { get; }
         IDonorBloodCollectionRepository DonorBloodCollection { get; }
         IDonorRecentDonationRepository DonorRecentDonation { get; }

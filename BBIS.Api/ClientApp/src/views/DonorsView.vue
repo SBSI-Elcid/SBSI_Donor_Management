@@ -238,6 +238,9 @@ export default class DonorsView extends VueBase {
             case DonorStatus.ForMethodBloodCollection:
                 this.$router.push({ path: `/donor/methodbloodcollection/${regId}` });
                 break;
+            case DonorStatus.ForBloodIssuance:
+                this.$router.push({ path: `/donor/issuanceofbloodbag/${regId}` });
+                break;
             case DonorStatus.ForBloodCollection:
                 this.$router.push({ path: `/donor/bloodcollection/${regId}` });
                 break;

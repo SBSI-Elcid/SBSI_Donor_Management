@@ -129,6 +129,13 @@ namespace BBIS.Database.MigrationHelper
                     IsActive = true,
                     LookupKey = "lookup.CrossMatchTypes",
                     Description = "Cross Match Types",
+                },
+                new Lookup
+                {
+                    LookupId = 19,
+                    IsActive = true,
+                    LookupKey = "lookup.Nationalities",
+                    Description = "Nationalities",
                 }
            );
         }
@@ -217,7 +224,8 @@ namespace BBIS.Database.MigrationHelper
                 new LookupOption { LookupId = 18, LookupOptionId = 62, Name = "AHG", Value = "AHG", IsActive = true },
 
                 new LookupOption { LookupId = 6, LookupOptionId = 63, Name = "Inventory", Value = "Inventory", IsActive = true },
-                new LookupOption { LookupId = 17, LookupOptionId = 64, Name = "N/A", Value = "N/A", IsActive = true }
+                new LookupOption { LookupId = 17, LookupOptionId = 64, Name = "N/A", Value = "N/A", IsActive = true },
+                new LookupOption { LookupId = 19, LookupOptionId = 65, Name = "Filipino", Value = "Filipino", IsActive = true }
           );
         }
     }

@@ -10,6 +10,8 @@ namespace BBIS.Application.Contracts
         Task<DonorInitialScreeningDto> GetInitialScreeningInfo(Guid transactionId);
         Task<DonorVitalSignsDto> GetDonorVitalSignsInfo(Guid transactionId);
 
+        Task<DonorBloodBagIssuanceDto> GetDonorBloodBagIssuance(Guid transactionId);
+
         Task<DonorCounselingDto> GetDonorCounselingInfo(Guid transactionId);
 
         Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id);
@@ -20,6 +22,7 @@ namespace BBIS.Application.Contracts
         
         Task<Guid> CreateUpdateDonorInitialScreening(DonorInitialScreeningDto dto, Guid userId);
         Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId);
+        Task<Guid> CreateUpdateDonorBloodBagIssuance(DonorBloodBagIssuanceDto dto, Guid userId);
         Task<Guid> UpdateDonorTransactionForBloodCollection(RegisteredDonorDto dto);
 
         Task<Guid> CreateUpdateDonorPhysicalExamination(DonorPhysicalExaminationDto dto, Guid userId);

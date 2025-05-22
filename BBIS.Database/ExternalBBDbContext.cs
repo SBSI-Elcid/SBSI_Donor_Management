@@ -17,9 +17,11 @@ namespace BBIS.Database
         public DbSet<DonorTransaction> DonorTransactions { get; set; }
         public DbSet<DonorRecentDonation> DonorRecentDonations { get; set; }
         public DbSet<DonorInitialScreening> DonorInitialScreenings { get; set; }
+        public DbSet<DonorVitalSigns> DonorVitalSigns { get; set; }
         public DbSet<DonorMedicalHistory> DonorMedicalHistories { get; set; }
         public DbSet<DonorPhysicalExamination> DonorPhysicalExaminations { get; set; }
         public DbSet<DonorBloodCollection> DonorBloodCollections { get; set; }
+        public DbSet<DonorBloodBagIssuance> DonorBloodBagIssuance { get; set; }
         public DbSet<DonorDeferral> DonorDeferrals { get; set; }
 
         public DbSet<Lookup> Lookups { get; set; }
