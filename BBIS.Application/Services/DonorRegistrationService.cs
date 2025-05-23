@@ -308,12 +308,11 @@ namespace BBIS.Application.Services
                 DonorId = donor.DonorId,
                 DonorRegistrationId = model.DonorRegistrationId,
                 BloodIsSafeToTransfuse = true,
-                DOHNBBNetsBarcode = "",
+                //DOHNBBNetsBarcode = "",
                 DonorStatus = DonorStatus.ForVitalSigns,
                 IsOffline = isOffline,
                 IsSync = !isOffline,
-                PRCBloodDonorNumber = "",
-                UnitSerialNumber = "",
+                SegmentSerialNumber = ""
             };
 
             await dbContext.DonorTransactions.AddAsync(newDonorTransaction);

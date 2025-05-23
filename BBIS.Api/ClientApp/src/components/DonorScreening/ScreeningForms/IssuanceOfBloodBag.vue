@@ -6,26 +6,24 @@
                 <label class="font-weight-bold">Blood Bag to be Used</label>
                 <v-select :items="bloodBagCollectionOptions"
                           label="Blood Bag to be Used"
-                          v-model = "donorBloodBagIssuance.BloodBagToBeUsed"
+                          v-model="donorBloodBagIssuance.BloodBagToBeUsed"
                           dense
                           outlined />
                 <!--<v-text-field dense outlined label="Blood Bag to be used" v-model ="donorBloodBagIssuance.BloodBagToBeUsed"></v-text-field>-->
-                
+
             </v-col>
 
             <!-- Bag Type Options -->
             <v-col cols="12" md="8">
-                <v-radio-group row v-model ="donorBloodBagIssuance.BloodBagType">
+                <v-radio-group row v-model="donorBloodBagIssuance.BloodBagType">
                     <!--<v-radio label="Single" value="single" />
-    <v-radio label="Double" value="double" />
-    <v-radio label="Triple" value="triple" />
-    <v-radio label="Quadruple" value="quadruple" />-->
-                    <v-radio v-for="(type, index) in bloodBagCollectionSubOptions" 
-                             :key="index" 
-                             :label="type.text" 
-                             :value="type.value"
-                             
-                             />
+                <v-radio label="Double" value="double" />
+                <v-radio label="Triple" value="triple" />
+                <v-radio label="Quadruple" value="quadruple" />-->
+                    <v-radio v-for="(type, index) in bloodBagCollectionSubOptions"
+                             :key="index"
+                             :label="type.text"
+                             :value="type.value" />
                 </v-radio-group>
             </v-col>
         </v-row>
@@ -51,7 +49,7 @@
 
             <!-- Print Button -->
             <v-col cols="12" md="4" class="text-left; mb-7">
-                <v-btn color="red darken-2" class="white--text mt-6" rounded>
+                <v-btn color="red darken-2" class="white--text mt-6" rounded @click="onPrint">
                     PRINT BARCODE
                 </v-btn>
 
@@ -63,7 +61,19 @@
                 </div>
             </div>
         </v-row>
+        <div id="printBarcode" style="display: none;">
+            <div class="text-center mx-auto" style="max-width: 300px;">
+                <img id="barcode" class="pa-1" />
+                <img id="barcode" class="pa-1" />
+                <img id="barcode" class="pa-1" />
+                <img id="barcode" class="pa-1" />
+                <img id="barcode" class="pa-1" />
+                <img id="barcode" class="pa-1" />
+            </div>
+        </div>
     </v-form>
+
+  
 </template>
 
 <script lang="ts">
@@ -79,6 +89,7 @@
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
     import { BloodBagCollections } from '@/models/Enums/BloodBagCollections';
+    import JsBarcode from 'jsbarcode'
     //import RecentDonationTable from '@/components/DonorScreening/ScreeningForms/RecentDonationTable.vue';
     @Component
     export default class IssuanceOfBloodBag extends VueBase {
@@ -88,6 +99,8 @@
 
         protected formValid: boolean = true;
         protected rules: any = { ...Common.ValidationRules }
+
+        protected generatedSerialNumber: string = '';
         protected errorMessage: string = '';
         protected showInHouseOptions: boolean = false;
         protected showRecentDonations: boolean = false;
@@ -205,9 +218,25 @@
         //    this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
         //}
 
+        protected onPrint(): void {
+
+            this.generatedSerialNumber = this.donorBloodBagIssuance.SegmentSerialNumber;
+            if (Common.hasValue(this.generatedSerialNumber)) {
+                JsBarcode("#barcode", `${this.generatedSerialNumber}`, {
+                    width: 2,
+                    height: 60,
+                    textAlign: 'left'
+                });
+            }
+            this.$htmlToPaper('printBarcode');
+
+            
+        }
+
+
         public async onApprovalConfirmation(confirm: boolean): Promise<void> {
             if (confirm) {
-                this.donorBloodBagIssuance.DonorStatus = DonorStatus.ForMethodBloodCollection;
+                this.donorBloodBagIssuance.DonorStatus = DonorStatus.ForBloodCollection;
                 await this.onSubmit();
             }
         }

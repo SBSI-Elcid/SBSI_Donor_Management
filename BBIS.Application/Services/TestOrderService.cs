@@ -243,7 +243,7 @@ namespace BBIS.Application.Services
         {
             var results = await dbContext.DonorTransactions
                 .Include(x => x.Donor)
-                .Where(x => x.DonorStatus == DonorStatus.Inventory && x.FinalBloodType == bt)
+                .Where(x => x.DonorStatus == DonorStatus.Inventory && x.BloodType == bt)
                 .Search(x => x.Donor.Firstname, x => x.Donor.Middlename, x => x.Donor.Lastname)
                 .Containing(searchText)
                 .Select(x =>
@@ -251,7 +251,7 @@ namespace BBIS.Application.Services
                     {
                         Id = x.DonorId,
                         Name = $"{x.Donor.Firstname} {x.Donor.Middlename.Substring(0, 1)}. {x.Donor.Lastname}",
-                        BloodType = x.FinalBloodType
+                        BloodType = x.BloodType
                     }).ToListAsync();
 
             if (results == null)

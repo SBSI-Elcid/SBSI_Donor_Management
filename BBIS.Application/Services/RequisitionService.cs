@@ -91,7 +91,7 @@ namespace BBIS.Application.Services
                     if (query != null && query.DonorTransaction != null) 
                     {
                         reservationItem.DonorTransactionId = query.DonorTransaction.DonorTransactionId;
-                        reservationItem.DonorUnitSerialNumber = query.DonorTransaction.UnitSerialNumber;
+                        reservationItem.DonorUnitSerialNumber = query.DonorTransaction.SegmentSerialNumber;
                     }
 
                     if (item.ReservationCheckLists.Any())

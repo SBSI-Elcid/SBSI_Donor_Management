@@ -4,13 +4,19 @@
             <!-- Start Time -->
             <v-col cols="12" md="4">
                 <label class="font-weight-bold">Start Time</label>
-                <v-text-field dense outlined label="Start Time of Blood Collection" />
+                <v-text-field 
+                              dense 
+                              outlined 
+                              type="time" 
+                              label="Start Time of Blood Collection" 
+                              
+                              />
             </v-col>
 
             <!-- End Time -->
             <v-col cols="12" md="4">
                 <label class="font-weight-bold">End Time</label>
-                <v-text-field dense outlined label="End Time of Blood Collection" />
+                <v-text-field dense outlined type="time" label="End Time of Blood Collection" />
             </v-col>
 
             <!-- Donor Reaction -->
@@ -22,7 +28,7 @@
 
         <v-row align="center">
             <!-- Success Radio -->
-            <v-col cols="12" md="2">
+            <v-col cols="12" md="2" class="mb-7">
                 <label class="font-weight-bold">Success?</label>
                 <v-radio-group row>
                     <v-radio label="Yes" value="yes" />
@@ -94,7 +100,7 @@
         protected showRecentDonations: boolean = false;
         protected showPatientDirectedFields: boolean = false;
         protected showMobileBloodDonationFields: boolean = false;
-        protected donorInitialScreening: IDonorInitialScreeningDto = new DonorInitialScreeningDto();
+       // protected donorInitialScreening: IDonorInitialScreeningDto = new DonorInitialScreeningDto();
         protected recentDonations: Array<IDonorRecentDonationDto> = new Array<IDonorRecentDonationDto>();
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;

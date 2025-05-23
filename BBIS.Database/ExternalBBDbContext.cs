@@ -206,11 +206,11 @@ namespace BBIS.Database
             {
                 entity.ToTable(nameof(DonorTransaction));
                 entity.HasKey(e => e.DonorTransactionId);
-                entity.Property(e => e.PRCBloodDonorNumber).HasColumnType("varchar(30)");
-                entity.Property(e => e.DOHNBBNetsBarcode).HasColumnType("varchar(30)");
-                entity.Property(e => e.UnitSerialNumber).HasColumnType("varchar(30)");
+                //entity.Property(e => e.PRCBloodDonorNumber).HasColumnType("varchar(30)");
+                //entity.Property(e => e.DOHNBBNetsBarcode).HasColumnType("varchar(30)");
+                //entity.Property(e => e.UnitSerialNumber).HasColumnType("varchar(30)");
                 entity.Property(e => e.DonorStatus).HasColumnType("varchar(25)");
-                entity.Property(e => e.FinalBloodType).HasColumnType("varchar(4)");
+                //entity.Property(e => e.FinalBloodType).HasColumnType("varchar(4)");
                 entity.Property(e => e.BloodRh).HasColumnType("varchar(15)");
 
                 entity.HasOne(x => x.Donor).WithMany(m => m.DonorTransactions).OnDelete(DeleteBehavior.NoAction);

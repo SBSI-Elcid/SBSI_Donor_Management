@@ -87,51 +87,76 @@
             <!-- Method of Blood Collection -->
             <v-col cols="12" md="4">
                 <label class="font-weight-bold">Method of Blood Collection</label>
-                <v-radio-group row>
+                <v-radio-group row v-model ="donorInitialScreening.MethodOfBloodCollection">
                     <v-radio label="Whole Blood Donor" value="whole" />
                     <v-radio label="Apheresis Donor" value="apheresis" />
                 </v-radio-group>
             </v-col>
-
             <!-- Blood Type -->
-            <v-col cols="12" md="4">
+            <!--<v-col cols="12" md="4">
                 <label class="font-weight-bold">Blood Type</label>
-                <v-select :items="['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']"
+                <v-select :items="bloodTypesOptions"
+                          v-model ="donorInitialScreening.MethodOfBloodCollection"
                           label="Blood Type"
                           dense
                           outlined />
-            </v-col>
+            </v-col>-->
         </v-row>
 
         <v-row>
             <!-- HGB -->
             <v-col cols="12" sm="6" md="2">
                 <label class="font-weight-bold">HGB</label>
-                <v-text-field dense outlined label="Hemoglobin" />
+                <v-text-field 
+                              dense 
+                              outlined 
+                              label="Hemoglobin" 
+                              v-model="donorInitialScreening.HGB"
+                              />
             </v-col>
 
             <!-- HCT -->
             <v-col cols="12" sm="6" md="2">
                 <label class="font-weight-bold">HCT</label>
-                <v-text-field dense outlined label="Hematocrit" />
+                <v-text-field 
+                              dense 
+                              outlined 
+                              label="Hematocrit" 
+                              v-model="donorInitialScreening.HCT"
+                              />
             </v-col>
 
             <!-- RBC -->
             <v-col cols="12" sm="6" md="2">
                 <label class="font-weight-bold">RBC</label>
-                <v-text-field dense outlined label="Red Blood Cells" />
+                <v-text-field 
+                              dense 
+                              outlined 
+                              label="Red Blood Cells" 
+                              v-model ="donorInitialScreening.RBC"
+                              />
             </v-col>
 
             <!-- WBC -->
             <v-col cols="12" sm="6" md="2">
                 <label class="font-weight-bold">WBC</label>
-                <v-text-field dense outlined label="White Blood Cells" />
+                <v-text-field 
+                              dense 
+                              outlined 
+                              label="White Blood Cells" 
+                              v-model ="donorInitialScreening.WBC"
+                              />
             </v-col>
 
             <!-- PLT -->
             <v-col cols="12" sm="6" md="2">
                 <label class="font-weight-bold">PLT</label>
-                <v-text-field dense outlined label="Platelet Count" />
+                <v-text-field 
+                              dense 
+                              outlined 
+                              label="Platelet Count" 
+                              v-model="donorInitialScreening.PLTCount"
+                              />
             </v-col>
         </v-row>
 
@@ -258,7 +283,7 @@ export default class InitialScreeningForm extends VueBase {
       // Enable the fields when Donor Status is not deferred.
       if (Common.hasValue(this.donorInitialScreening.DonorStatus) && this.donorInitialScreening.DonorStatus !== DonorStatus.Deferred) {
         this.isDisabled = false;
-        if (this.donorInitialScreening.DonorStatus !== DonorStatus.ForInitialScreening) {
+        if (this.donorInitialScreening.DonorStatus !== DonorStatus.ForMethodBloodCollection) {
           this.isEditingValue = true;
         }
       }

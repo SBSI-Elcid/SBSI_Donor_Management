@@ -301,13 +301,13 @@ namespace BBIS.Application.Services
                 {
                     BloodComponentId = bloodComponent.BloodComponentId,
                     BloodComponentName = bloodComponent.ComponentName,
-                    BloodType = donorTransaction.FinalBloodType,
+                    BloodType = donorTransaction.BloodType,
                     BloodRh = donorTransaction.BloodRh,
                     CollectionDate = donorTransaction.DonorBloodCollection.StartTime.Date,
                     ExpiryDate = expiryDate,
                     NotifyBeforeExpireOn = startNotifyExpiryOn,
                     UnitMeasure = unitMeasure,
-                    UnitSerialNumber = donorTransaction.UnitSerialNumber,
+                    UnitSerialNumber = donorTransaction.SegmentSerialNumber,
                     Volume = 0
                 };
 
@@ -334,7 +334,7 @@ namespace BBIS.Application.Services
                     x.Volume,
                     x.UnitMeasure,
                     x.ExpiryDate,
-                    x.InventorySource.DonorTransaction.UnitSerialNumber,
+                    x.InventorySource.DonorTransaction.SegmentSerialNumber,
                     x.BloodType, 
                     x.BloodRh,
                 })
@@ -349,7 +349,7 @@ namespace BBIS.Application.Services
                                 new InventoryUnitOptionsDto
                                 {
                                     InventoryItemId = c.InventoryItemId,
-                                    ItemText = $"{c.UnitSerialNumber} - {c.Volume}{c.UnitMeasure} ({c.BloodType}{ToRhSign(c.BloodRh)})" 
+                                    ItemText = $"{c.SegmentSerialNumber} - {c.Volume}{c.UnitMeasure} ({c.BloodType}{ToRhSign(c.BloodRh)})" 
                                 }).ToList()
             }).ToList();
 

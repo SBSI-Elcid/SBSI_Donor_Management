@@ -185,7 +185,10 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             this.donorCounseling.medicalHistories = this.newDonor.MedicalHistories;
             this.donorCounseling.DonorRegistrationId = this.$route.params.reg_id;
            try {
-                await this.donorScreeningService.upsertCounselingScreening(this.donorCounseling);
+               await this.donorScreeningService.upsertCounselingScreening(this.donorCounseling);
+               this.notify_success('Donor counseling saved successfully.');
+
+               this.$router.push({ path: '/donors' });
                 //this.$notify({ type: "success", text: "Donor counseling saved successfully." });
             } catch (error) {
                 console.error("Insert failed", error);

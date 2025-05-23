@@ -253,6 +253,7 @@
             let transactionId = await this.donorScreeningService.uMethodBloodCollection(dto);
 
             this.notify_success('Donor is now ready For Blood Collection.');
+            this.$router.push({ path: '/donors' });
             //this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
             //if (this.formValid === false) {
             //    return;

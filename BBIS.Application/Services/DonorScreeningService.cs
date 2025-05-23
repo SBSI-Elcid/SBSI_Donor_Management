@@ -301,7 +301,7 @@ namespace BBIS.Application.Services
             dto.DonorRegistrationId = query.DonorRegistrationId;
             dto.DonorStatus = query.DonorStatus;
             dto.UnitSerialNumber = serialNumber;
-            dto.PRCBloodDonorNumber = query.PRCBloodDonorNumber;
+            //dto.PRCBloodDonorNumber = query.PRCBloodDonorNumber;
             dto.StartTime = DateTime.SpecifyKind(dto.StartTime, DateTimeKind.Utc);
             dto.EndTime = DateTime.SpecifyKind(dto.EndTime, DateTimeKind.Utc);
             return dto;
@@ -434,6 +434,7 @@ namespace BBIS.Application.Services
             }
 
             donorTransaction.DonorStatus = dto.DonorStatus;
+            donorTransaction.SegmentSerialNumber = dto.SegmentSerialNumber;
             repository.DonorTransaction.Update(donorTransaction);
 
             await repository.SaveAsync();
@@ -616,7 +617,7 @@ namespace BBIS.Application.Services
                 }
 
                 donorTransaction.DonorStatus = dto.DonorStatus;
-                donorTransaction.PRCBloodDonorNumber = dto.PRCBloodDonorNumber;
+                //donorTransaction.PRCBloodDonorNumber = dto.PRCBloodDonorNumber;
                 repository.DonorTransaction.Update(donorTransaction);
 
                 await repository.SaveAsync();
@@ -654,13 +655,13 @@ namespace BBIS.Application.Services
 
         private async Task<string> GetUnitSerialNumber(DonorTransaction transaction)
         {
-            var serialNumber = transaction.UnitSerialNumber;
+            var serialNumber = transaction.SegmentSerialNumber;
 
             if (string.IsNullOrEmpty(serialNumber))
             {
                 // Generate a random byte array
                 serialNumber = RandomStringGeneratorHelper.Generate("SN");
-                transaction.UnitSerialNumber = serialNumber;
+                transaction.SegmentSerialNumber = serialNumber;
 
                 repository.DonorTransaction.Update(transaction);
 

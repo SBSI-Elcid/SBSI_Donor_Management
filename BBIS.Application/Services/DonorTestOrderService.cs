@@ -77,7 +77,7 @@ namespace BBIS.Application.Services
                         DonorTransactionId = x.DonorTransactionId,
                         RegistrationNumber = x.DonorTransaction.DonorRegistration.RegistrationNumber,
                         FullName = $"{x.DonorTransaction.Donor.Firstname} {x.DonorTransaction.Donor.Middlename.Substring(0, 1)}. {x.DonorTransaction.Donor.Lastname}",
-                        FinalBloodType = x.DonorTransaction.FinalBloodType,
+                        FinalBloodType = x.DonorTransaction.BloodType,
                         TestTypes = x.DonorTestOrderTestTypes
                             .Select(x => new DonorTestOrderTypesDto
                             {
@@ -232,7 +232,7 @@ namespace BBIS.Application.Services
 
             if (!string.IsNullOrEmpty(dto.FinalBloodType))
             {
-                donorTransaction.FinalBloodType = dto.FinalBloodType;
+                donorTransaction.BloodType = dto.FinalBloodType;
                 //donorTransaction.DonorInitialScreening.BloodType = dto.FinalBloodType;
             }
 
