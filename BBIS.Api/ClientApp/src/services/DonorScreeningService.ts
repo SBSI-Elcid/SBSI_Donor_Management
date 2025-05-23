@@ -76,7 +76,8 @@ export default class DonorScreeningService {
 		return response.Data as Guid; 
 	}
 
-	async upsertBloodBagIssuance(dto: IDonorBloodBagIssuance): Promise<Guid> {
+	async upsertBloodBagIssuance(dto: IDonorBloodBagIssuance[]): Promise<Guid> {
+
 		let response = await this.apiClient.postJson(`upsert-bloodbagissuance`, dto);
 		return response.Data as Guid;
 	}

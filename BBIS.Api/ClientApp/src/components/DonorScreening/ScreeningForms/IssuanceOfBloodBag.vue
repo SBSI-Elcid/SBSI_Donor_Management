@@ -106,7 +106,7 @@
         protected showRecentDonations: boolean = false;
         protected showPatientDirectedFields: boolean = false;
         protected showMobileBloodDonationFields: boolean = false;
-        protected donorBloodBagIssuance: IDonorBloodBagIssuance = new DonorBloodBagIssuanceDto();
+        protected donorBloodBagIssuance: IDonorBloodBagIssuance[] = []
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
 
@@ -136,7 +136,7 @@
             if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
                 let regId = this.$route.params.reg_id;
                 this.donorBloodBagIssuance = await this.donorScreeningService.getBloodBagIssuance(regId);
-                console.log(this.donorBloodBagIssuance);
+                /*console.log(this.donorBloodBagIssuance);*/
 
                 this.donorModule.setTransactionId(this.donorBloodBagIssuance.DonorTransactionId);
             }

@@ -22,7 +22,7 @@ namespace BBIS.Api.MappingConfigurations
             CreateMap<DonorVitalSignsDto, DonorVitalSigns>().ReverseMap();
             CreateMap<DonorRecentDonationDto, DonorRecentDonation>().ReverseMap();
             CreateMap<DonorPhysicalExaminationDto, DonorPhysicalExamination>().ReverseMap();
-            CreateMap<DonorBloodBagIssuanceDto, DonorBloodBagIssuance>();
+            CreateMap<DonorBloodBagIssuanceDto, DonorBloodBagIssuance>().ReverseMap();
             CreateMap<DonorBloodCollectionDto, DonorBloodCollection>().ReverseMap();
             CreateMap<DonorMedicalQuestionnaireDto, DonorMedicalHistory>();
             CreateMap<DonorDeferralDto, DonorDeferral>();

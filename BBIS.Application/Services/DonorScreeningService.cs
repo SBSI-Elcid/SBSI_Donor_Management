@@ -202,31 +202,32 @@ namespace BBIS.Application.Services
         public async Task<List<DonorBloodBagIssuanceDto>> GetDonorBloodBagIssuance(Guid id)
         {
 
-            var transaction = await dbContext.DonorTransactions
-            .Include(x => x.DonorBloodBagIssuances)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
+            var dto = new List<DonorBloodBagIssuanceDto>();
 
-            if (transaction == null)
-                throw new RecordNotFoundException($"Donor transaction not found for registration ID: {id}");
+            var query = await dbContext.DonorTransactions
+                .Include(x => x.DonorBloodBagIssuances)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
 
-            // If there are any blood bag issuances, map them
-            if (transaction.DonorBloodBagIssuances != null && transaction.DonorBloodBagIssuances.Any())
+            if (query == null)
             {
-                var dtolist = mapper.Map<List<DonorBloodBagIssuanceDto>>(transaction.DonorBloodBagIssuances);
+                //var transaction = new DonorBloodBagIssuanceDto();
+                //transaction.DonorTransactionId = query.DonorTransactionId;
 
-                // Set additional fields from parent transaction
-                foreach (var dto in dtolist)
-                {
-                    dto.DonorTransactionId = transaction.DonorTransactionId;
-                    dto.DonorRegistrationId = transaction.DonorRegistrationId;
-                    dto.DonorStatus = transaction.DonorStatus;
-                }
-
-                return dtolist;
+                //dto.Add(transaction);
+                return dto;
             }
 
-            return new List<DonorBloodBagIssuanceDto>();
+            try
+            {
+                dto = mapper.Map<List<DonorBloodBagIssuanceDto>>(query.DonorBloodBagIssuances);
+            }
+            catch (AutoMapperMappingException ex)
+            {
+                Console.WriteLine(ex.ToString);
+                throw;
+            }
+            return dto;
         }
 
         public async Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id)
