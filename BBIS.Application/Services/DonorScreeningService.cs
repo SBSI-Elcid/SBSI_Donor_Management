@@ -199,29 +199,34 @@ namespace BBIS.Application.Services
             return dto;
         }
 
-        public async Task<DonorBloodBagIssuanceDto> GetDonorBloodBagIssuance(Guid id)
+        public async Task<List<DonorBloodBagIssuanceDto>> GetDonorBloodBagIssuance(Guid id)
         {
-            var dto = new DonorBloodBagIssuanceDto();
 
-            var query = await dbContext.DonorTransactions
-                .Include(x => x.DonorBloodBagIssuance)
-                .Include(x => x.Donor)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
+            var transaction = await dbContext.DonorTransactions
+            .Include(x => x.DonorBloodBagIssuances)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
 
-            if (query == null)
+            if (transaction == null)
                 throw new RecordNotFoundException($"Donor transaction not found for registration ID: {id}");
 
-            if (query.DonorBloodBagIssuance != null)
+            // If there are any blood bag issuances, map them
+            if (transaction.DonorBloodBagIssuances != null && transaction.DonorBloodBagIssuances.Any())
             {
-                dto = mapper.Map<DonorBloodBagIssuanceDto>(query.DonorBloodBagIssuance);
+                var dtolist = mapper.Map<List<DonorBloodBagIssuanceDto>>(transaction.DonorBloodBagIssuances);
+
+                // Set additional fields from parent transaction
+                foreach (var dto in dtolist)
+                {
+                    dto.DonorTransactionId = transaction.DonorTransactionId;
+                    dto.DonorRegistrationId = transaction.DonorRegistrationId;
+                    dto.DonorStatus = transaction.DonorStatus;
+                }
+
+                return dtolist;
             }
 
-            dto.DonorTransactionId = query.DonorTransactionId;
-            dto.DonorRegistrationId = id;
-            
-
-            return dto;
+            return new List<DonorBloodBagIssuanceDto>();
         }
 
         public async Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id)
@@ -288,7 +293,7 @@ namespace BBIS.Application.Services
 
             if (query?.DonorBloodCollection == null)
             {
-                dto.UnitSerialNumber = serialNumber;
+                dto.SegmentSerialNumber = serialNumber;
                 dto.DonorRegistrationId = id;
                 dto.DonorStatus = query?.DonorStatus;
                 dto.StartTime = DateTime.UtcNow;
@@ -300,7 +305,7 @@ namespace BBIS.Application.Services
             dto.DonorTransactionId = query.DonorTransactionId;
             dto.DonorRegistrationId = query.DonorRegistrationId;
             dto.DonorStatus = query.DonorStatus;
-            dto.UnitSerialNumber = serialNumber;
+            dto.SegmentSerialNumber = serialNumber;
             //dto.PRCBloodDonorNumber = query.PRCBloodDonorNumber;
             dto.StartTime = DateTime.SpecifyKind(dto.StartTime, DateTimeKind.Utc);
             dto.EndTime = DateTime.SpecifyKind(dto.EndTime, DateTimeKind.Utc);

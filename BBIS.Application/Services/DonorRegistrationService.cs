@@ -327,10 +327,10 @@ namespace BBIS.Application.Services
             var result = new VerifyDonorResultDto() { IsValid = true };
 
             var currentDate = DateTime.UtcNow;
-            var donorBloodCollection = await dbContext.DonorBloodCollections.FirstOrDefaultAsync(x => x.DonorTransactionId == donorTransactionId);
+            var donorBloodCollection = await dbContext.DonorBloodBagIssuances.FirstOrDefaultAsync(x => x.DonorTransactionId == donorTransactionId);
 
             // Apheresis blood re-collection should be 2 weeks or more
-            if (donorBloodCollection != null && donorBloodCollection.CollectionType == BloodBagCollectionTypes.Apheresis)
+            if (donorBloodCollection != null && donorBloodCollection.BloodBagToBeUsed == BloodBagCollectionTypes.Apheresis)
             {
                 var ts = currentDate.Subtract(donationDate);
                 var dateDiff = ts.Days;

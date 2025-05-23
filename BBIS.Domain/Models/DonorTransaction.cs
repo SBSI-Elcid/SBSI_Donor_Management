@@ -25,7 +25,9 @@
 
         public virtual DonorInitialScreening DonorInitialScreening { get; set; }
         public virtual DonorPhysicalExamination DonorPhysicalExamination { get; set; }
-        public virtual DonorBloodBagIssuance DonorBloodBagIssuance { get; set; }
+
+        public ICollection<DonorBloodBagIssuance> DonorBloodBagIssuances { get; set; }
+        //public virtual DonorBloodBagIssuance DonorBloodBagIssuance { get; set; }
         public virtual DonorBloodCollection DonorBloodCollection { get; set; }
         public virtual DonorDeferral DonorDeferral { get; set; }
         public virtual DonorTestOrder DonorTestOrder { get; set; }

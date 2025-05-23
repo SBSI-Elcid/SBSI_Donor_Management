@@ -167,7 +167,7 @@ namespace BBIS.Api.Controllers
 
         [HttpGet("bloodcollection/{id}")]
         [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
-        public async Task<ActionResult<RequestResult<DonorPhysicalExaminationDto>>> GetBloodCollectionInfo(Guid id)
+        public async Task<ActionResult<RequestResult<DonorBloodCollectionDto>>> GetBloodCollectionInfo(Guid id)
         {
             try
             {

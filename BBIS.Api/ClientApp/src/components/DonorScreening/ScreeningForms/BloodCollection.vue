@@ -1,16 +1,13 @@
 <template>
-    <v-form class="form-container" ref="form"  lazy-validation>
+    <v-form class="form-container" ref="form" lazy-validation>
         <v-row>
             <!-- Start Time -->
             <v-col cols="12" md="4">
                 <label class="font-weight-bold">Start Time</label>
-                <v-text-field 
-                              dense 
-                              outlined 
-                              type="time" 
-                              label="Start Time of Blood Collection" 
-                              
-                              />
+                <v-text-field dense
+                              outlined
+                              type="time"
+                              label="Start Time of Blood Collection" />
             </v-col>
 
             <!-- End Time -->
@@ -67,6 +64,39 @@
                 </v-row>
             </v-col>
         </v-row>
+
+        <v-dialog v-model="showIssuanceDialog" max-width="800px" persistent>
+            <v-card>
+                <v-card-title>
+                    Add Blood Bag
+                    <v-spacer></v-spacer>
+                    <!--<v-btn icon @click="showIssuanceDialog = false">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>-->
+                </v-card-title>
+
+                <v-card-text style="overflow-y: auto; max-height: 540px;">
+                    <IssuanceOfBloodBagModal @close="showIssuanceDialog = false" @Issued="handleIssued" />
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <!--<v-dialog v-model="showIssuanceDialog" max-width="1000px " persistent>
+        <v-card class="">
+            <IssuanceOfBloodBagModal @close="showIssuanceDialog = false" />
+        </v-card>
+    </v-dialog>-->
+        <div  v-if="approvedSegmentSerialNumber" class="section-outer-container text-left pt-3 pb-2">
+            <strong>Segment Serial Number Approved:</strong> {{ approvedSegmentSerialNumber }}
+        </div>
+
+
+        <div class="section-outer-container text-right pt-3 pb-2">
+            <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
+            <v-btn color="default" large tile class="mr-2" @click="showIssuanceDialog = true"><v-icon color="success" size="25" left>mdi-blood-bag</v-icon> Add Bloog Bag</v-btn>
+            <v-btn color="default" large tile class="mr-2" @click=""><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
+            <v-btn color="default" large tile class="mr-2" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
+        </div>
     </v-form>
 </template>
 
@@ -85,8 +115,15 @@
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { ApplicationSettingKeys } from '@/models/ApplicationSettingKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
+    import IssuanceOfBloodBagModal from '@/components/DonorScreening/ScreeningForms/IssuanceOfBloodBagModal.vue';
     import moment from 'moment';
     import JsBarcode from 'jsbarcode';
+
+   @Component({
+      components: {
+        IssuanceOfBloodBagModal,
+      },
+    })
 
     export default class BloodCollection extends VueBase {
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
@@ -105,6 +142,8 @@
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
 
+        protected approvedSegmentSerialNumber: string = "";
+
         public get options(): (key: string) => Array<ILookupOptions> {
             return (key) => this.lookupModule.getOptionsByKey(key);
         }
@@ -112,6 +151,13 @@
         protected get bloodTypesOptions(): Array<{ text: string, value: string }> {
             return this.options(LookupKeys.BloodTypes).map(x => { return { text: x.Text, value: x.Value } });
         }
+
+        protected showIssuanceDialog: boolean = false;
+
+
+       protected handleIssued(segmentSerialNumber: string): void {
+          this.approvedSegmentSerialNumber = segmentSerialNumber;
+       }
 
     }
     

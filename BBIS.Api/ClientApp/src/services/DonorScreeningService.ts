@@ -11,6 +11,7 @@ import { IDonorCounseling } from "../models/DonorScreening/DonorCounselingDto";
 import { IDonorMedicalHistoryDto } from "../models/DonorRegistration/DonorMedicalHistoryDto";
 import { IRegisteredDonorDto } from "../models/DonorRegistration/IRegisteredDonorDto";
 import { IRegisteredDonorInfoDto } from "../models/DonorRegistration/IRegisteredDonorInfoDto";
+import { IDonorBloodBagIssuance } from "../models/DonorScreening/DonorBloodBagIssuance";
 
 export default class DonorScreeningService {
 	baseUrl: string = 'api/donorscreening/';
@@ -43,8 +44,8 @@ export default class DonorScreeningService {
 		return this.apiClient.get<IDonorPhysicalExaminationDto>(`physicalexam/${id}`);
 	}
 
-	async getBloodBagIssuance(id: Guid): Promise<IDonorBloodCollectionDto> {
-		return this.apiClient.get<IDonorBloodCollectionDto>(`issuanceofbloodbag/${id}`);
+	async getBloodBagIssuance(id: Guid): Promise<IDonorBloodBagIssuance> {
+		return this.apiClient.get<IDonorBloodBagIssuance>(`issuanceofbloodbag/${id}`);
 	}
 
 	async getBloodCollectionInfo(id: Guid): Promise<IDonorBloodCollectionDto> {
@@ -75,7 +76,7 @@ export default class DonorScreeningService {
 		return response.Data as Guid; 
 	}
 
-	async upsertBloodBagIssuance(dto: IDonorBloodCollectionDto): Promise<Guid> {
+	async upsertBloodBagIssuance(dto: IDonorBloodBagIssuance): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-bloodbagissuance`, dto);
 		return response.Data as Guid;
 	}

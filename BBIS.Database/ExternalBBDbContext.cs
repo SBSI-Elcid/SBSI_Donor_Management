@@ -21,7 +21,7 @@ namespace BBIS.Database
         public DbSet<DonorMedicalHistory> DonorMedicalHistories { get; set; }
         public DbSet<DonorPhysicalExamination> DonorPhysicalExaminations { get; set; }
         public DbSet<DonorBloodCollection> DonorBloodCollections { get; set; }
-        public DbSet<DonorBloodBagIssuance> DonorBloodBagIssuance { get; set; }
+        public DbSet<DonorBloodBagIssuance> DonorBloodBagIssuances { get; set; }
         public DbSet<DonorDeferral> DonorDeferrals { get; set; }
 
         public DbSet<Lookup> Lookups { get; set; }
@@ -253,15 +253,35 @@ namespace BBIS.Database
                 entity.HasOne(x => x.DonorTransaction).WithOne(x => x.DonorPhysicalExamination).OnDelete(DeleteBehavior.NoAction);
             });
 
+            modelBuilder.Entity<DonorBloodBagIssuance>(entity =>
+            {
+                entity.ToTable(nameof(DonorBloodBagIssuance));
+                entity.HasKey(e => e.DonorBloodBagIssuanceId);
+
+                entity.HasOne(e => e.DonorTransaction)
+                      .WithMany(t => t.DonorBloodBagIssuances)
+                      .HasForeignKey(e => e.DonorTransactionId)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
+            //modelBuilder.Entity<DonorBloodBagIssuance>(entity =>
+            //{
+            //    entity.ToTable(nameof(DonorBloodBagIssuance));
+            //    entity.HasKey(e => e.DonorBloodBagIssuanceId);
+
+            //    entity.HasOne(e => e.DonorTransaction)
+            //          .WithOne(e => e.DonorBloodBagIssuance)
+            //          .OnDelete(DeleteBehavior.NoAction);
+            //});
+
             modelBuilder.Entity<DonorBloodCollection>(entity =>
             {
                 entity.ToTable(nameof(DonorBloodCollection));
                 entity.HasKey(e => e.DonorBloodCollectionId);
-                entity.Property(e => e.CollectionType).HasColumnType("varchar(15)");
-                entity.Property(e => e.CollectionSubType).HasColumnType("varchar(15)");
+                //entity.Property(e => e.CollectionType).HasColumnType("varchar(15)");
+                //entity.Property(e => e.CollectionSubType).HasColumnType("varchar(15)");
                 entity.Property(e => e.UnitOfMeasurement).HasColumnType("varchar(10)");
                 entity.Property(e => e.UnwellReason).HasColumnType("varchar(100)");
-                entity.Property(e => e.MedicationGiven).HasColumnType("varchar(100)");
+                //entity.Property(e => e.MedicationGiven).HasColumnType("varchar(100)");
 
                 entity.HasOne(x => x.DonorTransaction).WithOne(x => x.DonorBloodCollection).OnDelete(DeleteBehavior.NoAction);
 

@@ -10,7 +10,7 @@ namespace BBIS.Application.Contracts
         Task<DonorInitialScreeningDto> GetInitialScreeningInfo(Guid transactionId);
         Task<DonorVitalSignsDto> GetDonorVitalSignsInfo(Guid transactionId);
 
-        Task<DonorBloodBagIssuanceDto> GetDonorBloodBagIssuance(Guid transactionId);
+        Task<List<DonorBloodBagIssuanceDto>> GetDonorBloodBagIssuance(Guid transactionId);
 
         Task<DonorCounselingDto> GetDonorCounselingInfo(Guid transactionId);
 

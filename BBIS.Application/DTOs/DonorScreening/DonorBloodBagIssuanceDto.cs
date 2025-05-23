@@ -15,9 +15,11 @@ namespace BBIS.Application.DTOs.DonorScreening
         public string BloodBagType { get; set; }
         public string UnitSerialNumber { get; set; }
         public string SegmentSerialNumber { get; set; }
-        public string PatientFirstName { get; set; }
-        public string PatientLastName { get; set; }
-        public string PatientMiddleName { get; set; }
+
+        public Boolean isFromModal { get; set; }
+        //public string PatientFirstName { get; set; }
+        //public string PatientLastName { get; set; }
+        //public string PatientMiddleName { get; set; }
         public Guid IssuedBy { get; set; }
         public DateTime IssuedDate { get; set; }
         public string DonorStatus { get; set; }

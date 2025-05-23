@@ -5,9 +5,7 @@ export interface IDonorBloodBagIssuance {
     BloodBagType: string,
     UnitSerialNumber: string,
     SegmentSerialNumber: string,
-    PatientFirstName: string,
-    PatientLastName: string,
-    PatientMiddleName: string,
+    isFromModal: boolean,
     DonorStatus: string,
 }
 
@@ -18,8 +16,6 @@ export class DonorBloodBagIssuanceDto implements IDonorBloodBagIssuance {
     BloodBagType: string = "";
     UnitSerialNumber: string = "";
     SegmentSerialNumber: string = "";
-    PatientFirstName: string = "";
-    PatientLastName: string = "";
-    PatientMiddleName: string = "";
+    isFromModal: boolean = false;
     DonorStatus: string = "";
 }
