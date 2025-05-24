@@ -61,6 +61,7 @@
         public static readonly string ForVitalSigns = nameof(ForVitalSigns);
         public static readonly string ForConsent = nameof(ForConsent);
         public static readonly string ForBloodIssuance = nameof(ForBloodIssuance);
+        public static readonly string ForPostDonationCare = nameof(ForPostDonationCare);
     }
 
     public static class BloodBagCollectionTypes

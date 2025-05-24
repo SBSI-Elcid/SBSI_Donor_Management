@@ -199,10 +199,10 @@ namespace BBIS.Application.Services
             return dto;
         }
 
-        public async Task<List<DonorBloodBagIssuanceDto>> GetDonorBloodBagIssuance(Guid id)
+        public async Task<DonorBloodBagIssuanceDto> GetDonorBloodBagIssuance(Guid id)
         {
 
-            var dto = new List<DonorBloodBagIssuanceDto>();
+            var dto = new DonorBloodBagIssuanceDto();
 
             var query = await dbContext.DonorTransactions
                 .Include(x => x.DonorBloodBagIssuances)
@@ -211,23 +211,42 @@ namespace BBIS.Application.Services
 
             if (query == null)
             {
-                //var transaction = new DonorBloodBagIssuanceDto();
-                //transaction.DonorTransactionId = query.DonorTransactionId;
-
-                //dto.Add(transaction);
                 return dto;
             }
-
             try
             {
-                dto = mapper.Map<List<DonorBloodBagIssuanceDto>>(query.DonorBloodBagIssuances);
+                var issuance = query.DonorBloodBagIssuances
+                    .Where(x => !x.isFromModal)
+                    .FirstOrDefault();
+                var issuanceList = query.DonorBloodBagIssuances
+                    .Where(x => !x.isFromModal)
+                    .ToList();
+
+                if (issuance != null)
+                {
+                    dto = mapper.Map<DonorBloodBagIssuanceDto>(issuance);
+                    dto.DonorRegistrationId = query.DonorRegistrationId;
+                    dto.BloodBagInfos = mapper.Map<List<DonorBloodBagInfo>>(issuanceList);
+                }
             }
             catch (AutoMapperMappingException ex)
             {
-                Console.WriteLine(ex.ToString);
+                Console.WriteLine(ex.ToString());
                 throw;
             }
+
             return dto;
+
+            //try
+            //{
+            //    dto = mapper.Map<DonorBloodBagIssuanceDto>(query.DonorBloodBagIssuances);
+            //}
+            //catch (AutoMapperMappingException ex)
+            //{
+            //    Console.WriteLine(ex.ToString);
+            //    throw;
+            //}
+            //return dto;
         }
 
         public async Task<List<DonorRecentDonationDto>> GetRecentDonations(Guid id)
@@ -296,6 +315,8 @@ namespace BBIS.Application.Services
             {
                 dto.SegmentSerialNumber = serialNumber;
                 dto.DonorRegistrationId = id;
+                dto.DonorTransactionId = query.DonorTransactionId;
+                dto.DonorRegistrationId = query.DonorRegistrationId;
                 dto.DonorStatus = query?.DonorStatus;
                 dto.StartTime = DateTime.UtcNow;
                 dto.EndTime = DateTime.UtcNow;
@@ -425,22 +446,48 @@ namespace BBIS.Application.Services
             if (donorTransaction == null)
                 throw new RecordNotFoundException($"Donor transaction not found for registration ID: {dto.DonorRegistrationId}");
 
-            var entity = mapper.Map<DonorBloodBagIssuance>(dto);
-            entity.IssuedBy = userId;
-            entity.IssuedDate = DateTime.UtcNow;
-            entity.DonorTransactionId = donorTransaction.DonorTransactionId;
+            var donorBloodBagIssuance = mapper.Map<DonorBloodBagIssuance>(dto);
 
-            if (dto.DonorBloodBagIssuanceId.HasValue)
+            var Issuance = mapper.Map<List<DonorBloodBagIssuance>>(dto.BloodBagInfos);
+
+            foreach (var item in Issuance)
             {
-                repository.DonorBloodBagIssuance.Update(entity);
+                item.DonorTransactionId = donorTransaction.DonorTransactionId;
+                item.IssuedBy = userId;
+                donorTransaction.SegmentSerialNumber = item.SegmentSerialNumber;
+                item.IssuedDate = DateTime.UtcNow;
+            }
+
+            if (dto.DonorBloodBagIssuanceId != Guid.Empty)
+            {
+                // Update each item individually
+                foreach (var item in Issuance)
+                {
+                    item.DonorBloodBagIssuanceId = dto.DonorBloodBagIssuanceId ?? Guid.Empty;
+                    repository.DonorBloodBagIssuance.Update(item);
+                }
             }
             else
             {
-                repository.DonorBloodBagIssuance.Create(entity);
+                // Add all items at once
+                repository.DonorBloodBagIssuance.AddRange(Issuance);
             }
+            //var entity = mapper.Map<DonorBloodBagIssuance>(dto);
+            //entity.IssuedBy = userId;
+            //entity.IssuedDate = DateTime.UtcNow;
+            //entity.DonorTransactionId = donorTransaction.DonorTransactionId;
+
+            //if (dto.DonorBloodBagIssuanceId.HasValue)
+            //{
+            //    repository.DonorBloodBagIssuance.Update(entity);
+            //}
+            //else
+            //{
+            //    repository.DonorBloodBagIssuance.Create(entity);
+            //}
 
             donorTransaction.DonorStatus = dto.DonorStatus;
-            donorTransaction.SegmentSerialNumber = dto.SegmentSerialNumber;
+            
             repository.DonorTransaction.Update(donorTransaction);
 
             await repository.SaveAsync();

@@ -1,21 +1,15 @@
+import { IDonorIssuedBloodBags} from '../DonorScreening/DonorIssuedBloodBags'
+
 export interface IDonorBloodBagIssuance {
     DonorTransactionId: Guid,
     DonorRegistrationId: Guid,
-    BloodBagToBeUsed: string,
-    BloodBagType: string,
-    UnitSerialNumber: string,
-    SegmentSerialNumber: string,
-    isFromModal: boolean,
+    BloodBagInfos: IDonorIssuedBloodBags[]; 
     DonorStatus: string,
 }
 
 export class DonorBloodBagIssuanceDto implements IDonorBloodBagIssuance {
     DonorTransactionId: Guid = "";
     DonorRegistrationId: Guid = "";
-    BloodBagToBeUsed: string = "";
-    BloodBagType: string = "";
-    UnitSerialNumber: string = "";
-    SegmentSerialNumber: string = "";
-    isFromModal: boolean = false;
+    BloodBagInfos: IDonorIssuedBloodBags[] = [];
     DonorStatus: string = "";
 }

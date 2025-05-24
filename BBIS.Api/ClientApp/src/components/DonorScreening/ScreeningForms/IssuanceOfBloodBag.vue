@@ -6,16 +6,19 @@
                 <label class="font-weight-bold">Blood Bag to be Used</label>
                 <v-select :items="bloodBagCollectionOptions"
                           label="Blood Bag to be Used"
-                          v-model="donorBloodBagIssuance.BloodBagToBeUsed"
-                          dense
-                          outlined />
+                           dense
+                            outlined 
+                          v-model="donorBloodBagInfo.BloodBagToBeUsed"
+                          />
+                          <!--v-model="donorBloodBagInfo.BloodBagToBeUsed"-->
+                         
                 <!--<v-text-field dense outlined label="Blood Bag to be used" v-model ="donorBloodBagIssuance.BloodBagToBeUsed"></v-text-field>-->
 
             </v-col>
 
             <!-- Bag Type Options -->
             <v-col cols="12" md="8">
-                <v-radio-group row v-model="donorBloodBagIssuance.BloodBagType">
+                <v-radio-group row v-model="donorBloodBagInfo.BloodBagType"> <!--v-model="donorBloodBagIssuance.BloodBagType"-->
                     <!--<v-radio label="Single" value="single" />
                 <v-radio label="Double" value="double" />
                 <v-radio label="Triple" value="triple" />
@@ -35,7 +38,9 @@
                 <v-text-field dense
                               outlined
                               label="Segment Serial Number"
-                              v-model="donorBloodBagIssuance.SegmentSerialNumber" />
+                              v-model="donorBloodBagInfo.SegmentSerialNumber"
+                              />
+                              <!--v-model="donorBloodBagIssuance.SegmentSerialNumber"--> 
             </v-col>
 
             <!-- Unit Serial Number -->
@@ -44,7 +49,9 @@
                 <v-text-field dense
                               outlined
                               label="Unit Serial Number"
-                              v-model="donorBloodBagIssuance.UnitSerialNumber" />
+                              v-model="donorBloodBagInfo.UnitSerialNumber"
+                              />
+                              <!--v-model="donorBloodBagIssuance.UnitSerialNumber"--> 
             </v-col>
 
             <!-- Print Button -->
@@ -90,6 +97,7 @@
     import { DonorStatus } from '@/models/Enums/DonorStatus';
     import { BloodBagCollections } from '@/models/Enums/BloodBagCollections';
     import JsBarcode from 'jsbarcode'
+import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/DonorScreening/DonorIssuedBloodBags';
     //import RecentDonationTable from '@/components/DonorScreening/ScreeningForms/RecentDonationTable.vue';
     @Component
     export default class IssuanceOfBloodBag extends VueBase {
@@ -106,7 +114,8 @@
         protected showRecentDonations: boolean = false;
         protected showPatientDirectedFields: boolean = false;
         protected showMobileBloodDonationFields: boolean = false;
-        protected donorBloodBagIssuance: IDonorBloodBagIssuance[] = []
+        protected donorBloodBagIssuance: IDonorBloodBagIssuance = new DonorBloodBagIssuanceDto();
+        protected donorBloodBagInfo: IDonorIssuedBloodBags = new DonorIssuedBloodBagsDto();
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
 
@@ -137,19 +146,24 @@
                 let regId = this.$route.params.reg_id;
                 this.donorBloodBagIssuance = await this.donorScreeningService.getBloodBagIssuance(regId);
                 /*console.log(this.donorBloodBagIssuance);*/
-
+                this.donorBloodBagInfo = this.donorBloodBagIssuance.BloodBagInfos[0] || new DonorIssuedBloodBagsDto();
+                console.log("Blood Bag Info:", this.donorBloodBagIssuance.BloodBagInfos);
                 this.donorModule.setTransactionId(this.donorBloodBagIssuance.DonorTransactionId);
             }
         }
 
+       //protected get bloodBagIssuedInfo(): Array<{ donorBloodBagInfo: IDonorBloodBagIssuance }> {
+       //     return [{ donorBloodBagInfo: this.donorBloodBagIssuance }];
+       // }
+
         public get bloodBagCollectionSubOptions(): Array<{ text: string, value: string }> {
-            if (this.donorBloodBagIssuance.BloodBagToBeUsed === BloodBagCollections.KARMI || this.donorBloodBagIssuance.BloodBagToBeUsed === BloodBagCollections.TERUMO) {
+            if (this.donorBloodBagInfo.BloodBagToBeUsed === BloodBagCollections.KARMI || this.donorBloodBagInfo.BloodBagToBeUsed === BloodBagCollections.TERUMO) {
                 return this.bloodBagsSizeOptions;
             }
-            else if (this.donorBloodBagIssuance.BloodBagToBeUsed === BloodBagCollections.SpecialBag) {
+            else if (this.donorBloodBagInfo.BloodBagToBeUsed === BloodBagCollections.SpecialBag) {
                 return this.specialBagOptions;
             }
-            else if (this.donorBloodBagIssuance.BloodBagToBeUsed === BloodBagCollections.Apheresis) {
+            else if (this.donorBloodBagInfo.BloodBagToBeUsed === BloodBagCollections.Apheresis) {
                 return this.apheresisBagOptions;
             }
             else {
@@ -237,6 +251,8 @@
         public async onApprovalConfirmation(confirm: boolean): Promise<void> {
             if (confirm) {
                 this.donorBloodBagIssuance.DonorStatus = DonorStatus.ForBloodCollection;
+                this.donorBloodBagIssuance.BloodBagInfos = [this.donorBloodBagInfo];
+                console.log(this.donorBloodBagIssuance.BloodBagInfos);
                 await this.onSubmit();
             }
         }

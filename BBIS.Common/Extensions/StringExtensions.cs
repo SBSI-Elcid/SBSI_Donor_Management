@@ -23,6 +23,7 @@ namespace BBIS.Common.Extensions
                     DonorStatus.ForConsent,
                     DonorStatus.ForMethodBloodCollection,
                     DonorStatus.ForBloodIssuance,
+                    DonorStatus.ForPostDonationCare,
                     DonorStatus.Deferred,
                 };
             }
@@ -45,6 +46,7 @@ namespace BBIS.Common.Extensions
                 statuses.Add(DonorStatus.ForMethodBloodCollection);
                 statuses.Add(DonorStatus.ForBloodIssuance);
                 statuses.Add(DonorStatus.ForBloodCollection);
+                statuses.Add(DonorStatus.ForPostDonationCare);
             }
 
             return statuses;
