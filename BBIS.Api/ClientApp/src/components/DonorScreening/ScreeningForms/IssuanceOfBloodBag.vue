@@ -147,7 +147,8 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
                 this.donorBloodBagIssuance = await this.donorScreeningService.getBloodBagIssuance(regId);
                 /*console.log(this.donorBloodBagIssuance);*/
                 this.donorBloodBagInfo = this.donorBloodBagIssuance.BloodBagInfos[0] || new DonorIssuedBloodBagsDto();
-                console.log("Blood Bag Info:", this.donorBloodBagIssuance.BloodBagInfos);
+                console.log(this.donorBloodBagIssuance);
+                console.log("RegId", regId);
                 this.donorModule.setTransactionId(this.donorBloodBagIssuance.DonorTransactionId);
             }
         }

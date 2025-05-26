@@ -225,9 +225,17 @@ namespace BBIS.Application.Services
                 if (issuance != null)
                 {
                     dto = mapper.Map<DonorBloodBagIssuanceDto>(issuance);
+
                     dto.DonorRegistrationId = query.DonorRegistrationId;
                     dto.BloodBagInfos = mapper.Map<List<DonorBloodBagInfo>>(issuanceList);
+
                 }
+                else {
+                    dto.DonorRegistrationId = query.DonorRegistrationId;
+                    dto.DonorTransactionId = query.DonorTransactionId;
+                }
+
+
             }
             catch (AutoMapperMappingException ex)
             {
