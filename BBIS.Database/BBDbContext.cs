@@ -15,6 +15,8 @@ namespace BBIS.Database
         public DbSet<Donor> Donors { get; set; }
         public DbSet<DonorRegistration> DonorRegistrations { get; set; }
         public DbSet<DonorTransaction> DonorTransactions { get; set; }
+        public DbSet<DonorPostDonationCare> DonorPostDonationCares { get; set; }
+        public DbSet<VitalSignsMonitoring> VitalSignsMonitorings { get; set; }
         public DbSet<DonorRecentDonation> DonorRecentDonations { get; set; }
         public DbSet<DonorInitialScreening> DonorInitialScreenings { get; set; }
         public DbSet<DonorVitalSigns> DonorVitalSigns { get; set; }
@@ -245,6 +247,27 @@ namespace BBIS.Database
                       .WithMany(e=>e.DonorBloodBagIssuances)
                       .HasForeignKey(e => e.DonorTransactionId)
                       .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<DonorPostDonationCare>(entity => {
+                entity.ToTable(nameof(DonorPostDonationCare));
+                entity.HasKey(e => e.DonorPostDonationCareId);
+
+                entity.HasOne(e => e.DonorTransaction)
+                      .WithOne(x => x.DonorPostDonationCare).OnDelete(DeleteBehavior.NoAction); 
+            
+            
+            });
+
+
+            modelBuilder.Entity<VitalSignsMonitoring>(entity => {
+                entity.ToTable(nameof(VitalSignsMonitoring));
+                entity.HasKey(e => e.VitalSignsMonitoringId);
+
+                entity.HasOne(e => e.DonorPostDonationCare)
+                      .WithMany(m => m.VitalSignsMonitorings).OnDelete(DeleteBehavior.NoAction);
+
+
             });
 
             modelBuilder.Entity<DonorPhysicalExamination>(entity =>

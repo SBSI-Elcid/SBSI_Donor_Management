@@ -16,6 +16,8 @@ namespace BBIS.Application.Repositories
         private IDonorPhysicalExaminationRepository _donorPhysicalExamination;
         private IDonorRecentDonationRepository _donorRecentDonation;
         private IDonorBloodCollectionRepository _donorBloodCollection;
+        private IDonorPostDonationCareRepository _donorPostDonationCare;
+        private IDonorVitalSignsMonitoring _vitalSignsMonitoring ;
         private IDonorDeferralRepository _donorDeferral;
         private IDonorRegistrationRepository _donorRegistration;
         private IApplicationSettingRepository _applicationSetting;
@@ -123,6 +125,30 @@ namespace BBIS.Application.Repositories
                     _donorBloodBagIssuance = new DonorBloodBagIssuanceRepository(_dbContext);
                 }
                 return _donorBloodBagIssuance;
+            }
+        }
+
+        public IDonorPostDonationCareRepository DonorPostDonationCare
+        {
+            get
+            {
+                if (_donorPostDonationCare == null)
+                {
+                    _donorPostDonationCare = new DonorPostDonationCareRepository(_dbContext);
+                }
+                return _donorPostDonationCare;
+            }
+        }
+
+        public IDonorVitalSignsMonitoring VitalSignsMonitoring
+        {
+            get
+            {
+                if (_vitalSignsMonitoring == null)
+                {
+                    _vitalSignsMonitoring = new VitalSignsMonitoringRepository(_dbContext);
+                }
+                return _vitalSignsMonitoring;
             }
         }
 

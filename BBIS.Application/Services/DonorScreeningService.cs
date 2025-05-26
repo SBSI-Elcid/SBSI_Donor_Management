@@ -342,6 +342,36 @@ namespace BBIS.Application.Services
             return dto;
         }
 
+        public async Task<DonorPostDonationCareDto> GetPostDonationCare(Guid id)
+        {
+            var dto = new DonorPostDonationCareDto();
+
+            var query = await dbContext.DonorTransactions
+                .Include(x => x.DonorPostDonationCare)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.DonorRegistrationId == id);
+
+            if (query == null || query?.DonorPostDonationCare == null)
+            {
+              
+                return dto;
+            }
+
+          
+
+            dto = mapper.Map<DonorPostDonationCareDto>(query.DonorPostDonationCare);
+            dto.DonorTransactionId = query.DonorTransactionId;
+
+            var vitalSignsMonitoring = await dbContext.VitalSignsMonitorings
+            .Where(x => x.DonorPostDonationCareId == dto.DonorPostDonationCareId)
+            .ToListAsync();
+
+            dto.VitalSignsMonitoringDetails = mapper.Map<List<VitalSignsMonitoringDto>>(vitalSignsMonitoring);
+
+            return dto;
+        }
+
+
         public async Task<Guid> CreateUpdateDonorInitialScreening(DonorInitialScreeningDto dto, Guid userId)
         {
             try
@@ -586,6 +616,58 @@ namespace BBIS.Application.Services
 
                 donorTransaction.DonorStatus = dto.DonorStatus;
                
+                repository.DonorTransaction.Update(donorTransaction);
+
+                await repository.SaveAsync();
+
+                return donorTransaction.DonorRegistrationId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in CreateUpdateDonorCounseling: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<Guid> CreateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid regid)
+        {
+            try
+            {
+
+                if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+                var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(x => x.DonorTransactionId == dto.DonorTransactionId);
+                if (donorTransaction == null) throw new RecordNotFoundException($"Donor transaction does not exist for Id: {dto.DonorTransactionId}");
+
+                var vitalSignsMonitoringDetails = mapper.Map<List<VitalSignsMonitoring>>(dto.VitalSignsMonitoringDetails);
+
+
+                foreach (var item in vitalSignsMonitoringDetails)
+                {
+                    item.DonorPostDonationCareId = dto.DonorPostDonationCareId;
+                }
+
+                if (dto.DonorPostDonationCareId != Guid.Empty)
+                {
+                    // Update each item individually
+                    foreach (var item in vitalSignsMonitoringDetails)
+                    {
+                        repository.VitalSignsMonitoring.Update(item);
+                    }
+                }
+                else
+                {
+                    // Add all items at once
+                    repository.VitalSignsMonitoring.AddRange(vitalSignsMonitoringDetails);
+                }
+                //if (dto.DonorStatus == DonorStatus.Deferred)
+                //{
+                //    await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
+                //    donorTransaction.BloodIsSafeToTransfuse = false;
+                //    donorTransaction.DateOfDonation = DateTime.UtcNow;
+                //}
+
+
                 repository.DonorTransaction.Update(donorTransaction);
 
                 await repository.SaveAsync();

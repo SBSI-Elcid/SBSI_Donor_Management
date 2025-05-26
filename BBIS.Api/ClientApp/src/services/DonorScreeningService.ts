@@ -12,6 +12,7 @@ import { IDonorMedicalHistoryDto } from "../models/DonorRegistration/DonorMedica
 import { IRegisteredDonorDto } from "../models/DonorRegistration/IRegisteredDonorDto";
 import { IRegisteredDonorInfoDto } from "../models/DonorRegistration/IRegisteredDonorInfoDto";
 import { IDonorBloodBagIssuance } from "../models/DonorScreening/DonorBloodBagIssuance";
+import { IDonorPostDonationCare} from "../models/DonorScreening/DonorPostDonationCareDto"
 
 export default class DonorScreeningService {
 	baseUrl: string = 'api/donorscreening/';
@@ -46,6 +47,10 @@ export default class DonorScreeningService {
 
 	async getBloodBagIssuance(id: Guid): Promise<IDonorBloodBagIssuance> {
 		return this.apiClient.get<IDonorBloodBagIssuance>(`issuanceofbloodbag/${id}`);
+	}
+
+	async getDonorPostDonationCare(id: Guid): Promise<IDonorPostDonationCare> {
+		return this.apiClient.get<IDonorPostDonationCare>(`postdonationcare/${id}`);
 	}
 
 	async getBloodCollectionInfo(id: Guid): Promise<IDonorBloodCollectionDto> {

@@ -32,6 +32,8 @@
         public virtual DonorDeferral DonorDeferral { get; set; }
         public virtual DonorTestOrder DonorTestOrder { get; set; }
         public virtual DonorVitalSigns DonorVitalSigns { get; set; }
+
+        public virtual DonorPostDonationCare DonorPostDonationCare { get; set; }
         public virtual ICollection<InventorySource> InventorySources { get; set; }
 
         public virtual ICollection<ReservationItem> ReservationItems { get; set; }

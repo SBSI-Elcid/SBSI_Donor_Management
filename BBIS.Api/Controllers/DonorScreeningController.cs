@@ -186,6 +186,27 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpGet("postdonationcare/{id}")]
+        [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
+        public async Task<ActionResult<RequestResult<DonorBloodCollectionDto>>> GetPostDonationCare(Guid id)
+        {
+            try
+            {
+                var result = await this.donorScreeningService.GetPostDonationCare(id);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong retrieving Blood Collection info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving Blood Collection info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpPost("upsert-initialscreening")]
         [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateInitialScreening([FromBody] DonorInitialScreeningDto dto)
