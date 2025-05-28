@@ -1,4 +1,5 @@
 import { IVitalSignsMonitoringDetailsDto } from "./VitalSignsMonitoringDetailsDto";
+import { IPostDonationDetail,PostDonationDetailsDto } from "./PostDonationDetailsDto";
 
 export interface IDonorPostDonationCare {
     DonorPostDonationCareId: Guid | null;
@@ -13,6 +14,8 @@ export interface IDonorPostDonationCare {
     DoctorName: string;
     DischargeDate: Date | null;
 
+
+    PostDonationListDetails: IPostDonationDetail[];
     VitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto[];
 
 }
@@ -28,6 +31,8 @@ export class DonorPostDonationCareDto implements IDonorPostDonationCare {
     MonitoredBy: string | null = "";
     DoctorName: string = "";
     DischargeDate: Date | null = null
+
+    PostDonationListDetails: IPostDonationDetail[] = [];
     VitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto[] = [];
 
 }

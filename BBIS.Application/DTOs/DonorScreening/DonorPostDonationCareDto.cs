@@ -21,6 +21,7 @@ namespace BBIS.Application.DTOs.DonorScreening
         public string DoctorName { get; set; }
         public DateTime DischargeDate { get; set; }
 
+        public List<PostDonationDetailsDto> PostDonationListDetails { get; set; }
         public List<VitalSignsMonitoringDto> VitalSignsMonitoringDetails { get; set; }
     }
 }

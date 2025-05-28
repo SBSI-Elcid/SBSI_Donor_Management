@@ -12,6 +12,8 @@
         IDonorPhysicalExaminationRepository DonorPhysicalExamination { get; }
         IDonorBloodCollectionRepository DonorBloodCollection { get; }
         IDonorPostDonationCareRepository DonorPostDonationCare { get; }
+
+        IPostDonationDetailsRepository PostDonationDetail { get; }
         IDonorVitalSignsMonitoring VitalSignsMonitoring { get; }
         IDonorRecentDonationRepository DonorRecentDonation { get; }
         IDonorDeferralRepository DonorDeferral { get; }

@@ -365,9 +365,15 @@ namespace BBIS.Application.Services
             dto = mapper.Map<DonorPostDonationCareDto>(query.DonorPostDonationCare);
             dto.DonorTransactionId = query.DonorTransactionId;
 
+            var postDonationDetail = await dbContext.PostDonationDetails
+            .Where(x => x.DonorPostDonationCareId == dto.DonorPostDonationCareId)
+            .ToListAsync();
+
             var vitalSignsMonitoring = await dbContext.VitalSignsMonitorings
             .Where(x => x.DonorPostDonationCareId == dto.DonorPostDonationCareId)
             .ToListAsync();
+
+            dto.PostDonationListDetails = mapper.Map<List<PostDonationDetailsDto>>(postDonationDetail);
 
             dto.VitalSignsMonitoringDetails = mapper.Map<List<VitalSignsMonitoringDto>>(vitalSignsMonitoring);
 
@@ -640,8 +646,14 @@ namespace BBIS.Application.Services
                 donorCare.MonitoredBy = userid;
 
                 var vitalSignsMonitoringDetails = mapper.Map<List<VitalSignsMonitoring>>(dto.VitalSignsMonitoringDetails);
+                var postDonationDetails = mapper.Map<List<PostDonationDetail>>(dto.PostDonationListDetails);
 
                 foreach (var item in vitalSignsMonitoringDetails)
+                {
+                    item.DonorPostDonationCareId = pid;
+                }
+
+                foreach (var item in postDonationDetails)
                 {
                     item.DonorPostDonationCareId = pid;
                 }
@@ -659,11 +671,16 @@ namespace BBIS.Application.Services
                     {
                         repository.VitalSignsMonitoring.Update(item);
                     }
+                    foreach (var item in postDonationDetails)
+                    {
+                        repository.PostDonationDetail.Update(item);
+                    }
                 }
                 else
                 {
                     repository.DonorPostDonationCare.Create(donorCare);
                     repository.VitalSignsMonitoring.AddRange(vitalSignsMonitoringDetails);
+                    repository.PostDonationDetail.AddRange(postDonationDetails);
                 }
 
                 // Optional deferral logic

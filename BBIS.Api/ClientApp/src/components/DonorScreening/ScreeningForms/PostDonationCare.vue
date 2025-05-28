@@ -88,15 +88,15 @@
                 </v-col>
             </v-row>
 
-            <v-row>
+            <v-row v-if="postDonationDetail.length >= 3">
                 <v-col>
-                    <v-textarea label="Day 1 Post Donation" rows="2" outlined />
+                    <v-textarea v-model="postDonationDetail[0].Details" label="Day 1 Post Donation" rows="2" outlined />
                 </v-col>
                 <v-col>
-                    <v-textarea label="Day 2 Post Donation" rows="2" outlined />
+                    <v-textarea v-model="postDonationDetail[1].Details" label="Day 2 Post Donation" rows="2" outlined />
                 </v-col>
                 <v-col>
-                    <v-textarea label="Day 3 Post Donation" rows="2" outlined />
+                    <v-textarea v-model="postDonationDetail[2].Details" label="Day 3 Post Donation" rows="2" outlined />
                 </v-col>
                 <v-col>
                     <v-textarea label="Supervisor's Note" rows="2" outlined />
@@ -121,6 +121,7 @@
     import Common from '@/common/Common';
     import { DonorPostDonationCare, DonorPostDonationCareDto, IDonorPostDonationCare } from '@/models/DonorScreening/DonorPostDonationCareDto';
     import { VitalSignsMonitoringDetailsDto, IVitalSignsMonitoringDetailsDto } from '@/models/DonorScreening/VitalSignsMonitoringDetailsDto';
+    import { IPostDonationDetail,PostDonationDetailsDto } from '@/models/DonorScreening/PostDonationDetailsDto';
     import { ILookupOptions } from '@/models/Lookups/LookupOptions';
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
@@ -143,6 +144,7 @@
         protected donorPostDonationCare: IDonorPostDonationCare = new DonorPostDonationCareDto();
         /* protected vitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto = new VitalSignsMonitoringDetailsDto();*/
         protected vitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto[] = [];
+        protected postDonationDetail: IPostDonationDetail[] = [];
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
 
@@ -168,10 +170,19 @@
                 const regId = this.$route.params.reg_id;
                 this.donorPostDonationCare = await this.donorScreeningService.getDonorPostDonationCare(regId);
 
-                console.log("DonationPostDto", this.donorPostDonationCare);
+               
                 const rawDetails = this.donorPostDonationCare.VitalSignsMonitoringDetails;
 
+                const rawPostDonationDetails = this.donorPostDonationCare.PostDonationListDetails;
+
+                this.postDonationDetail = Array.isArray(rawPostDonationDetails) ? [...rawPostDonationDetails] : [];
+
                 this.vitalSignsMonitoringDetails = Array.isArray(rawDetails) ? [...rawDetails] : [];
+
+                console.log("postDonationDetail", this.postDonationDetail);
+                while (this.postDonationDetail.length < 3) {
+                    this.postDonationDetail.push(new PostDonationDetailsDto());
+                }
 
                 // Fill the array to always have 4 items
                 while (this.vitalSignsMonitoringDetails.length < 4) {
@@ -179,12 +190,17 @@
                 }
                /* console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);*/
 
+                //this.vitalSignsMonitoringDetails.forEach(detail => {
+                //    if (detail.Time) {
+                //        detail.Time = moment(detail.Time).format('HH:mm');
+                //    } else {
+                //        detail.Time = '';
+                //    }
+                //});
+
                 this.vitalSignsMonitoringDetails.forEach(detail => {
-                    if (detail.Time) {
-                        detail.Time = moment(detail.Time).format('HH:mm');
-                    } else {
-                        detail.Time = '';
-                    }
+                    const isEmpty = !detail.Time || detail.Time.startsWith('0001-01-01');
+                    detail.Time = isEmpty ? '' : moment(detail.Time).format('HH:mm');
                 });
 
                 this.donorModule.setTransactionId(this.donorPostDonationCare.DonorTransactionId);
@@ -224,6 +240,7 @@
         public async onApprovalConfirmation(confirm: boolean): Promise<void> {
             if (confirm) {
                 this.donorPostDonationCare.VitalSignsMonitoringDetails = this.vitalSignsMonitoringDetails;
+                this.donorPostDonationCare.PostDonationListDetails = this.postDonationDetail;
                 await this.onSubmit();
             }
         }

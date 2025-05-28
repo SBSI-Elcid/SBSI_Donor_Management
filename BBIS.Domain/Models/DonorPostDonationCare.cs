@@ -25,5 +25,6 @@ namespace BBIS.Domain.Models
 
         public virtual DonorTransaction DonorTransaction { get; set; }
         public ICollection<VitalSignsMonitoring> VitalSignsMonitorings { get; set; }
+        public ICollection<PostDonationDetail> PostDonationDetails { get; set; }
     }
 }

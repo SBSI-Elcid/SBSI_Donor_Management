@@ -16,6 +16,7 @@ namespace BBIS.Database
         public DbSet<DonorRegistration> DonorRegistrations { get; set; }
         public DbSet<DonorTransaction> DonorTransactions { get; set; }
         public DbSet<DonorPostDonationCare> DonorPostDonationCares { get; set; }
+        public DbSet<PostDonationDetail> PostDonationDetails { get; set; }
         public DbSet<VitalSignsMonitoring> VitalSignsMonitorings { get; set; }
         public DbSet<DonorRecentDonation> DonorRecentDonations { get; set; }
         public DbSet<DonorInitialScreening> DonorInitialScreenings { get; set; }
@@ -266,6 +267,16 @@ namespace BBIS.Database
 
                 entity.HasOne(e => e.DonorPostDonationCare)
                       .WithMany(m => m.VitalSignsMonitorings).OnDelete(DeleteBehavior.NoAction);
+
+
+            });
+
+            modelBuilder.Entity<PostDonationDetail>(entity => {
+                entity.ToTable(nameof(PostDonationDetail));
+                entity.HasKey(e => e.PostDonationDetailsId);
+
+                entity.HasOne(e => e.DonorPostDonationCare)
+                      .WithMany(m => m.PostDonationDetails).OnDelete(DeleteBehavior.NoAction);
 
 
             });
