@@ -353,7 +353,10 @@ namespace BBIS.Application.Services
 
             if (query == null || query?.DonorPostDonationCare == null)
             {
-              
+
+                //dto = mapper.Map<DonorPostDonationCareDto>(query.DonorPostDonationCare);
+                dto.DonorTransactionId = query.DonorTransactionId;
+
                 return dto;
             }
 
@@ -468,6 +471,7 @@ namespace BBIS.Application.Services
             }
 
             donorTransaction.DonorStatus = dto.DonorStatus;
+            Console.WriteLine(entity.DonorVitalSignsId);
             repository.DonorTransaction.Update(donorTransaction);
 
             await repository.SaveAsync();
@@ -507,22 +511,8 @@ namespace BBIS.Application.Services
             }
             else
             {
-                // Add all items at once
                 repository.DonorBloodBagIssuance.AddRange(Issuance);
             }
-            //var entity = mapper.Map<DonorBloodBagIssuance>(dto);
-            //entity.IssuedBy = userId;
-            //entity.IssuedDate = DateTime.UtcNow;
-            //entity.DonorTransactionId = donorTransaction.DonorTransactionId;
-
-            //if (dto.DonorBloodBagIssuanceId.HasValue)
-            //{
-            //    repository.DonorBloodBagIssuance.Update(entity);
-            //}
-            //else
-            //{
-            //    repository.DonorBloodBagIssuance.Create(entity);
-            //}
 
             donorTransaction.DonorStatus = dto.DonorStatus;
             
@@ -629,7 +619,7 @@ namespace BBIS.Application.Services
             }
         }
 
-        public async Task<Guid> CreateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid regid)
+        public async Task<Guid> CreateUpdateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid regid)
         {
             try
             {
@@ -644,7 +634,7 @@ namespace BBIS.Application.Services
 
                 foreach (var item in vitalSignsMonitoringDetails)
                 {
-                    item.DonorPostDonationCareId = dto.DonorPostDonationCareId;
+                    item.DonorPostDonationCareId = dto.DonorPostDonationCareId.Value;
                 }
 
                 if (dto.DonorPostDonationCareId != Guid.Empty)
@@ -676,7 +666,7 @@ namespace BBIS.Application.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in CreateUpdateDonorCounseling: {ex.Message}");
+                Console.WriteLine($"Error in CreateUpdateDonorPostDonationCare: {ex.Message}");
                 throw;
             }
         }
@@ -772,6 +762,52 @@ namespace BBIS.Application.Services
                 throw;
             }
         }
+
+        //public async Task<Guid> CreateUpdateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid userId)
+        //{
+        //    try
+        //    {
+        //        if (dto == null) throw new ArgumentNullException(nameof(DonorPostDonationCareDto));
+
+        //        // Check if DonorEventId exists
+        //        var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(x => x.DonorTransactionId == dto.DonorTransactionId);
+        //        if (donorTransaction == null) throw new RecordNotFoundException($"Donor transaction does not exist for Id: {dto.DonorTransactionId}");
+
+        //        var donorPostDonationCare = mapper.Map<DonorPostDonationCare>(dto);
+        //        //donorPostDonationCare. = userId/*;*/
+        //        //bloodCollection.DonorTransactionId = donorTransaction.DonorTransactionId;
+
+        //        if (dto.DonorPostDonationCareId != Guid.Empty)
+        //        {
+        //            repository.DonorPostDonationCare.Update(donorPostDonationCare);
+        //        }
+        //        else
+        //        {
+        //            // Set Date of Donation after Blood Colection;
+        //            //donorTransaction.DateOfDonation = DateTime.UtcNow;
+        //            repository.DonorPostDonationCare.Create(donorPostDonationCare);
+        //        }
+
+        //        //if (dto.DonorStatus == DonorStatus.Deferred)
+        //        //{
+        //        //    await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
+        //        //    donorTransaction.BloodIsSafeToTransfuse = false;
+        //        //    donorTransaction.DateOfDonation = DateTime.UtcNow;
+        //        //}
+
+        //        //donorTransaction.DonorStatus = dto.DonorStatus;
+        //        ////donorTransaction.PRCBloodDonorNumber = dto.PRCBloodDonorNumber;
+        //        repository.DonorTransaction.Update(donorTransaction);
+
+        //        await repository.SaveAsync();
+
+        //        return donorTransaction.DonorRegistrationId;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         private async Task MarkDonorDeferred(Guid transactionId,  string deferralStatus, string remarks)
         {

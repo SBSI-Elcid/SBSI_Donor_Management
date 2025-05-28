@@ -3,33 +3,35 @@
         <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
             <v-row>
                 <v-col cols="6">
-                    <v-combobox label="Type of Reaction" 
+                    <v-combobox label="Type of Reaction"
                                 :items="['Local', 'Vasovagal', 'Apheresis related', 'Allergic']"
                                 solo
-                                append-icon="mdi-menu-down"/>
+                                v-model="donorPostDonationCare.TypeOfReaction"
+                                append-icon="mdi-menu-down" />
                 </v-col>
                 <v-col cols="6">
                     <v-combobox label="Severity of Reaction"
-                              :items="['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5']"
-                              solo
-                              append-icon="mdi-menu-down" />
+                                :items="['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5']"
+                                solo
+                                v-model="donorPostDonationCare.SeverityOfReaction"
+                                append-icon="mdi-menu-down" />
                 </v-col>
             </v-row>
 
             <v-row>
                 <v-col cols="6">
-                    <v-combobox label="Reaction Manifestation" 
-                                :items ="['Dizziness','Fainting','Convulsion']"
+                    <v-combobox label="Reaction Manifestation"
+                                :items="['Dizziness','Fainting','Convulsion']"
                                 solo
-                                append-icon ="mdi-menu-down"
-                                />
+                                v-model="donorPostDonationCare.ReactionManifestation"
+                                append-icon="mdi-menu-down" />
                 </v-col>
                 <v-col cols="6">
-                    <v-combobox label="Action / Interventions" 
+                    <v-combobox label="Action / Interventions"
                                 :items="['Positioned Supine','Leg Elevated','Muscle Contraction','Oxygen Inhalation','Iv Fluids']"
                                 solo
-                                append-icon ="mdi-menu-down"
-                                />
+                                v-model="donorPostDonationCare.ActionInterventions"
+                                append-icon="mdi-menu-down" />
                 </v-col>
             </v-row>
 
@@ -46,13 +48,27 @@
                                     <th>Others</th>
                                 </tr>
                             </thead>
+                            <!--<tbody>
+                        <tr v-for="i in 4" :key="i">
+                            <td><v-text-field type ="time" dense hide-details /></td>
+                            <td><v-text-field dense hide-details /></td>
+                            <td><v-text-field dense hide-details /></td>
+                            <td><v-text-field dense hide-details /></td>
+                        </tr>
+                    </tbody>-->
                             <tbody>
-                                <tr v-for="i in 4" :key="i">
-                                    <td><v-text-field type ="time" dense hide-details /></td>
-                                    <td><v-text-field dense hide-details /></td>
-                                    <td><v-text-field dense hide-details /></td>
-                                    <td><v-text-field dense hide-details /></td>
+                                <tr v-for="(item, index) in vitalSignsMonitoringDetails" :key="index">
+                                    <td><v-text-field v-model="item.Time" type="time" dense hide-details /></td>
+                                    <td><v-text-field v-model="item.BP" dense hide-details /></td>
+                                    <td><v-text-field v-model="item.PR" dense hide-details /></td>
+                                    <td><v-text-field v-model="item.Others" dense hide-details /></td>
                                 </tr>
+                                <!--<tr v-for="(detail, i) in vitalSignsMonitoringDetails" :key="i">
+                            <td><v-text-field v-model="vitalSignsMonitoringDetails.Time" type="time" dense hide-details /></td>
+                            <td><v-text-field v-model="vitalSignsMonitoringDetails.BP" dense hide-details /></td>
+                            <td><v-text-field v-model="vitalSignsMonitoringDetails.PR" dense hide-details /></td>
+                            <td><v-text-field v-model="vitalSignsMonitoringDetails.Others" dense hide-details /></td>
+                        </tr>-->
                             </tbody>
                         </v-simple-table>
                     </v-card>
@@ -86,6 +102,11 @@
                     <v-textarea label="Supervisor's Note" rows="2" outlined />
                 </v-col>
             </v-row>
+
+            <div class="section-outer-container text-right pt-3 pb-2">
+                <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
+                   <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Save</v-btn>
+            </div>
         </v-form>
     </v-container>
 </template>
@@ -103,7 +124,7 @@
     import { ILookupOptions } from '@/models/Lookups/LookupOptions';
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
-    
+    import moment from 'moment';
 
 
     @Component
@@ -115,7 +136,7 @@
 
         protected formValid: boolean = true;
         protected rules: any = { ...Common.ValidationRules }
-
+        protected vTime: string = '';
     
         protected errorMessage: string = '';
        
@@ -143,16 +164,44 @@
         }
 
         protected async getDonorPostDonationCare(): Promise<void> {
-            if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
-                let regId = this.$route.params.reg_id;
+            if (this.$route.params.reg_id && typeof this.$route.params.reg_id === 'string') {
+                const regId = this.$route.params.reg_id;
                 this.donorPostDonationCare = await this.donorScreeningService.getDonorPostDonationCare(regId);
-                /*console.log(this.donorBloodBagIssuance);*/
-                this.vitalSignsMonitoringDetails = this.donorPostDonationCare.VitalSignsMonitoringDetails || new VitalSignsMonitoringDetailsDto();
-                console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);
-               
+
+                console.log("DonationPostDto", this.donorPostDonationCare);
+                const rawDetails = this.donorPostDonationCare.VitalSignsMonitoringDetails;
+
+                this.vitalSignsMonitoringDetails = Array.isArray(rawDetails) ? [...rawDetails] : [];
+
+                // Fill the array to always have 4 items
+                while (this.vitalSignsMonitoringDetails.length < 4) {
+                    this.vitalSignsMonitoringDetails.push(new VitalSignsMonitoringDetailsDto());
+                }
+               /* console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);*/
+
+                this.vitalSignsMonitoringDetails.forEach(detail => {
+                    if (detail.Time) {
+                        detail.Time = moment(detail.Time).format('HH:mm');
+                    } else {
+                        detail.Time = '';
+                    }
+                });
+
                 this.donorModule.setTransactionId(this.donorPostDonationCare.DonorTransactionId);
             }
         }
+
+        //protected async getDonorPostDonationCare(): Promise<void> {
+        //    if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
+        //        let regId = this.$route.params.reg_id;
+        //        this.donorPostDonationCare = await this.donorScreeningService.getDonorPostDonationCare(regId);
+        //        /*console.log(this.donorBloodBagIssuance);*/
+        //        this.vitalSignsMonitoringDetails = [this.donorPostDonationCare.VitalSignsMonitoringDetails] || new VitalSignsMonitoringDetailsDto();
+        //        console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);
+               
+        //        this.donorModule.setTransactionId(this.donorPostDonationCare.DonorTransactionId);
+        //    }
+        //}
 
 
         protected onApprove = (): void => {
@@ -180,11 +229,11 @@
         }
 
         public async onSubmit(): Promise<void> {
-            console.log(this.donorVitalSigns);
+            console.log(this.donorPostDonationCare);
             let loader = this.showLoader();
             try {
                 //this.donorVitalSigns.RecentDonations = this.recentDonations;
-                await this.donorScreeningService.upsertVitalSignsScreening(this.donorVitalSigns);
+                await this.donorScreeningService.upsertDonorPostDonationCare(this.donorPostDonationCare);
                 this.notify_success('Form successfully submitted.');
 
                 this.$router.push({ path: '/donors' });

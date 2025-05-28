@@ -75,7 +75,11 @@ export default class DonorScreeningService {
 		let response = await this.apiClient.postJson(`upsert-counseling`, dto);
 		return response.Data as Guid;
 	}
-
+	async upsertDonorPostDonationCare(dto: IDonorPostDonationCare): Promise<Guid> {
+		console.log("upsert",dto);
+		let response = await this.apiClient.postJson(`upsert-donorpostdonationcare`, dto);
+		return response.Data as Guid;
+	}
 	async upsertPhysicalExamination(dto: IDonorPhysicalExaminationDto): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-physicalexamination`, dto);
 		return response.Data as Guid; 

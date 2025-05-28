@@ -10,8 +10,8 @@ namespace BBIS.Application.DTOs.DonorScreening
     {
         public int VitalSignsMonitoringId { get; set; } 
 
-        public Guid DonorPostDonationCareId { get; set; } 
-        public DateTime Time { get; set; }
+        public Guid? DonorPostDonationCareId { get; set; }
+        public DateTime? Time { get; set; }
         public double BP { get; set; }
         public double PR { get; set; }
 

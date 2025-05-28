@@ -1,9 +1,9 @@
 export interface IDonorBloodCollectionDto {
-    DonorBloodCollectionId: Guid | null,
+    DonorBloodCollectionId: Guid,
     DonorTransactionId: Guid,
     //CollectionType: string,
     //CollectionSubType: string,
-    CollectedBloodAmount: number | null,
+    CollectedBloodAmount: number,
     UnitOfMeasurement: string,
     Success: boolean,
     UnwellReason: string,
@@ -21,17 +21,17 @@ export interface IDonorBloodCollectionDto {
 }
 
 export class DonorBloodCollectionDto implements IDonorBloodCollectionDto {
-    DonorBloodCollectionId: Guid | null = null;
+    DonorBloodCollectionId: Guid = "";
     DonorTransactionId: Guid = "";
     //CollectionType: string = "";
     //CollectionSubType: string = "";
-    CollectedBloodAmount: number | null = null;
+    CollectedBloodAmount: number = 0;
     UnitOfMeasurement: string = "";
     Success: boolean = false;
     UnwellReason: string = "";
    /* MedicationGiven: string = "";*/
-    StartTime: Date | null = null;
-    EndTime: Date | null = null;
+    StartTime: Date | null = null
+    EndTime: Date | null  = null
     PatientFirstName: string = "";
     PatientLastName: string = "";
     PatientMiddleName: string = "";

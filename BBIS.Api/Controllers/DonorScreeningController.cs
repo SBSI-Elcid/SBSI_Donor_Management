@@ -416,5 +416,30 @@ namespace BBIS.Api.Controllers
                 return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
             }
         }
+        [HttpPost("upsert-donorpostdonationcare")]
+        [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
+        public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorPostDonationCare([FromBody] DonorPostDonationCareDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.donorScreeningService.CreateUpdateDonorPostDonationCare(dto, this.UserId);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong during blood collection: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong during blood collection: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

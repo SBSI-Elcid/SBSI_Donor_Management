@@ -8,7 +8,7 @@ namespace BBIS.Application.DTOs.DonorScreening
 {
     public class DonorPostDonationCareDto
     {
-        public Guid DonorPostDonationCareId { get; set; } 
+        public Guid? DonorPostDonationCareId { get; set; }
         public Guid DonorTransactionId { get; set; } 
         public string TypeOfReaction { get; set; }
         public string SeverityOfReaction { get; set; }
