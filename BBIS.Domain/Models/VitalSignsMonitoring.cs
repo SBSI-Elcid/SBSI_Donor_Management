@@ -12,8 +12,8 @@ namespace BBIS.Domain.Models
 
         public Guid DonorPostDonationCareId { get; set; } // Foreign Key
         public DateTime Time { get; set; }
-        public double BP { get; set; }
-        public double PR { get; set; }
+        public string BP { get; set; }
+        public string PR { get; set; }
 
         public string Others { get; set; }
 

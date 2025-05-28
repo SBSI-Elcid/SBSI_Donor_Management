@@ -75,14 +75,14 @@
                 </v-col>
 
                 <v-col>
-                    <v-textarea label="Doctor's Notes" rows="4" outlined />
-                    <v-text-field label="Discharge Status" />
+                    <v-textarea v-model = "donorPostDonationCare.DoctorsNote" label="Doctor's Notes" rows="4" outlined />
+                    <v-text-field v-model ="donorPostDonationCare.DischargeStatus" label="Discharge Status" />
                     <v-row>
+                        <!--<v-col>
+                            <v-text-field v-model = "donorPostDonationCare.DoctorsNote" label="Monitored By" />
+                        </v-col>-->
                         <v-col>
-                            <v-text-field label="Monitored By" />
-                        </v-col>
-                        <v-col>
-                            <v-text-field label="Doctor's Name" />
+                            <v-text-field v-model = "donorPostDonationCare.DoctorName" label="Doctor's Name" />
                         </v-col>
                     </v-row>
                 </v-col>

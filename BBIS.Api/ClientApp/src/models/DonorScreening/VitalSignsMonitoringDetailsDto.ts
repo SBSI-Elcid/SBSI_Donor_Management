@@ -2,8 +2,8 @@ export interface IVitalSignsMonitoringDetailsDto {
     VitalSignsMonitoringId: number;
     DonorPostDonationCareId: Guid;
     Time: Date | null,
-    BP: number;
-    PR: number;
+    BP: string;
+    PR: string;
     Others: string;       
 }
 
@@ -11,8 +11,8 @@ export class VitalSignsMonitoringDetailsDto implements IVitalSignsMonitoringDeta
     VitalSignsMonitoringId: number = 0;
     DonorPostDonationCareId: string  = "";
     Time: Date | null = null
-    BP: number = 0;
-    PR: number = 0;
+    BP: string = "";
+    PR: string = "";
     Others: string = "";
 
 }

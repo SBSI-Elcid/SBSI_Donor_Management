@@ -619,27 +619,42 @@ namespace BBIS.Application.Services
             }
         }
 
-        public async Task<Guid> CreateUpdateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid regid)
+        public async Task<Guid> CreateUpdateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid userid)
         {
             try
             {
-
                 if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-                var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(x => x.DonorTransactionId == dto.DonorTransactionId);
-                if (donorTransaction == null) throw new RecordNotFoundException($"Donor transaction does not exist for Id: {dto.DonorTransactionId}");
+                var donorTransaction = await repository.DonorTransaction
+                    .FindOneByConditionAsync(x => x.DonorTransactionId == dto.DonorTransactionId);
+
+                if (donorTransaction == null)
+                    throw new RecordNotFoundException($"Donor transaction does not exist for Id: {dto.DonorTransactionId}");
+
+                Guid pid = dto.DonorPostDonationCareId ?? Guid.NewGuid();
+                bool isUpdate = dto.DonorPostDonationCareId.HasValue;
+
+                // Map and set ID
+                var donorCare = mapper.Map<DonorPostDonationCare>(dto);
+                donorCare.DonorPostDonationCareId = pid;
+                donorCare.MonitoredBy = userid;
 
                 var vitalSignsMonitoringDetails = mapper.Map<List<VitalSignsMonitoring>>(dto.VitalSignsMonitoringDetails);
 
-
                 foreach (var item in vitalSignsMonitoringDetails)
                 {
-                    item.DonorPostDonationCareId = dto.DonorPostDonationCareId.Value;
+                    item.DonorPostDonationCareId = pid;
                 }
 
-                if (dto.DonorPostDonationCareId != Guid.Empty)
+                if (isUpdate)
                 {
-                    // Update each item individually
+                    repository.DonorPostDonationCare.Update(donorCare);
+
+                    // Optional: Remove old entries if you're not doing a full replace
+                    // var existingVitalSigns = await repository.VitalSignsMonitoring
+                    //     .FindByConditionAsync(x => x.DonorPostDonationCareId == pid);
+                    // repository.VitalSignsMonitoring.RemoveRange(existingVitalSigns);
+
                     foreach (var item in vitalSignsMonitoringDetails)
                     {
                         repository.VitalSignsMonitoring.Update(item);
@@ -647,16 +662,17 @@ namespace BBIS.Application.Services
                 }
                 else
                 {
-                    // Add all items at once
+                    repository.DonorPostDonationCare.Create(donorCare);
                     repository.VitalSignsMonitoring.AddRange(vitalSignsMonitoringDetails);
                 }
-                //if (dto.DonorStatus == DonorStatus.Deferred)
-                //{
-                //    await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
-                //    donorTransaction.BloodIsSafeToTransfuse = false;
-                //    donorTransaction.DateOfDonation = DateTime.UtcNow;
-                //}
 
+                // Optional deferral logic
+                // if (dto.DonorStatus == DonorStatus.Deferred)
+                // {
+                //     await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
+                //     donorTransaction.BloodIsSafeToTransfuse = false;
+                //     donorTransaction.DateOfDonation = DateTime.UtcNow;
+                // }
 
                 repository.DonorTransaction.Update(donorTransaction);
 
