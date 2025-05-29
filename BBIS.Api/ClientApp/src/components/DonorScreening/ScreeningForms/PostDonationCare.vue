@@ -49,13 +49,13 @@
                                 </tr>
                             </thead>
                             <!--<tbody>
-                        <tr v-for="i in 4" :key="i">
-                            <td><v-text-field type ="time" dense hide-details /></td>
-                            <td><v-text-field dense hide-details /></td>
-                            <td><v-text-field dense hide-details /></td>
-                            <td><v-text-field dense hide-details /></td>
-                        </tr>
-                    </tbody>-->
+                                <tr v-for="i in 4" :key="i">
+                                    <td><v-text-field type ="time" dense hide-details /></td>
+                                    <td><v-text-field dense hide-details /></td>
+                                    <td><v-text-field dense hide-details /></td>
+                                    <td><v-text-field dense hide-details /></td>
+                                </tr>
+                            </tbody>-->
                             <tbody>
                                 <tr v-for="(item, index) in vitalSignsMonitoringDetails" :key="index">
                                     <td><v-text-field v-model="item.Time" type="time" dense hide-details /></td>
@@ -64,25 +64,25 @@
                                     <td><v-text-field v-model="item.Others" dense hide-details /></td>
                                 </tr>
                                 <!--<tr v-for="(detail, i) in vitalSignsMonitoringDetails" :key="i">
-                            <td><v-text-field v-model="vitalSignsMonitoringDetails.Time" type="time" dense hide-details /></td>
-                            <td><v-text-field v-model="vitalSignsMonitoringDetails.BP" dense hide-details /></td>
-                            <td><v-text-field v-model="vitalSignsMonitoringDetails.PR" dense hide-details /></td>
-                            <td><v-text-field v-model="vitalSignsMonitoringDetails.Others" dense hide-details /></td>
-                        </tr>-->
+                                    <td><v-text-field v-model="vitalSignsMonitoringDetails.Time" type="time" dense hide-details /></td>
+                                    <td><v-text-field v-model="vitalSignsMonitoringDetails.BP" dense hide-details /></td>
+                                    <td><v-text-field v-model="vitalSignsMonitoringDetails.PR" dense hide-details /></td>
+                                    <td><v-text-field v-model="vitalSignsMonitoringDetails.Others" dense hide-details /></td>
+                                </tr>-->
                             </tbody>
                         </v-simple-table>
                     </v-card>
                 </v-col>
 
                 <v-col>
-                    <v-textarea v-model = "donorPostDonationCare.DoctorsNote" label="Doctor's Notes" rows="4" outlined />
-                    <v-text-field v-model ="donorPostDonationCare.DischargeStatus" label="Discharge Status" />
+                    <v-textarea v-model="donorPostDonationCare.DoctorsNote" label="Doctor's Notes" rows="4" outlined />
+                    <v-text-field v-model="donorPostDonationCare.DischargeStatus" label="Discharge Status" />
                     <v-row>
                         <!--<v-col>
                             <v-text-field v-model = "donorPostDonationCare.DoctorsNote" label="Monitored By" />
                         </v-col>-->
                         <v-col>
-                            <v-text-field v-model = "donorPostDonationCare.DoctorName" label="Doctor's Name" />
+                            <v-text-field v-model="donorPostDonationCare.DoctorName" label="Doctor's Name" />
                         </v-col>
                     </v-row>
                 </v-col>
@@ -104,8 +104,8 @@
             </v-row>
 
             <div class="section-outer-container text-right pt-3 pb-2">
-                <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
-                   <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Save</v-btn>
+                <v-btn color="default" large tile class="mr-2" @click=""><v-icon color="success" size="25" left>mdi-medication</v-icon> Discharge</v-btn>
+                <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Save</v-btn>
             </div>
         </v-form>
     </v-container>
@@ -121,7 +121,7 @@
     import Common from '@/common/Common';
     import { DonorPostDonationCare, DonorPostDonationCareDto, IDonorPostDonationCare } from '@/models/DonorScreening/DonorPostDonationCareDto';
     import { VitalSignsMonitoringDetailsDto, IVitalSignsMonitoringDetailsDto } from '@/models/DonorScreening/VitalSignsMonitoringDetailsDto';
-    import { IPostDonationDetail,PostDonationDetailsDto } from '@/models/DonorScreening/PostDonationDetailsDto';
+    import { IPostDonationDetail, PostDonationDetailsDto } from '@/models/DonorScreening/PostDonationDetailsDto';
     import { ILookupOptions } from '@/models/Lookups/LookupOptions';
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
@@ -138,9 +138,9 @@
         protected formValid: boolean = true;
         protected rules: any = { ...Common.ValidationRules }
         protected vTime: string = '';
-    
+
         protected errorMessage: string = '';
-       
+
         protected donorPostDonationCare: IDonorPostDonationCare = new DonorPostDonationCareDto();
         /* protected vitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto = new VitalSignsMonitoringDetailsDto();*/
         protected vitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto[] = [];
@@ -170,7 +170,7 @@
                 const regId = this.$route.params.reg_id;
                 this.donorPostDonationCare = await this.donorScreeningService.getDonorPostDonationCare(regId);
 
-               
+
                 const rawDetails = this.donorPostDonationCare.VitalSignsMonitoringDetails;
 
                 const rawPostDonationDetails = this.donorPostDonationCare.PostDonationListDetails;
@@ -188,7 +188,7 @@
                 while (this.vitalSignsMonitoringDetails.length < 4) {
                     this.vitalSignsMonitoringDetails.push(new VitalSignsMonitoringDetailsDto());
                 }
-               /* console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);*/
+                /* console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);*/
 
                 //this.vitalSignsMonitoringDetails.forEach(detail => {
                 //    if (detail.Time) {
@@ -214,7 +214,7 @@
         //        /*console.log(this.donorBloodBagIssuance);*/
         //        this.vitalSignsMonitoringDetails = [this.donorPostDonationCare.VitalSignsMonitoringDetails] || new VitalSignsMonitoringDetailsDto();
         //        console.log("PostDonationCare:", this.vitalSignsMonitoringDetails);
-               
+
         //        this.donorModule.setTransactionId(this.donorPostDonationCare.DonorTransactionId);
         //    }
         //}
