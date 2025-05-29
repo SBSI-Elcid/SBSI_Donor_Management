@@ -12,7 +12,9 @@
         IDonorPhysicalExaminationRepository DonorPhysicalExamination { get; }
         IDonorBloodCollectionRepository DonorBloodCollection { get; }
         IDonorPostDonationCareRepository DonorPostDonationCare { get; }
-
+        IScheduleRepository Schedule { get; } 
+        IChecklistRepository Checklist { get; }
+        IActivityDonor ActivityDonor { get; }
         IPostDonationDetailsRepository PostDonationDetail { get; }
         IDonorVitalSignsMonitoring VitalSignsMonitoring { get; }
         IDonorRecentDonationRepository DonorRecentDonation { get; }

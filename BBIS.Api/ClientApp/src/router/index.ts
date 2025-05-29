@@ -146,6 +146,14 @@ const routes: Array<RouteConfig> = [
           }
         ]
       },
+        {
+        path: 'schedules',
+        name: 'Schedules',
+        meta: {
+          requiresAuth: true      
+        },
+        component: () => import('../views/SchedulesView.vue')    
+      },
       {
         path: 'reports',
         name: 'Reports',

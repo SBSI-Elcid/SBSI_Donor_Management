@@ -27,6 +27,12 @@ namespace BBIS.Database
         public DbSet<DonorBloodCollection> DonorBloodCollections { get; set; }
         public DbSet<DonorDeferral> DonorDeferrals { get; set; }
 
+
+        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<checklist> Checklists { get; set; }
+        public DbSet<ActivityDonor> ActivityDonors { get; set; }
+
+
         public DbSet<Lookup> Lookups { get; set; }
         public DbSet<LookupOption> LookupOptions { get; set; }
         public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
@@ -194,6 +200,33 @@ namespace BBIS.Database
                 entity.HasOne(x => x.Donor).WithMany(m => m.DonorRecentDonations)
                       .OnDelete(DeleteBehavior.NoAction);
             });
+
+            modelBuilder.Entity<Schedule>(entity =>
+            {
+                entity.ToTable(nameof(Schedule));
+                entity.HasKey(e => e.ScheduleId);
+      
+            });
+
+            modelBuilder.Entity<checklist>(entity =>
+            {
+                entity.ToTable(nameof(checklist));
+                entity.HasKey(e => e.ChecklistId);
+
+                entity.HasOne(x => x.Schedule).WithOne(x => x.checklist).OnDelete(DeleteBehavior.NoAction);
+
+            });
+
+            modelBuilder.Entity<ActivityDonor>(entity =>
+            {
+                entity.ToTable(nameof(ActivityDonor));
+                entity.HasKey(e => e.ActivityDonorId);
+
+                entity.HasOne(x => x.Schedule).WithMany(x => x.ActivityDonors).OnDelete(DeleteBehavior.NoAction);
+
+            });
+
+
 
             modelBuilder.Entity<DonorDeferral>(entity =>
             {

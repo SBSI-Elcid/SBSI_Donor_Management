@@ -3,6 +3,7 @@ using System;
 using BBIS.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BBIS.Database.Migrations
 {
     [DbContext(typeof(BBDbContext))]
-    partial class BBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250529135207_AddedScheduleChecklistActivityDonor")]
+    partial class AddedScheduleChecklistActivityDonor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2214,23 +2216,13 @@ namespace BBIS.Database.Migrations
                         },
                         new
                         {
-                            ModuleId = new Guid("2ba843a3-d26d-4c11-ab66-462e1ea4b491"),
-                            Icon = "mdi-calendar-arrow-right",
-                            IsActive = true,
-                            IsParentMenu = false,
-                            Link = "/schedules",
-                            Menu = "Schedule Services",
-                            OrderNo = 3
-                        },
-                        new
-                        {
                             ModuleId = new Guid("bc8d57ab-af77-4ec3-a348-5d040802f6e3"),
                             Icon = "mdi-hand-coin-outline",
                             IsActive = true,
                             IsParentMenu = false,
                             Link = "/orders/donors",
                             Menu = "Test Orders",
-                            OrderNo = 4
+                            OrderNo = 3
                         },
                         new
                         {
@@ -2240,7 +2232,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/requisitions/availability",
                             Menu = "Requisitions",
-                            OrderNo = 5
+                            OrderNo = 4
                         },
                         new
                         {
@@ -2250,7 +2242,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/patients",
                             Menu = "Patients",
-                            OrderNo = 6
+                            OrderNo = 5
                         },
                         new
                         {
@@ -2260,7 +2252,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/inventory",
                             Menu = "Inventory",
-                            OrderNo = 7
+                            OrderNo = 6
                         },
                         new
                         {
@@ -2270,7 +2262,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/reports",
                             Menu = "Reports",
-                            OrderNo = 8
+                            OrderNo = 7
                         },
                         new
                         {
@@ -2280,7 +2272,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = true,
                             Link = "/setting",
                             Menu = "Setting",
-                            OrderNo = 9
+                            OrderNo = 8
                         },
                         new
                         {
@@ -2290,7 +2282,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/users",
                             Menu = "Users",
-                            OrderNo = 10,
+                            OrderNo = 9,
                             ParentModuleId = new Guid("f0fa95f2-2288-434f-8df6-71f00e9be302")
                         },
                         new
@@ -2301,7 +2293,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/app-settings/unit-of-measurement",
                             Menu = "App Setting",
-                            OrderNo = 11,
+                            OrderNo = 10,
                             ParentModuleId = new Guid("f0fa95f2-2288-434f-8df6-71f00e9be302")
                         },
                         new
@@ -2312,7 +2304,7 @@ namespace BBIS.Database.Migrations
                             IsParentMenu = false,
                             Link = "/signatories",
                             Menu = "Signatories",
-                            OrderNo = 12,
+                            OrderNo = 11,
                             ParentModuleId = new Guid("f0fa95f2-2288-434f-8df6-71f00e9be302")
                         });
                 });

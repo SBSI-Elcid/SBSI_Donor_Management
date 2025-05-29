@@ -17,6 +17,9 @@ namespace BBIS.Application.Repositories
         private IDonorRecentDonationRepository _donorRecentDonation;
         private IDonorBloodCollectionRepository _donorBloodCollection;
         private IDonorPostDonationCareRepository _donorPostDonationCare;
+        private IScheduleRepository _schedule;
+        private IChecklistRepository _checklist;
+        private IActivityDonor _activityDonor;
         private IPostDonationDetailsRepository _postDonationDetail;
         private IDonorVitalSignsMonitoring _vitalSignsMonitoring ;
         private IDonorDeferralRepository _donorDeferral;
@@ -138,6 +141,42 @@ namespace BBIS.Application.Repositories
                     _donorPostDonationCare = new DonorPostDonationCareRepository(_dbContext);
                 }
                 return _donorPostDonationCare;
+            }
+        }
+
+        public IScheduleRepository Schedule
+        {
+            get
+            {
+                if (_schedule == null)
+                {
+                    _schedule = new ScheduleRepository(_dbContext);
+                }
+                return _schedule;
+            }
+        }
+
+        public IChecklistRepository Checklist
+        {
+            get
+            {
+                if (_checklist == null)
+                {
+                    _checklist = new CheckListRepository(_dbContext);
+                }
+                return _checklist;
+            }
+        }
+
+        public IActivityDonor ActivityDonor
+        {
+            get
+            {
+                if (_activityDonor == null)
+                {
+                    _activityDonor = new ActivityDonorRepository(_dbContext);
+                }
+                return _activityDonor;
             }
         }
 
