@@ -11,6 +11,6 @@ namespace BBIS.Application.Contracts
 {
     public interface IScheduleService
     {
-        Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto, List<string> roles);
+        Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto);
     }
 }

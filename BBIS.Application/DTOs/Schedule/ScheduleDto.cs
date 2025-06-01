@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BBIS.Application.DTOs.Common;
 using BBIS.Domain.Models;
 
 namespace BBIS.Application.DTOs.Schedule
 {
-    public class ScheduleDto
+    public class ScheduleDto : PagedSearchDto
     {
         public Guid ScheduleId { get; set; }
         public string Status { get; set; }

@@ -31,7 +31,7 @@ namespace BBIS.Application.Services
             this.mapper = mapper;
         }
 
-        public async Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(PagedSearchDto searchDto)
+        public  async Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto)
         {
             if (searchDto == null)
             {
