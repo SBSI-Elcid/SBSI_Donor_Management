@@ -1,4 +1,5 @@
 ﻿using BBIS.Application.ConnectionProvider;
+using AutoMapper;
 using BBIS.Application.Contracts;
 using BBIS.Application.Repositories;
 using BBIS.Application.Services;
@@ -12,6 +13,10 @@ using BBIS.Domain.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using NinjaNye.SearchExtensions;
+using System.Linq.Dynamic.Core;
+using BBIS.Application.DTOs.Common;
+using BBIS.Application.DTOs.Schedule;
 
 namespace BBIS.Api.Extensions
 {
@@ -29,6 +34,7 @@ namespace BBIS.Api.Extensions
             services.AddTransient<IDonorTestOrderService, DonorTestOrderService>();
             services.AddTransient<ILookupService,LookupService>();
             services.AddTransient<IDonorScreeningService, DonorScreeningService>();
+            services.AddTransient<IScheduleService, ScheduleServices>();
             services.AddTransient<IDonorRegistrationService, DonorRegistrationService>();
             services.AddTransient<IApplicationSettingService, ApplicationSettingService>();
             services.AddTransient<IInventoryService, InventoryService>();

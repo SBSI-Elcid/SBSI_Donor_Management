@@ -9,8 +9,8 @@
 
                     <v-card-actions>
                         <v-btn color="red darken-2" class="white--text" @click="createSchedule">Create Schedule</v-btn>
-                        <v-btn color="red darken-2" class="white--text" @click="editSchedule">Edit Schedule</v-btn>
-                        <v-btn color="red darken-2" class="white--text" @click="cancelSchedule">Cancel Schedule</v-btn>
+                        <v-btn color="red darken-2" class="white--text" @click="">Edit Schedule</v-btn>
+                        <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>
                     </v-card-actions>
 
                     <v-data-table :headers="[
@@ -29,7 +29,7 @@
             </v-col>
         </v-row>
 
-        <CreateSchedule v-if="showCreateDialog" @close="showCreateDialog = false" />
+        <CreateSchedule v-model = "showCreateDialog" @close="showCreateDialog = false" />
     </v-container>
 </template>
 
@@ -39,9 +39,14 @@
     import { getModule } from 'vuex-module-decorators';
     import AuthModule from '../store/AuthModule';
     import VueBase from '@/components/VueBase';
- 
+
+    @Component({ components: { CreateSchedule } })
     export default class SchedulesView extends VueBase {
-        
+
+        protected showCreateDialog: boolean = false;
+        protected createSchedule(): void {
+            this.showCreateDialog = true;
+        }
     }
 
 
