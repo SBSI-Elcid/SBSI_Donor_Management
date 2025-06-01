@@ -2,6 +2,7 @@
 using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.DonorRegistration;
 using BBIS.Application.DTOs.DonorScreening;
+using BBIS.Application.DTOs.Schedule;
 using BBIS.Application.DTOs.Patient;
 using BBIS.Application.DTOs.Requisition;
 using BBIS.Application.DTOs.Signatory;
@@ -28,6 +29,7 @@ namespace BBIS.Api.MappingConfigurations
             CreateMap<DonorPostDonationCareDto, DonorPostDonationCare>().ReverseMap();
             CreateMap<VitalSignsMonitoringDto, VitalSignsMonitoring>().ReverseMap();
             CreateMap<PostDonationDetailsDto, PostDonationDetail>().ReverseMap();
+            CreateMap<ScheduleDto, Schedule>().ReverseMap();
             CreateMap<DonorMedicalQuestionnaireDto, DonorMedicalHistory>();
             CreateMap<DonorDeferralDto, DonorDeferral>();
             CreateMap<RegisterDonorDto, DonorRegistration>();

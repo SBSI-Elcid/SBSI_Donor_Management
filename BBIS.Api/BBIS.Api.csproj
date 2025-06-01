@@ -62,7 +62,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="ClientApp\src\components\Schedule\" />
+	  <Folder Include="ClientApp\src\components\Schedule\ScheduleForms\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

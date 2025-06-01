@@ -13,6 +13,8 @@ using BBIS.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using NinjaNye.SearchExtensions;
 using System.Linq.Dynamic.Core;
+using BBIS.Application.DTOs.DonorScreening;
+using BBIS.Common.Exceptions;
 
 
 
@@ -31,7 +33,7 @@ namespace BBIS.Application.Services
             this.mapper = mapper;
         }
 
-        public  async Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto)
+        public async Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto)
         {
             if (searchDto == null)
             {
@@ -92,5 +94,42 @@ namespace BBIS.Application.Services
 
             return pagedResult;
         }
+
+        public async Task<ScheduleDto> GetScheduleById(Guid id)
+        {
+            var dto = new ScheduleDto();
+
+            var query = await dbContext.Schedules
+              .FirstOrDefaultAsync(x => x.ScheduleId == id);
+
+            dto = mapper.Map<ScheduleDto>(query);
+            return dto;
+        }
+
+        public async Task<Guid> CreateUpdateSchedule(ScheduleDto dto, Guid userId)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+
+            var entity = mapper.Map<Schedule>(dto);
+            entity.UpdatedBy = userId;
+            entity.UpdatedAt = DateTime.UtcNow;
+    
+
+            if (dto.ScheduleId.HasValue)
+            {
+                repository.Schedule.Update(entity);
+            }
+            else
+            {
+                repository.Schedule.Create(entity);
+            }
+
+  
+
+            await repository.SaveAsync();
+            return entity.ScheduleId;
+        }
+
     }
-    }
+}

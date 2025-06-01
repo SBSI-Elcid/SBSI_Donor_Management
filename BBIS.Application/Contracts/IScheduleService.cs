@@ -12,5 +12,9 @@ namespace BBIS.Application.Contracts
     public interface IScheduleService
     {
         Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto);
+
+        Task<ScheduleDto> GetScheduleById(Guid transactionId);
+
+        Task<Guid> CreateUpdateSchedule(ScheduleDto dto, Guid userId);
     }
 }

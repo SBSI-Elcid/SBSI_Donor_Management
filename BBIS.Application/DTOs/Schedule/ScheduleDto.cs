@@ -10,7 +10,7 @@ namespace BBIS.Application.DTOs.Schedule
 {
     public class ScheduleDto : PagedSearchDto
     {
-        public Guid ScheduleId { get; set; }
+        public Guid? ScheduleId { get; set; }
         public string Status { get; set; }
         public string ActivityName { get; set; }
         public string ActivityType { get; set; }
