@@ -29,7 +29,8 @@ export default class DonorScreeningView extends VueBase {
   protected donorModule: DonorModule = getModule(DonorModule, this.$store);
   protected apiRequestActive: boolean = false;
 
-  protected get donorStatus(): string {
+    protected get donorStatus(): string {
+        console.log("DonorStatusModule", this.donorModule.getDonorStatus);
     return this.donorModule.getDonorStatus;
   }
 

@@ -48,7 +48,7 @@
       <div class="section-outer-container text-right pt-3 pb-2">
         <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
         <v-btn color="default" large tile class="mr-2" v-if="" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
-        <v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
+        <v-btn color="default" large tile class="mr-2" v-if="" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
       </div>
     </v-form>
   </div>
@@ -163,12 +163,33 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             return;
         }
 
-        protected onApprove(): void {
+
+        protected onDeferred(): void {
             this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
             if (this.formValid === false) {
                 return;
             }
 
+            this.mark_deferred(`Are you sure you want to tag this donor as deffered?`, 'Mark Donor as Deferred', 'Mark as Deferred', 'Cancel', this.onDeferralConfirmation);
+        }
+
+        public async onDeferralConfirmation(confirm: boolean, result: any): Promise<void> {
+            if (confirm) {
+                this.donorCounseling.DonorStatus = DonorStatus.Deferred;
+                this.donorCounseling.DeferralStatus = result[0].DeferralStatus;
+                this.donorCounseling.Remarks = result[0].Remarks;
+                await this.onSubmit();
+            }
+        }
+
+
+
+        protected onApprove(): void {
+            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            if (this.formValid === false) {
+                return;
+            }
+            this.donorCounseling.DonorStatus = DonorStatus.ForConsent;
             this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
         }
 
@@ -176,14 +197,16 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
             this.newDonor.MedicalHistories = donorMedicalHistory;
             this.donorModule.setDonorInformation(this.newDonor);
+
+            
+            this.donorCounseling.medicalHistories = this.newDonor.MedicalHistories;
+            this.donorCounseling.DonorRegistrationId = this.$route.params.reg_id;
             await this.insertData();
         }
 
         public async insertData(): Promise<void> {
 
-            this.donorCounseling.DonorStatus = DonorStatus.ForConsent;
-            this.donorCounseling.medicalHistories = this.newDonor.MedicalHistories;
-            this.donorCounseling.DonorRegistrationId = this.$route.params.reg_id;
+            
            try {
                await this.donorScreeningService.upsertCounselingScreening(this.donorCounseling);
                this.notify_success('Donor counseling saved successfully.');

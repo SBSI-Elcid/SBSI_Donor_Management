@@ -15,8 +15,10 @@ namespace BBIS.Application.DTOs.DonorScreening
         public List<DonorMedicalQuestionnaireDto> MedicalHistories { get; set; } = new List<DonorMedicalQuestionnaireDto>();
 
         public string DonorStatus { get; set; }
+        public string DeferralStatus { get; set; }
+        public string Remarks { get; set; }
 
-       
+
     }
 }
 

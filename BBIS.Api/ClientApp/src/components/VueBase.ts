@@ -112,10 +112,12 @@ export default class VueBase extends Vue {
   protected mark_deferred(confirmMessage: string, title: string, confirmBtnText: string, cancelBtntext: string, callbackFunc: Function): void {
     this.$swal.fire({
       title: title,
-      html: `<div class="swal_input_wrapper">
-              <div class="swal2-radio" style="display: flex;">
+      html: `<div class="swal_input_wrapper" style = "max-width: 800px;font-size:10pt">
+              <div class="swal2-radio" style="display: flex; font-size: 8pt">
                 <label><input type="radio" name="swal2-radio" value="Temporary"><span class="swal2-label">Temporary</span></label>
+                <label><input type="radio" name="swal2-radio" value="Indefinite"><span class="swal2-label">Indefinite</span></label>
                 <label><input type="radio" name="swal2-radio" value="Permanent"><span class="swal2-label">Permanent</span></label>
+                <label><input type="radio" name="swal2-radio" value="Self Deferral"><span class="swal2-label">Self Deferral</span></label>
               </div>
               <textarea id="swal-input3" style="width:75%" placeholder="Remarks" class="swal2-textarea"></textarea>
             </div>`,

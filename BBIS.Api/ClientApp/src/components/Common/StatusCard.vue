@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="290" max-height="64">
+  <v-card max-width="420" max-height="64">
      <v-tooltip right>
         <template v-slot:activator="{ on, attrs }">
           <v-card-text class="text-h6 grey--text" v-bind="attrs" v-on="on">
@@ -8,7 +8,7 @@
             {{ addSpaceBetweenUpperCaseLetters(statusText) }} 
           </v-card-text>
         </template>
-        <span>{{donorStatus.Remarks}}</span>
+        <span>{{donorStatus.Remarks}}T</span>
       </v-tooltip>
   </v-card>
 </template>

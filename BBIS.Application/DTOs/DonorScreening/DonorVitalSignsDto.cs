@@ -22,5 +22,8 @@ namespace BBIS.Application.DTOs.DonorScreening
         public string DonorName { get; set; }
 
         public string DonorStatus { get; set; }
+
+        public string DeferralStatus { get; set; }
+        public string Remarks { get; set; }
     }
 }

@@ -52,10 +52,10 @@
 
             </v-row>
 
-            <div class="section-outer-container mt-3">
+            <div class="section-outer-container mt-3" v-if ="isEditable">
                 <div class="text-right">
                     <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
-                    <!--v-btn color="default" large tile class="mr-2" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>-->
+                    <v-btn color="default" large tile class="mr-2" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
                 </div>
             </div>
         </v-form>
@@ -90,6 +90,11 @@
         protected donorVitalSigns: IDonorVitalSigns = new DonorVitalSignsDto();
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
+       
+        protected get isEditable(): boolean {
+            console.log("DonorVitalStatus", this.donorVitalSigns.DonorStatus);
+            return this.donorVitalSigns.DonorStatus === DonorStatus.ForVitalSigns;
+        }
 
         public async created(): Promise<void> {
 
@@ -156,15 +161,23 @@
             this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
         };
 
-        //protected onApprove(): void {
-        //    this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
-        //    if (this.formValid === false) {
-        //        return;
-        //    }
+        protected onDeferred(): void {
+            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            if (this.formValid === false) {
+                return;
+            }
 
-        //    this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
-        //}
+            this.mark_deferred(`Are you sure you want to tag this donor as deffered?`, 'Mark Donor as Deferred', 'Mark as Deferred', 'Cancel', this.onDeferralConfirmation);
+        }
 
+        public async onDeferralConfirmation(confirm: boolean, result: any): Promise<void> {
+            if (confirm) {
+                this.donorVitalSigns.DonorStatus = DonorStatus.Deferred;
+                this.donorVitalSigns.DeferralStatus = result[0].DeferralStatus;
+                this.donorVitalSigns.Remarks = result[0].Remarks;
+                await this.onSubmit();
+            }
+        }
         public async onApprovalConfirmation(confirm: boolean): Promise<void> {
             if (confirm) {
                 this.donorVitalSigns.DonorStatus = DonorStatus.ForPhysicalExamination;

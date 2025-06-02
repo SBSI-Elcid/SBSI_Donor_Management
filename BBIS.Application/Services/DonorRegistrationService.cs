@@ -239,13 +239,14 @@ namespace BBIS.Application.Services
                         {
                             result = GetVerificationResultForRegisteredDonor(donorLatestTransaction.DonorStatus, registrant.RegistrationNumber);
                         }
-
+                        result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
                         return result;
                     }
 
                     if (donorLatestTransaction.DonorStatus != DonorStatus.Deferred)
                     {
                         result = await ValidateDonor(donorLatestTransaction.DonorTransactionId, donorLatestTransaction.DateOfDonation.Value, donorDto);
+                        result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
                         return result;
                     }
 
@@ -259,10 +260,12 @@ namespace BBIS.Application.Services
                             DeferralStatus = donorDeferral.DeferralStatus,
                             Remarks = donorDeferral.Remarks
                         };
+                        result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
                         return result;
                     }
 
                     // If Deferral Status is Temporary check for previous latest donor history donation date
+                    result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
                     result = await ValidateDonor(donorLatestTransaction.DonorTransactionId, donorLatestTransaction.DateOfDonation.Value, donorDto);
                 }
             }

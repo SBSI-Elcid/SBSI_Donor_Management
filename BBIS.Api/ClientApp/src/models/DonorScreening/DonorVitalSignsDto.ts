@@ -8,6 +8,8 @@ export interface IDonorVitalSigns {
     RespiratoryRate: number,
     OxygenSaturation: number,
     DonorStatus: string,
+    DeferralStatus: string,
+    Remarks: string
 }
 
 export class DonorVitalSignsDto implements IDonorVitalSigns {
@@ -20,4 +22,6 @@ export class DonorVitalSignsDto implements IDonorVitalSigns {
     RespiratoryRate: number = 0;
     OxygenSaturation: number = 0;
     DonorStatus: string = "";
+    DeferralStatus: string = "";
+    Remarks: string = "";
 }

@@ -4,7 +4,9 @@ export interface IVerifyDonorResultDto {
     IsValid: boolean,
     DeferralStatus: string,
     Remarks: string | null,
-    Donor: DonorDto
+    Donor: DonorDto,
+    donorRegistrationId: Guid
+
 }
   
 export class VerifyDonorResultDto implements IVerifyDonorResultDto {
@@ -12,5 +14,6 @@ export class VerifyDonorResultDto implements IVerifyDonorResultDto {
     DeferralStatus: string = "";
     Remarks: string | null = null;
     Donor: DonorDto = new DonorDto();
+    donorRegistrationId: Guid = "";
 }
   

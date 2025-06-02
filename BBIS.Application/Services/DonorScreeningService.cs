@@ -160,6 +160,7 @@ namespace BBIS.Application.Services
             if (query.DonorVitalSigns != null)
             {
                 dto = mapper.Map<DonorVitalSignsDto>(query.DonorVitalSigns);
+                dto.DonorStatus = query?.DonorStatus;
             }
 
             dto.DonorTransactionId = query.DonorTransactionId;
@@ -225,7 +226,7 @@ namespace BBIS.Application.Services
                 if (issuance != null)
                 {
                     dto = mapper.Map<DonorBloodBagIssuanceDto>(issuance);
-
+                    dto.DonorStatus = query?.DonorStatus;
                     dto.DonorRegistrationId = query.DonorRegistrationId;
                     dto.BloodBagInfos = mapper.Map<List<DonorBloodBagInfo>>(issuanceList);
 
@@ -356,7 +357,7 @@ namespace BBIS.Application.Services
 
                 //dto = mapper.Map<DonorPostDonationCareDto>(query.DonorPostDonationCare);
                 dto.DonorTransactionId = query.DonorTransactionId;
-
+                dto.DonorStatus = query?.DonorStatus;
                 return dto;
             }
 
@@ -474,6 +475,12 @@ namespace BBIS.Application.Services
             else
             {
                 repository.DonorVitalSigns.Create(entity);
+            }
+            if (dto.DonorStatus == DonorStatus.Deferred)
+            {
+                await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
+                donorTransaction.BloodIsSafeToTransfuse = false;
+                donorTransaction.DateOfDonation = DateTime.UtcNow;
             }
 
             donorTransaction.DonorStatus = dto.DonorStatus;
