@@ -149,7 +149,7 @@
                 this.donorPhysicalExam.DonorStatus = DonorStatus.Deferred;
                 this.donorPhysicalExam.DeferralStatus = result[0].DeferralStatus;
                 this.donorPhysicalExam.Remarks = result[0].Remarks;
-                await this.onSubmit();
+                await this.submit();
             }
         }
 

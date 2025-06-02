@@ -162,7 +162,7 @@ namespace BBIS.Application.Services
                 dto = mapper.Map<DonorVitalSignsDto>(query.DonorVitalSigns);
                 dto.DonorStatus = query?.DonorStatus;
             }
-
+            dto.DonorStatus = query?.DonorStatus;
             dto.DonorTransactionId = query.DonorTransactionId;
             dto.DonorRegistrationId = id;
             dto.DonorName = $"{query.Donor.Firstname} {query.Donor.Middlename?.FirstOrDefault()}. {query.Donor.Lastname}";

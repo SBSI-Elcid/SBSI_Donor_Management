@@ -44,6 +44,8 @@
     public static class DeferralStatus
     {
         public static readonly string Permanent = nameof(Permanent);
+        public static readonly string SelfDeferred = nameof(SelfDeferred);
+        public static readonly string Indefinite = nameof(Indefinite);
         public static readonly string Temporary = nameof(Temporary);
     }
 
