@@ -155,7 +155,7 @@
             <v-divider />
 
             <!-- BUTTONS -->
-            <div class="section-outer-container text-right pt-3 pb-2"> 
+            <div class="section-outer-container text-right pt-3 pb-2" v-if ="!isDisabled"> 
                 <v-btn v-if="" color="primary" large class="mr-2" @click="onApprove"><v-icon size="25" left>mdi-content-save</v-icon> {{ submitLabel }}</v-btn>
             </div>
         </v-form>
@@ -191,6 +191,7 @@
 
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
+        protected isDisabled: boolean = true;
         /*protected donorInfo?: IDonorDto;*/
 
         protected async created() {
@@ -201,7 +202,8 @@
 
                 this.donorModule.setTransactionId(RegisteredDonorInfo.DonorTransactionId);
 
-                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus === DonorStatus.Deferred) {
+                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus === DonorStatus.Deferred && this.RegisteredDonorInfo.DonorStatus !== DonorStatus.ForCounseling) {
+                    this.isDisabled = false;
                     this.donorModule.setDonorStatus(RegisteredDonorInfo.DonorStatus);
                 }
 

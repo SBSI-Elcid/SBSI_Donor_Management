@@ -296,11 +296,15 @@ namespace BBIS.Application.Services
                 dto.DonorStatus = query?.DonorStatus;
                 return dto;
             }
+            else 
+            {
+                dto = mapper.Map<DonorPhysicalExaminationDto>(query.DonorPhysicalExamination);
+                dto.DonorTransactionId = query.DonorTransactionId;
+                dto.DonorRegistrationId = query.DonorRegistrationId;
+                dto.DonorStatus = query.DonorStatus;
+            }
 
-            dto = mapper.Map<DonorPhysicalExaminationDto>(query.DonorPhysicalExamination);
-            dto.DonorTransactionId = query.DonorTransactionId;
-            dto.DonorRegistrationId = query.DonorRegistrationId;
-            dto.DonorStatus = query.DonorStatus;
+           
             return dto;
         }
 

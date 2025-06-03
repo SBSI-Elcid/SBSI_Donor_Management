@@ -77,6 +77,7 @@
     import Common from '@/common/Common';
     import BirthdatePicker from '@/components/Common/FormInputs/BirthdatePicker.vue';
     import moment from 'moment';
+    import { DonorStatus } from '@/models/Enums/DonorStatus';
     @Component({
         components: { StatusCard, BirthdatePicker }
     })
@@ -109,8 +110,16 @@
                     this.newDonor.MedicalHistories = new Array<DonorMedicalHistoryDto>();
                 }
 
-                console.log("DonorStatus", this.verifyDonorResult.DeferralStatus);
-                console.log("DonorRegistrationId", this.verifyDonorResult.donorRegistrationId);
+
+/*                const allStatuses = Object.values(DonorStatus);*/
+
+                //if (!allStatuses.includes(this.verifyDonorResult.DeferralStatus)) {
+                //    this.$router.push({ path: `/donor/info/${this.verifyDonorResult.donorRegistrationId}`});
+                //}
+                //console.log(this.verifyDonorResult);
+                ////this.$router.push({ path: `/donor/info/${regId}` });
+                //console.log("DonorStatus", this.verifyDonorResult.DeferralStatus);
+                //console.log("DonorRegistrationId", this.verifyDonorResult.donorRegistrationId);
                 if (this.verifyDonorResult.IsValid) {
                     this.onNext();
                 }

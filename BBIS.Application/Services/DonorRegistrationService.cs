@@ -116,15 +116,50 @@ namespace BBIS.Application.Services
 
             // Check if there's already associated transaction record
             var donorTransaction = await repository.DonorTransaction.FindOneByConditionAsync(x => x.DonorRegistrationId == regId);
+
+            //var donor = new DonorDto();
+
+
+             var donor = await repository.Donor.FindOneByConditionAsync(x =>
+                                         x.Lastname == donorRegistration.Lastname &&
+                                         x.Firstname == donorRegistration.Firstname &&
+                                         x.Middlename == donorRegistration.Middlename &&
+                                         x.BirthDate == donorRegistration.BirthDate
+                                     );
+            
+
             if (donorTransaction != null)
             {
                 dto.DonorStatus = donorTransaction.DonorStatus;
                 dto.DonorTransactionId = donorTransaction.DonorTransactionId;
+                var donorTransactionByDonorId = await repository.DonorTransaction
+                                            .FindByConditionAsync(x => x.DonorId == donor.DonorId);
+
+                var previousTransaction = donorTransactionByDonorId
+                    .Where(x => x.DateOfDonation < donorTransaction.DateOfDonation)
+                    .OrderByDescending(x => x.DateOfDonation)
+                    .FirstOrDefault();
+
+                var resultTransaction = previousTransaction ?? donorTransaction;
+
+                if (donor != null && donorTransaction.DonorTransactionId != resultTransaction.DonorTransactionId)
+                {
+
+                    if (resultTransaction != null)
+                    {
+                        dto.DonorStatus = resultTransaction.DonorStatus;
+                    }
+                }
             }
-            else
-            {
-                dto.DonorStatus = DonorStatus.ForInitialScreening;
-            }
+            
+            //if (donor != null && donorTransaction != null)
+            //{
+            //    dto.DonorStatus = DonorStatus.ForVitalSigns;
+            //}
+            //else
+            //{
+            // dto.DonorStatus = DonorStatus.ForVitalSigns;
+            //}
 
             dto.MedicalHistories = donorRegistration.DonorMedicalHistories
                 .Select(x =>
@@ -252,14 +287,16 @@ namespace BBIS.Application.Services
 
                     var donorDeferral = await dbContext.DonorDeferrals.FirstOrDefaultAsync(x => x.DonorTransactionId == donorLatestTransaction.DonorTransactionId);
 
-                    if (donorDeferral.DeferralStatus == DeferralStatus.Permanent)
+                    if (donorDeferral.DeferralStatus == DeferralStatus.Permanent || donorDeferral.DeferralStatus == DeferralStatus.Temporary || 
+                        donorDeferral.DeferralStatus == DeferralStatus.SelfDeferred || donorDeferral.DeferralStatus == DeferralStatus.Indefinite)
                     {
                         result = new VerifyDonorResultDto()
                         {
-                            IsValid = false,
+                            IsValid = true,
                             DeferralStatus = donorDeferral.DeferralStatus,
                             Remarks = donorDeferral.Remarks
                         };
+                        result.Donor = donorDto;
                         result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
                         return result;
                     }
@@ -331,41 +368,59 @@ namespace BBIS.Application.Services
 
             var currentDate = DateTime.UtcNow;
             var donorBloodCollection = await dbContext.DonorBloodBagIssuances.FirstOrDefaultAsync(x => x.DonorTransactionId == donorTransactionId);
+            var donorTransaction = await dbContext.DonorTransactions
+                                   .Include(x => x.DonorDeferral)
+                                   .Where(x => x.DonorTransactionId == donorTransactionId)
+                                   .OrderByDescending(x => x.DateOfDonation)
+                                   .AsNoTracking()
+                                   .FirstOrDefaultAsync();
+
 
             // Apheresis blood re-collection should be 2 weeks or more
-            if (donorBloodCollection != null && donorBloodCollection.BloodBagToBeUsed == BloodBagCollectionTypes.Apheresis)
-            {
-                var ts = currentDate.Subtract(donationDate);
-                var dateDiff = ts.Days;
-                var totalWeeks = (int)dateDiff / 7;
+            //if (donorBloodCollection != null && donorBloodCollection.BloodBagToBeUsed == BloodBagCollectionTypes.Apheresis)
+            //{
+            //    var ts = currentDate.Subtract(donationDate);
+            //    var dateDiff = ts.Days;
+            //    var totalWeeks = (int)dateDiff / 7;
 
-                result.IsValid = totalWeeks >= 2;
+            //    result.IsValid = totalWeeks >= 2;
 
-                if (result.IsValid)
+            //    if (result.IsValid)
+            //    {
+            //        result.Donor = donor;
+            //    }
+            //    else
+            //    {
+            //        result.DeferralStatus = DeferralStatus.Temporary;
+            //        result.Remarks = $"Apheresis, current week count: {totalWeeks}";
+            //    }
+            //}
+            //else // For whole blood collection it should 3 months or more
+            //{
+            //    int monthsApart = 12 * (donationDate.Year - currentDate.Year) + donationDate.Month - currentDate.Month;
+            //    var pastMonths = Math.Abs(monthsApart);
+
+            //    result.IsValid = pastMonths >= 3;
+
+            //    if (result.IsValid)
+            //    {
+            //        result.Donor = donor;
+            //    }
+            //    else
+            //    {
+            //        result.DeferralStatus = DeferralStatus.Temporary;
+            //        result.Remarks = $"Current month count: {pastMonths}";
+            //    }
+            //}
+            if (donorTransaction != null) {
+                if (donorTransaction.DonorStatus != "Deferred")
                 {
                     result.Donor = donor;
                 }
-                else
-                {
-                    result.DeferralStatus = DeferralStatus.Temporary;
-                    result.Remarks = $"Apheresis, current week count: {totalWeeks}";
-                }
-            }
-            else // For whole blood collection it should 3 months or more
-            {
-                int monthsApart = 12 * (donationDate.Year - currentDate.Year) + donationDate.Month - currentDate.Month;
-                var pastMonths = Math.Abs(monthsApart);
-
-                result.IsValid = pastMonths >= 3;
-
-                if (result.IsValid)
-                {
+                else {
+                    result.DeferralStatus = donorTransaction.DonorDeferral.DeferralStatus;
+                    result.Remarks = donorTransaction.DonorDeferral.Remarks;
                     result.Donor = donor;
-                }
-                else
-                {
-                    result.DeferralStatus = DeferralStatus.Temporary;
-                    result.Remarks = $"Current month count: {pastMonths}";
                 }
             }
 

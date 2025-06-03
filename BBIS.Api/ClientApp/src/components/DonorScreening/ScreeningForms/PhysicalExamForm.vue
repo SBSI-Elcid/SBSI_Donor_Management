@@ -12,7 +12,7 @@
 
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">HEENT</label>
-                    <v-text-field type="number"
+                    <v-text-field 
                                   v-model="donorPhysicalExam.HEENT"
                                   :disabled="isDisabled"
                                   dense outlined />
@@ -20,7 +20,7 @@
 
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">HEART and Lungs</label>
-                    <v-text-field type="number"
+                    <v-text-field 
                                   v-model="donorPhysicalExam.HeartAndLungs"
                                   :disabled="isDisabled"
                                   dense outlined />
@@ -120,11 +120,11 @@
             if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
                 let id = this.$route.params.reg_id;
                 this.donorPhysicalExam = await this.donorScreeningService.getPhysicalExamInfo(id);
-
+                
                 this.donorModule.setTransactionId(this.donorPhysicalExam.DonorTransactionId);
 
                 // Enable the fields when Donor Status is not deferred and not for initial screening.
-                if (Common.hasValue(this.donorPhysicalExam.DonorStatus) && this.donorPhysicalExam.DonorStatus !== DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForInitialScreening) {
+                if (Common.hasValue(this.donorPhysicalExam.DonorStatus) && this.donorPhysicalExam.DonorStatus !== DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForVitalSigns) {
                     this.isDisabled = false;
                     if (this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
                         this.isEditingValue = true;

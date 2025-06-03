@@ -35,8 +35,10 @@ export default class DonorScreeningView extends VueBase {
   }
 
   protected async created(): Promise<void> {
-    await this.lookupModule.loadLookups();
+      await this.lookupModule.loadLookups();
+      
   }
+
 
   protected beforeRouteLeave(to: Route, from: Route, next: Function): void {
     if (to.path !== from.path) {

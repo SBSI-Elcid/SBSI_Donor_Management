@@ -13,6 +13,7 @@
               v-if ="!question.hasHistory"
               v-model="question.donorMedHistory.Answer" 
               :rules="[rules.required]" 
+              :disabled="isDisabled"
               hide-details="true" 
               row
             >
@@ -31,6 +32,7 @@
             <v-text-field 
               v-if="" 
               v-model="question.donorMedHistory.Remarks"
+              :disabled="isDisabled"
               placeholder="Remarks"
               hide-details="true"
               dense flat solo 
@@ -45,7 +47,7 @@
       <v-divider />
 
       <!-- BUTTONS -->
-      <div class="section-outer-container text-right pt-3 pb-2">
+      <div class="section-outer-container text-right pt-3 pb-2" v-if ="!isDisabled">
         <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
         <v-btn color="default" large tile class="mr-2" v-if="" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
         <v-btn color="default" large tile class="mr-2" v-if="" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
@@ -84,7 +86,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
         protected donorInfo?: IDonorDto;
 
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
-
+        protected isDisabled: boolean = true;
 
         protected get medicalQuestionnaires(): Array<IMedicalQuestionnaireDto> {
             let questionnaires = this.donorModule.getMedicalQuestionnaire;
@@ -95,9 +97,33 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             return questionnaires;
         }
 
+       
         protected async created() {
+           
             await this.loadDonorInfo(); // Load donor info before mounting
             await this.donorModule.loadMedicalQuestionnaire(); // Fetch medical questionnaires
+        }
+
+        
+         mounted() {
+            window.addEventListener('keydown', this.handleF11Key);
+        }
+         beforeDestroy() {
+            window.removeEventListener('keydown', this.handleF11Key);
+        }
+
+        protected handleF11Key(event: KeyboardEvent): void {
+            if (event.key === 'F11') {
+                event.preventDefault(); // prevent browser fullscreen
+                this.setAllAnswersToYes();
+            }
+        }
+        protected setAllAnswersToYes(): void {
+            this.donorMedicalHistories.forEach((question) => {
+                if (!question.hasHistory && question.donorMedHistory) {
+                    this.$set(question.donorMedHistory, 'Answer', 'Yes'); // ensure reactivity
+                }
+            });
         }
 
         protected async loadDonorInfo(): Promise<void> {
@@ -109,7 +135,8 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
 
                     this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
 
-                    if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred) {
+                    if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
+                        this.isDisabled = false;
                         this.donorModule.setDonorStatus(donorInfo.DonorStatus);
                     }
                     console.log(donorInfo);

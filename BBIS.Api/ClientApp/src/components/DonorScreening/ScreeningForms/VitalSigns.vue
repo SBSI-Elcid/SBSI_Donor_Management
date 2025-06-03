@@ -5,6 +5,7 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Body Weight (kgs)</label>
                     <v-text-field type="number"
+                                  :disabled="isDisabled"
                                   v-model ="donorVitalSigns.BodyWeight"
                                   dense outlined />
                 </v-col>
@@ -12,6 +13,7 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Temperature</label>
                     <v-text-field type="number"
+                                  :disabled="isDisabled"
                                   v-model ="donorVitalSigns.Temperature"
                                   dense outlined />
                 </v-col>
@@ -21,7 +23,8 @@
             <v-row>
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Blood Pressure</label>
-                    <v-text-field type="number"
+                    <v-text-field
+                                  :disabled="isDisabled"
                                   v-model ="donorVitalSigns.BloodPressure"
                                   dense outlined />
                 </v-col>
@@ -29,6 +32,7 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Pulse Rate</label>
                     <v-text-field type="number"
+                                  :disabled="isDisabled"
                                   v-model ="donorVitalSigns.PulseRate"
                                   dense outlined />
                 </v-col>
@@ -39,6 +43,7 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Respiratory Rate</label>
                     <v-text-field type="number"
+                                  :disabled="isDisabled"
                                   v-model ="donorVitalSigns.RespiratoryRate"
                                   dense outlined />
                 </v-col>
@@ -46,6 +51,7 @@
                 <v-col cols="2" class="py-0">
                     <label class="label-container">Oxygen Saturation</label>
                     <v-text-field type="number"
+                                  :disabled="isDisabled"
                                   v-model ="donorVitalSigns.OxygenSaturation"
                                   dense outlined />
                 </v-col>
@@ -73,12 +79,15 @@
     import { ILookupOptions } from '@/models/Lookups/LookupOptions';
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
+    import DonorRegistrationService from '@/services/DonorRegistrationService';
+    import { IRegisteredDonorInfoDto,RegisteredDonorInfoDto } from '@/models/DonorRegistration/IRegisteredDonorInfoDto';
     //import RecentDonationTable from '@/components/DonorScreening/ScreeningForms/RecentDonationTable.vue';
     @Component
     export default class VitalSigns extends VueBase {
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
         protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
+        protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
 
         protected formValid: boolean = true;
         protected rules: any = { ...Common.ValidationRules }
@@ -90,6 +99,8 @@
         protected donorVitalSigns: IDonorVitalSigns = new DonorVitalSignsDto();
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
+
+        protected donorInfo: IRegisteredDonorInfoDto = new RegisteredDonorInfoDto();
        
         protected get isEditable(): boolean {
             console.log("DonorVitalStatus", this.donorVitalSigns.DonorStatus);
@@ -103,6 +114,7 @@
             try {
                 
                 await this.getDonorVitalSignsInfo();
+                //await this.getLatestDonorStatusWithSameDonor();
             }
             catch (error) {
                 console.log(error);
@@ -112,13 +124,27 @@
             }
         }
 
+        //protected async getLatestDonorStatusWithSameDonor(): Promise<void> {
+        //    if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
+        //        let regId = this.$route.params.reg_id;
+        //        let donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(regId);
+        //        console.log("donorInfo",donorInfo);
+        //        this.donorModule.setDonorStatus(donorInfo.DonorStatus);
+               
+        //    }
+        //}
+
         protected async getDonorVitalSignsInfo(): Promise<void> {
             if (this.$route.params.reg_id && typeof (this.$route.params.reg_id) === 'string') {
                 let regId = this.$route.params.reg_id;
                 this.donorVitalSigns = await this.donorScreeningService.getDonorVitalSignsInfo(regId);
                 console.log(this.donorVitalSigns);
-
+                
                 this.donorModule.setTransactionId(this.donorVitalSigns.DonorTransactionId);
+
+                if (Common.hasValue(this.donorVitalSigns.DonorStatus) && this.donorVitalSigns.DonorStatus !== DonorStatus.Deferred) {
+                    this.isDisabled = false;
+                }
             }
         }
 
