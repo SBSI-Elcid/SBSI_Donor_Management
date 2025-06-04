@@ -106,6 +106,21 @@ namespace BBIS.Application.Services
             return dto;
         }
 
+        public async Task<ChecklistDto> GetCheckList(Guid id)
+        {
+            var dto = new ChecklistDto();
+
+            var query = await dbContext.Checklists
+              .FirstOrDefaultAsync(x => x.ScheduleId == id);
+
+            if (query != null) {
+                dto = mapper.Map<ChecklistDto>(query);
+            }
+
+           
+            return dto;
+        }
+
         public async Task<Guid> CreateUpdateSchedule(ScheduleDto dto, Guid userId)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
@@ -126,6 +141,31 @@ namespace BBIS.Application.Services
             }
 
   
+
+            await repository.SaveAsync();
+            return entity.ScheduleId;
+        }
+
+        public async Task<Guid> CreateUpdateCheckList(ChecklistDto dto, Guid userId)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+
+            var entity = mapper.Map<checklist>(dto);
+            entity.UpdatedBy = userId;
+            entity.UpdatedAt = DateTime.UtcNow;
+
+
+            if (dto.ChecklistId.HasValue)
+            {
+                repository.Checklist.Update(entity);
+            }
+            else
+            {
+                repository.Checklist.Create(entity);
+            }
+
+
 
             await repository.SaveAsync();
             return entity.ScheduleId;

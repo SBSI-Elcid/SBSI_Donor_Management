@@ -58,6 +58,26 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpGet("checklist/{id}")]
+        public async Task<ActionResult<RequestResult<ChecklistDto>>> GetChecklist(Guid id)
+        {
+            try
+            {
+                var result = await this.scheduleService.GetCheckList(id);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
 
         [HttpPost("upsert-schedule")]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateSchedule([FromBody] ScheduleDto dto)
@@ -70,6 +90,31 @@ namespace BBIS.Api.Controllers
                 }
 
                 var result = await this.scheduleService.CreateUpdateSchedule(dto, this.UserId);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong during schedule creation: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong during schedule creation: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost("upsert-checklist")]
+        public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateCheckList([FromBody] ChecklistDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.scheduleService.CreateUpdateCheckList(dto, this.UserId);
                 return this.Json(result);
             }
             catch (RecordNotFoundException ex)

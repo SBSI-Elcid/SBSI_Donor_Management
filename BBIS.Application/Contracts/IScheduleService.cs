@@ -15,6 +15,10 @@ namespace BBIS.Application.Contracts
 
         Task<ScheduleDto> GetScheduleById(Guid transactionId);
 
+        Task<ChecklistDto> GetCheckList(Guid transactionId);
+
+        Task<Guid> CreateUpdateCheckList(ChecklistDto dto, Guid userId);
+
         Task<Guid> CreateUpdateSchedule(ScheduleDto dto, Guid userId);
     }
 }

@@ -11,5 +11,6 @@ export enum DonorStatus {
     ForLaboratoryTest = "ForLaboratoryTest",
     Success = "Success",
     Deferred = "Deferred",
-    Inventory = "Inventory"
+    Inventory = "Inventory",
+    Discharge = "Discharge"
 }

@@ -10,7 +10,7 @@
                     <v-card-actions>
                         <v-btn color="red darken-2" class="white--text" @click="createSchedule">Create Schedule</v-btn>
                         <!--<v-btn color="red darken-2" class="white--text" @click="">Edit Schedule</v-btn>
-                        <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>-->
+                    <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>-->
                     </v-card-actions>
 
                     <v-data-table :headers="[
@@ -36,7 +36,8 @@
             </v-col>
         </v-row>
 
-        <CreateSchedule v-model = "showCreateDialog" :isEditing="isEditing" :scheduleId="scheduleId"  @close="handleClose" />
+        <CreateSchedule v-model="showCreateDialog" :isEditing="isEditing" :scheduleId="scheduleId" @close="handleClose" />
+        <router-view />
     </v-container>
 </template>
 
@@ -80,7 +81,6 @@
         }
 
         protected async openSchedule(scheduleId: Guid): Promise<void> {
-            console.log("ScheduleID", scheduleId);
             this.isEditing = true;
             this.scheduleId = scheduleId;
             this.showCreateDialog = true;
@@ -113,10 +113,12 @@
                     ScheduleDateTime: moment(record.ScheduleDateTime).format("YYYY-MM-DD")
                 }));
                 
-            } catch (err) {
-                console.error('Failed to load schedules', err);
-                this.$toast?.error('Error loading schedules');   // if you use a toast lib
-            } finally {
+            } catch (error: any) {
+                if (error.StatusCode != 500) {
+                    let errorMessage = error.Message ?? "An error occured while processing your request.";
+                    this.notify_error(errorMessage);
+                }
+             } finally {
                 this.loading = false;
             }
         }

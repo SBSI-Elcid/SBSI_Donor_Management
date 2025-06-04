@@ -14,7 +14,7 @@ export interface IDonorPostDonationCare {
     DoctorName: string;
     DischargeDate: Date | null;
 
-
+    DonorStatus: string;
     PostDonationListDetails: IPostDonationDetail[];
     VitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto[];
 
@@ -32,6 +32,7 @@ export class DonorPostDonationCareDto implements IDonorPostDonationCare {
     DoctorName: string = "";
     DischargeDate: Date | null = null
 
+    DonorStatus: string = "";
     PostDonationListDetails: IPostDonationDetail[] = [];
     VitalSignsMonitoringDetails: IVitalSignsMonitoringDetailsDto[] = [];
 

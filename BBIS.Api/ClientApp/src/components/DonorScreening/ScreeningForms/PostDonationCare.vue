@@ -104,7 +104,7 @@
             </v-row>
 
             <div class="section-outer-container text-right pt-3 pb-2">
-                <v-btn color="default" large tile class="mr-2" @click=""><v-icon color="success" size="25" left>mdi-medication</v-icon> Discharge</v-btn>
+                <v-btn color="default" large tile class="mr-2" @click="onDischarge"><v-icon color="success" size="25" left>mdi-medication</v-icon> Discharge</v-btn>
                 <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Save</v-btn>
             </div>
         </v-form>
@@ -237,8 +237,36 @@
             this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onApprovalConfirmation);
         };
 
+
+        protected onDischarge = (): void => {
+
+            const form = this.$refs.form as any;
+
+            if (!form) {
+                this.notify_error('Form is not ready yet.');
+                return;
+            }
+
+            this.formValid = form.validate();
+            if (this.formValid === false) {
+                return;
+            }
+
+            this.confirm(`Are you sure you want to proceed with discharging this donor?`, 'Discharge Donor', 'Discharge', 'Cancel', this.onDischargeConfirmation);
+        };
+
+        public async onDischargeConfirmation(confirm: boolean): Promise<void> {
+            if (confirm) {
+                this.donorPostDonationCare.VitalSignsMonitoringDetails = this.vitalSignsMonitoringDetails;
+                this.donorPostDonationCare.PostDonationListDetails = this.postDonationDetail;
+                this.donorPostDonationCare.DonorStatus = DonorStatus.Discharge;
+                await this.onSubmit();
+            }
+        }
+
         public async onApprovalConfirmation(confirm: boolean): Promise<void> {
             if (confirm) {
+                this.donorPostDonationCare.DonorStatus = DonorStatus.ForPostDonationCare
                 this.donorPostDonationCare.VitalSignsMonitoringDetails = this.vitalSignsMonitoringDetails;
                 this.donorPostDonationCare.PostDonationListDetails = this.postDonationDetail;
                 await this.onSubmit();

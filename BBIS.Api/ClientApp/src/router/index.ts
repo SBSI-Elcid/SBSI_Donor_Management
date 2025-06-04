@@ -153,14 +153,22 @@ const routes: Array<RouteConfig> = [
                     requiresAuth: true
                 },
                 component: () => import('../views/SchedulesView.vue'),
-                children: [
-                    {
-                        path: 'checklist/:schedule_id',
-                        name: 'CheckList',
-                        component: () => import('@/components/Schedule/ScheduleForms/CheckList.vue'),
-                        props: true//route => ({ params: route.params.donor_reg_id }) 
-                    }
-                ]
+                //children: [
+                //    {
+                //        path: 'activitydonor/:schedule_id',
+                //        name: 'ActivityDonor',
+                //        component: () => import('@/components/Schedule/ScheduleForms/ActivityDonor.vue'),
+                //        props: true//route => ({ params: route.params.donor_reg_id })
+                //    }
+                //]
+                props:true
+            },
+            {
+                path: '/schedules/activitydonor/:schedule_id',
+                name: 'ActivityDonor',
+                component: () => import('@/components/Schedule/ScheduleForms/ActivityDonor.vue'),
+                props: true,
+                meta: { requiresAuth: true }
             },
             {
                 path: 'reports',
@@ -257,6 +265,14 @@ const routes: Array<RouteConfig> = [
             requiresAuth: false
         },
         component: () => import('../views/LandingPageView.vue')
+    },
+    {
+        path: '/activitydonorregister',
+        name: 'ActivityDonorRegister',
+        meta: {
+            requiresAuth: false
+        },
+        component: () => import('@/components/Schedule/ScheduleForms/ActivityDonorRegister.vue')
     },
     {
         path: '/register',

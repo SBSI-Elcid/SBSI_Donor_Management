@@ -702,6 +702,7 @@ namespace BBIS.Application.Services
                 //     donorTransaction.DateOfDonation = DateTime.UtcNow;
                 // }
 
+                donorTransaction.DonorStatus = dto.DonorStatus;
                 repository.DonorTransaction.Update(donorTransaction);
 
                 await repository.SaveAsync();
