@@ -12,12 +12,15 @@ namespace BBIS.Application.Contracts
     public interface IScheduleService
     {
         Task<PagedSearchResultDto<ScheduleDto>> GetSchedules(ScheduleDto searchDto);
+        Task<PagedSearchResultDto<ActivityDonorDto>> GetActivityDonor(ActivityDonorDto searchDto, Guid id);
 
         Task<ScheduleDto> GetScheduleById(Guid transactionId);
 
         Task<ChecklistDto> GetCheckList(Guid transactionId);
 
         Task<Guid> CreateUpdateCheckList(ChecklistDto dto, Guid userId);
+
+        Task<Guid> CreateUpdateActivityDonor(ActivityDonorDto dto, Guid userId);
 
         Task<Guid> CreateUpdateSchedule(ScheduleDto dto, Guid userId);
     }

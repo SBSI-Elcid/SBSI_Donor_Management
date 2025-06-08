@@ -142,8 +142,8 @@
                 
                 this.donorModule.setTransactionId(this.donorVitalSigns.DonorTransactionId);
 
-                if (Common.hasValue(this.donorVitalSigns.DonorStatus) && this.donorVitalSigns.DonorStatus !== DonorStatus.Deferred) {
-                    this.isDisabled = false;
+                if (Common.hasValue(this.donorVitalSigns.DonorStatus) && this.donorVitalSigns.DonorStatus !== DonorStatus.Deferred && this.donorVitalSigns.DonorStatus !== DonorStatus.ForVitalSigns) {
+                    this.isDisabled = true;
                 }
             }
         }

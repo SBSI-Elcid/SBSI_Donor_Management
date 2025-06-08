@@ -531,6 +531,13 @@ namespace BBIS.Application.Services
                 repository.DonorBloodBagIssuance.AddRange(Issuance);
             }
 
+            if (dto.DonorStatus == DonorStatus.Deferred)
+            {
+                await MarkDonorDeferred(donorTransaction.DonorTransactionId, dto.DeferralStatus, dto.Remarks);
+                donorTransaction.BloodIsSafeToTransfuse = false;
+                donorTransaction.DateOfDonation = DateTime.UtcNow;
+            }
+
             donorTransaction.DonorStatus = dto.DonorStatus;
             
             repository.DonorTransaction.Update(donorTransaction);

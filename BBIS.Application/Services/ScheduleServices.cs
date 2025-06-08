@@ -95,6 +95,64 @@ namespace BBIS.Application.Services
             return pagedResult;
         }
 
+        public async Task<PagedSearchResultDto<ActivityDonorDto>> GetActivityDonor(ActivityDonorDto searchDto, Guid id)
+        {
+            if (searchDto == null)
+            {
+                throw new ArgumentNullException(nameof(searchDto));
+            }
+
+            var sortBy = string.IsNullOrEmpty(searchDto.SortBy)
+                ? "ScheduleDateTime asc"
+                : searchDto.SortBy + (searchDto.SortDesc ? " desc" : " asc");
+
+            var pagedResult = new PagedSearchResultDto<ActivityDonorDto>(searchDto);
+
+            var query = dbContext.ActivityDonors.Where(x => x.ScheduleId == searchDto.ScheduleId).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchDto.SearchText))
+            {
+                query = query.Where(x =>
+                        x.LastName.Contains(searchDto.SearchText) ||
+                        x.FirstName.Contains(searchDto.SearchText) ||
+                        x.MiddleName.Contains(searchDto.SearchText)
+                );
+            }
+
+            if (searchDto.PageSize == -1)
+            {
+                searchDto.PageSize = query.Count();
+            }
+
+            var results = await query
+                .Skip((searchDto.PageNumber - 1) * searchDto.PageSize)
+                .Take(searchDto.PageSize)
+                .Select(x => new ActivityDonorDto
+                {
+                    ActivityDonorId = x.ActivityDonorId,
+                    ScheduleId = x.ScheduleId,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    MiddleName = x.MiddleName,
+                    FullName = $"{x.FirstName} {x.MiddleName.Substring(0, 1)}. {x.LastName}",
+                    UpdatedAt = x.UpdatedAt,
+                    UpdatedBy = x.UpdatedBy
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            var totalRecords = query.Count();
+
+            if (results == null || !results.Any()) return pagedResult;
+
+            pagedResult.TotalCount = totalRecords;
+            pagedResult.Results = results.AsQueryable()
+                .OrderBy(x => x.ScheduleId)
+                .ToList();
+
+            return pagedResult;
+        }
+
         public async Task<ScheduleDto> GetScheduleById(Guid id)
         {
             var dto = new ScheduleDto();
@@ -113,11 +171,12 @@ namespace BBIS.Application.Services
             var query = await dbContext.Checklists
               .FirstOrDefaultAsync(x => x.ScheduleId == id);
 
-            if (query != null) {
+            if (query != null)
+            {
                 dto = mapper.Map<ChecklistDto>(query);
             }
 
-           
+
             return dto;
         }
 
@@ -129,7 +188,7 @@ namespace BBIS.Application.Services
             var entity = mapper.Map<Schedule>(dto);
             entity.UpdatedBy = userId;
             entity.UpdatedAt = DateTime.UtcNow;
-    
+
 
             if (dto.ScheduleId.HasValue)
             {
@@ -140,7 +199,7 @@ namespace BBIS.Application.Services
                 repository.Schedule.Create(entity);
             }
 
-  
+
 
             await repository.SaveAsync();
             return entity.ScheduleId;
@@ -163,6 +222,31 @@ namespace BBIS.Application.Services
             else
             {
                 repository.Checklist.Create(entity);
+            }
+
+
+
+            await repository.SaveAsync();
+            return entity.ScheduleId;
+        }
+
+        public async Task<Guid> CreateUpdateActivityDonor(ActivityDonorDto dto, Guid userId)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+
+            var entity = mapper.Map<ActivityDonor>(dto);
+            entity.UpdatedBy = userId;
+            entity.UpdatedAt = DateTime.UtcNow;
+
+
+            if (dto.ActivityDonorId.HasValue)
+            {
+                repository.ActivityDonor.Update(entity);
+            }
+            else
+            {
+                repository.ActivityDonor.Create(entity);
             }
 
 

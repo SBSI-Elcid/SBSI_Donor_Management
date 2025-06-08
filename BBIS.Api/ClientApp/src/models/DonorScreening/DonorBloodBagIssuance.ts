@@ -5,6 +5,9 @@ export interface IDonorBloodBagIssuance {
     DonorRegistrationId: Guid,
     BloodBagInfos: IDonorIssuedBloodBags[]; 
     DonorStatus: string,
+    DeferralStatus: string,
+    Remarks: string
+
 }
 
 export class DonorBloodBagIssuanceDto implements IDonorBloodBagIssuance {
@@ -12,4 +15,6 @@ export class DonorBloodBagIssuanceDto implements IDonorBloodBagIssuance {
     DonorRegistrationId: Guid = "";
     BloodBagInfos: IDonorIssuedBloodBags[] = [];
     DonorStatus: string = "";
+    DeferralStatus: string = "";
+    Remarks: string = "";
 }

@@ -100,7 +100,13 @@ export default class DonorRegisterView extends Vue {
 
   protected print(): void {
     this.$htmlToPaper('printRef');
-  }
+    }
+
+    protected  mounted(): void {
+        const show = this.$route.query.showRegistrationForm;
+        this.showRegistrationForm = show === 'true';
+        //await this.loadrecords();
+    }
 
   protected resetForm(): void {
     this.success = false;

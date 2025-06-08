@@ -36,6 +36,22 @@ namespace BBIS.Api.Controllers
                 logger.LogError($"Something went wrong retrieving registered schedules: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
             }
+
+        }
+
+        [HttpPost("activitydonor")]
+        public async Task<ActionResult<RequestResult<PagedSearchResultDto<ActivityDonorDto>>>> GetActivityDonor([FromBody] ActivityDonorDto dto,Guid id)
+        {
+            try
+            {
+                var results = await this.scheduleService.GetActivityDonor(dto,id);
+                return this.Json(results);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving registered schedules: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpGet("schedule/{id}")]
@@ -119,12 +135,37 @@ namespace BBIS.Api.Controllers
             }
             catch (RecordNotFoundException ex)
             {
-                logger.LogError($"Something went wrong during schedule creation: {ex.Message}");
+                logger.LogError($"Something went wrong during checklist creation: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
-                logger.LogError($"Something went wrong during schedule creation: {ex.Message}");
+                logger.LogError($"Something went wrong during checklist creation: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost("upsert-activitydonor")]
+        public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateActivityDonor([FromBody] ActivityDonorDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.scheduleService.CreateUpdateActivityDonor(dto, this.UserId);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong during donor creation: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong during donor creation: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
             }
         }

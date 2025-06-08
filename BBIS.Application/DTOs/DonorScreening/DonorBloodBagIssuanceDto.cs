@@ -25,5 +25,8 @@ namespace BBIS.Application.DTOs.DonorScreening
         public Guid IssuedBy { get; set; }
         public DateTime IssuedDate { get; set; }
         public string DonorStatus { get; set; }
+
+        public string DeferralStatus { get; set; }
+        public string Remarks { get; set; }
     }
 }

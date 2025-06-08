@@ -1,8 +1,10 @@
 import { ApiClient } from "./ApiClient";
 import { ISchedule, ScheduleDto } from "../models/Schedules/ScheduleDto"
+import { IActivityDonorDto,ActivityDonorDto } from "../models/Schedules/ActivityDonorDto"
 import { SchedulePagedSearchDto } from "../models/Schedules/SchedulePagedSearchDto";
 import { PagedSearchResultDto } from "../models/PagedSearchDto";
 import { IChecklistDto } from "../models/Schedules/ChecklistDto";
+import { ActivityDonorPagedSearchDto } from "../models/Schedules/ActivityDonorPagedSearchDto";
 
 
 export default class ScheduleService {
@@ -21,6 +23,11 @@ export default class ScheduleService {
         return this.apiClient.get<ISchedule>(`schedule/${id}`);
     }
 
+    async getActivityDonor(dto: ActivityDonorPagedSearchDto): Promise<PagedSearchResultDto<IActivityDonorDto>> {
+        return this.apiClient.getPostData<PagedSearchResultDto<IActivityDonorDto>>(`activitydonor`,dto);
+    }
+
+
     async getCheckList(id: Guid): Promise<IChecklistDto> {
         return this.apiClient.get<IChecklistDto>(`checklist/${id}`);
     }
@@ -30,8 +37,14 @@ export default class ScheduleService {
         return response.Data as Guid;
     }
 
+
     async upsertCheckList(dto: IChecklistDto): Promise<Guid> {
         let response = await this.apiClient.postJson(`upsert-checklist`, dto);
+        return response.Data as Guid;
+    }
+
+    async upsertActivityDonor(dto: IActivityDonorDto): Promise<Guid> {
+        let response = await this.apiClient.postJson(`upsert-activitydonor`, dto);
         return response.Data as Guid;
     }
    

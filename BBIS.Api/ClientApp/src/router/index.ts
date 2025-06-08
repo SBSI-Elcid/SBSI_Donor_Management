@@ -267,12 +267,13 @@ const routes: Array<RouteConfig> = [
         component: () => import('../views/LandingPageView.vue')
     },
     {
-        path: '/activitydonorregister',
+        path: '/activitydonorregister/:schedule_id',
         name: 'ActivityDonorRegister',
         meta: {
             requiresAuth: false
         },
-        component: () => import('@/components/Schedule/ScheduleForms/ActivityDonorRegister.vue')
+        component: () => import('@/components/Schedule/ScheduleForms/ActivityDonorRegister.vue'),
+        props: true
     },
     {
         path: '/register',

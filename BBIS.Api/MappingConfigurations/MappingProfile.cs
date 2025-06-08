@@ -30,6 +30,7 @@ namespace BBIS.Api.MappingConfigurations
             CreateMap<VitalSignsMonitoringDto, VitalSignsMonitoring>().ReverseMap();
             CreateMap<PostDonationDetailsDto, PostDonationDetail>().ReverseMap();
             CreateMap<ScheduleDto, Schedule>().ReverseMap();
+            CreateMap<ActivityDonorDto, ActivityDonor>().ReverseMap();
             CreateMap<ChecklistDto, checklist>().ReverseMap();
             CreateMap<DonorMedicalQuestionnaireDto, DonorMedicalHistory>();
             CreateMap<DonorDeferralDto, DonorDeferral>();

@@ -366,7 +366,8 @@ export default class PersonalData extends VueBase {
         }
     }
 
-  protected mounted(): void {
+    protected mounted(): void {
+        console.log(this.inReviewPage);
       this.calculateAge();
   }
 

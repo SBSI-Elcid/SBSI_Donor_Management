@@ -109,9 +109,7 @@ export default class RegistrationsView extends VueBase {
     }
   }
 
-  protected async mounted() : Promise<void> {
-    //await this.loadrecords();
-  }
+
 
 }
 

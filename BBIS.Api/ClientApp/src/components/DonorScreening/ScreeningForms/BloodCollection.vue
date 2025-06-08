@@ -6,6 +6,7 @@
                 <label class="font-weight-bold">Start Time</label>
                 <v-text-field dense
                               outlined
+                               :disabled="isEditingValue"
                               type="time"
                               label="Start Time of Blood Collection"
                               v-model ="startTime"/>
@@ -17,6 +18,7 @@
                 <v-text-field 
                               dense 
                               outlined 
+                               :disabled="isEditingValue"
                               type="time" 
                               label="End Time of Blood Collection"
                               v-model = "endTime"
@@ -28,7 +30,8 @@
                 <label class="font-weight-bold">Donor Reaction</label>
                 <v-text-field 
                               dense 
-                              outlined 
+                              outlined
+                               :disabled="isEditingValue"
                               label="Donor Reaction" 
                               v-model ="donorBloodCollection.UnwellReason"
                               />
@@ -40,8 +43,8 @@
             <v-col cols="12" md="2" class="mb-7">
                 <label class="font-weight-bold">Success?</label>
                 <v-radio-group row v-model ="donorBloodCollection.Success"> 
-                    <v-radio label="Yes" value="true" />
-                    <v-radio label="No" value="false" />
+                    <v-radio label="Yes" :value="true" />
+                    <v-radio label="No" :value="false" />
                 </v-radio-group>
             </v-col>
 
@@ -55,24 +58,26 @@
             </v-col>-->
 
             <!-- Collected Blood Amount -->
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4"  v-if ="isSuccess">
                 <label class="font-weight-bold">Collected Blood Amount (mL)</label>
                 <v-text-field 
                               dense 
                               outlined 
+                               :disabled="isEditingValue"
                               label="Collected Blood Amount" 
                               v-model ="donorBloodCollection.CollectedBloodAmount"
                               />
             </v-col>
 
             <!-- Patient Allocation -->
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" v-if ="isSuccess">
                 <label class="font-weight-bold">Patient Allocation</label>
                 <v-row>
                     <v-col cols="4">
                         <v-text-field 
                                       dense 
                                       outlined 
+                                       :disabled="isEditingValue"
                                       label="Last Name" 
                                       v-model="donorBloodCollection.PatientLastName"
                                       />
@@ -81,6 +86,7 @@
                         <v-text-field 
                                       dense 
                                       outlined 
+                                       :disabled="isEditingValue"
                                       label="First Name" 
                                       v-model="donorBloodCollection.PatientFirstName"
                                       />
@@ -89,6 +95,7 @@
                         <v-text-field 
                                       dense 
                                       outlined 
+                                       :disabled="isEditingValue"
                                       label="Middle Name" 
                                        v-model="donorBloodCollection.PatientMiddleName"
                                       />
@@ -123,7 +130,7 @@
         </div>
 
 
-        <div class="section-outer-container text-right pt-3 pb-2">
+        <div class="section-outer-container text-right pt-3 pb-2" v-if="!isEditingValue">
             <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
             <v-btn color="default" large tile class="mr-2" @click="showIssuanceDialog = true"><v-icon color="success" size="25" left>mdi-blood-bag</v-icon> Add Bloog Bag</v-btn>
             <v-btn color="default" large tile class="mr-2" @click="onSubmit"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
@@ -177,8 +184,13 @@
        protected startTime: string = '';
        protected endTime: string = '';
 
+       
        protected approvedSegmentSerialNumber: string = "";
        protected showIssuanceDialog: boolean = false;
+
+       protected get isSuccess(): boolean {
+           return this.donorBloodCollection.Success;
+       }
 
         public get options(): (key: string) => Array<ILookupOptions> {
             return (key) => this.lookupModule.getOptionsByKey(key);
@@ -191,7 +203,11 @@
        protected handleIssued(segmentSerialNumber: string): void {
            this.approvedSegmentSerialNumber = segmentSerialNumber;
        }
-      
+
+       //@Watch('donorBloodCollection.Success')
+       //protected async successChange(): Promise<void> {
+       //    await this.loadrecords();
+       //}
 
        protected async created(): Promise<void> {
            let loader = this.showLoader();
@@ -220,11 +236,10 @@
 
                // Enable the fields when Donor Status is not deferred and not for initial screening and not for physical exam.
                if (Common.hasValue(this.donorBloodCollection.DonorStatus) && this.donorBloodCollection.DonorStatus !== DonorStatus.Deferred
-                   && this.donorBloodCollection.DonorStatus !== DonorStatus.ForInitialScreening && this.donorBloodCollection.DonorStatus !== DonorStatus.ForPhysicalExamination) {
+                  && this.donorBloodCollection.DonorStatus !== DonorStatus.ForBloodCollection) {
                    this.isDisabled = false;
-                   if (this.donorBloodCollection.DonorStatus !== DonorStatus.ForBloodCollection) {
-                       this.isEditingValue = true;
-                   }
+                   this.isEditingValue = true;
+                   
                }
 
                let hasBloodCollectionId = Common.hasValue(this.donorBloodCollection.DonorBloodCollectionId);

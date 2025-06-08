@@ -7,6 +7,7 @@
                 <v-select :items="bloodBagCollectionOptions"
                           label="Blood Bag to be Used"
                            dense
+                          :disabled="isEditingValue"
                             outlined 
                           v-model="donorBloodBagInfo.BloodBagToBeUsed"
                           />
@@ -18,7 +19,10 @@
 
             <!-- Bag Type Options -->
             <v-col cols="12" md="8">
-                <v-radio-group row v-model="donorBloodBagInfo.BloodBagType"> <!--v-model="donorBloodBagIssuance.BloodBagType"-->
+                <v-radio-group 
+                               row 
+                               v-model="donorBloodBagInfo.BloodBagType"
+                               :disabled="isEditingValue"> <!--v-model="donorBloodBagIssuance.BloodBagType"-->
                     <!--<v-radio label="Single" value="single" />
                 <v-radio label="Double" value="double" />
                 <v-radio label="Triple" value="triple" />
@@ -37,6 +41,7 @@
                 <label class="font-weight-bold">Segment Serial Number</label>
                 <v-text-field dense
                               outlined
+                              :disabled="isEditingValue"
                               label="Segment Serial Number"
                               v-model="donorBloodBagInfo.SegmentSerialNumber"
                               />
@@ -48,6 +53,7 @@
                 <label class="font-weight-bold">Unit Serial Number</label>
                 <v-text-field dense
                               outlined
+                              :disabled="isEditingValue"
                               label="Unit Serial Number"
                               v-model="donorBloodBagInfo.UnitSerialNumber"
                               />
@@ -62,9 +68,9 @@
 
             </v-col>
             <div class="section-outer-container mt-3">
-                <div class="text-right">
+                <div class="text-right" v-if="!isEditingValue">
                     <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
-                    <!--v-btn color="default" large tile class="mr-2" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>-->
+                    <v-btn color="default" large tile class="mr-2" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
                 </div>
             </div>
         </v-row>
@@ -147,8 +153,13 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
                 this.donorBloodBagIssuance = await this.donorScreeningService.getBloodBagIssuance(regId);
                 /*console.log(this.donorBloodBagIssuance);*/
                 this.donorBloodBagInfo = this.donorBloodBagIssuance.BloodBagInfos[0] || new DonorIssuedBloodBagsDto();
-                console.log(this.donorBloodBagIssuance);
-                console.log("RegId", regId);
+
+                if (Common.hasValue(this.donorBloodBagIssuance.DonorStatus) && this.donorBloodBagIssuance.DonorStatus !== DonorStatus.Deferred && this.donorBloodBagIssuance.DonorStatus !== DonorStatus.ForBloodIssuance) {
+                    this.isDisabled = false;
+                     this.isEditingValue = true;
+                    
+                }
+
                 this.donorModule.setTransactionId(this.donorBloodBagIssuance.DonorTransactionId);
             }
         }
@@ -207,6 +218,16 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
         //    }
         //}
 
+        protected onDeferred(): void {
+            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            if (this.formValid === false) {
+                return;
+            }
+
+            this.mark_deferred(`Are you sure you want to tag this donor as deffered?`, 'Mark Donor as Deferred', 'Mark as Deferred', 'Cancel', this.onDeferralConfirmation);
+        }
+
+
         protected onApprove = (): void => {
 
             const form = this.$refs.form as any;
@@ -248,6 +269,16 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
             
         }
 
+        public async onDeferralConfirmation(confirm: boolean): Promise<void> {
+            if (confirm) {
+                this.donorBloodBagIssuance.DonorStatus = DonorStatus.Deferred;
+                this.donorBloodBagIssuance.BloodBagInfos = [this.donorBloodBagInfo];
+                this.donorBloodBagIssuance.DeferralStatus = result[0].DeferralStatus;
+                this.donorBloodBagIssuance.Remarks = result[0].Remarks;
+                console.log(this.donorBloodBagIssuance.BloodBagInfos);
+                await this.onSubmit();
+            }
+        }
 
         public async onApprovalConfirmation(confirm: boolean): Promise<void> {
             if (confirm) {

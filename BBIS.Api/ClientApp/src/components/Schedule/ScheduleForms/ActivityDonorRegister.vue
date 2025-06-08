@@ -28,6 +28,7 @@
                             <v-row no-gutters class="">
                                 <v-col cols="12">
                                     <v-text-field label="Last Name"
+                                                  v-model="activityDonor.LastName"
                                                   :rules="[rules.required, rules.maxLength(90)]"
                                                   dense outlined />
                                 </v-col>
@@ -36,6 +37,7 @@
                             <v-row no-gutters>
                                 <v-col cols="12" class="py-0">
                                     <v-text-field label="First Name"
+                                                  v-model="activityDonor.FirstName"
                                                   :rules="[rules.required, rules.maxLength(90)]"
                                                   dense outlined />
                                 </v-col>
@@ -44,23 +46,24 @@
                             <v-row no-gutters>
                                 <v-col cols="12" class="py-0">
                                     <v-text-field label="Middle Name"
+                                                  v-model="activityDonor.MiddleName"
                                                   :rules="[rules.required, rules.maxLength(90)]"
                                                   dense outlined />
                                 </v-col>
                             </v-row>
-
-                            <v-row no-gutters>
-                                <v-col cols="12" class="py-0">
-                                    <BirthdatePicker :labelText="'Birthdate'" />
-                                </v-col>
-                            </v-row>
-
                             <v-row no-gutters>
                                 <v-col align-self="center" cols="12" class="py-0 text-center">
+                                    <v-btn 
+                                           color="primary" 
+                                           large tile 
+                                           @click ="backToActDonor"
+                                           class="mr-2">
+                                    <v-icon color="warning" size="25" left>mdi-arrow-left</v-icon> Back</v-btn>
                                     <v-btn large
                                            color="primary"
+                                           @click="onRegister"
                                            class="mr-2">
-                                        <v-icon left>mdi-account-search</v-icon> Verify
+                                        <v-icon left>mdi-account-search</v-icon> Register Schedule Donor
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -88,17 +91,20 @@
     import BirthdatePicker from '@/components/Common/FormInputs/BirthdatePicker.vue';
     import moment from 'moment';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
-
+    import ScheduleService from "@/services/ScheduleService"
+    import { ActivityDonorDto, IActivityDonorDto } from '@/models/Schedules/ActivityDonorDto'
     import CommonAppBar from '@/components/Common/CommonAppBar.vue';
     import CommonFooter from '@/components/Common/CommonFooter.vue';
 
     @Component({
-        components: { CommonAppBar, CommonFooter, BirthdatePicker }
+        components: { CommonAppBar, CommonFooter }
     })
     export default class ActivityDonorRegister extends VueBase {
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
+        protected scheduleService: ScheduleService = new ScheduleService();
 
+        protected activityDonor: IActivityDonorDto = new ActivityDonorDto();
         protected formValid: boolean = true;
         protected rules: any = { ...Common.ValidationRules }
 
@@ -155,28 +161,40 @@
         //            }
         //        }
 
-        //        @Watch('newDonor.BirthDate')
-        //        protected onChangeModelBirthDate(): void {
-        //            this.calculateAge();
-        //        }
+        //@Watch('newDonor.BirthDate')
+        //protected onChangeModelBirthDate(): void {
+        //    this.calculateAge();
+        //}
 
-        //        protected calculateAge(): void {
-        //            let years = moment().diff(moment(this.newDonor.BirthDate, 'YYYY-MM-DD'), 'years');
-        //            console.log(years);
-        //            if (years === 65 || years <= 15) {
-        //                this.isBloodDonator = false;
-        //                this.notify_warning("Age is 15 and below or 65 and above, are restricted from blood donation");
-        //            } else {
-        //                this.isBloodDonator = true;
-        //            }
-        //        }
-
-        //        public onReset(): void {
-        //            (this.$refs.form as any).reset();
-        //            this.showVerifyButton = true;
-        //            this.showDonorStatus = false;
-        //            this.showRefreshButton = false;
-        //        }
+        //protected calculateAge(): void {
+        //    let years = moment().diff(moment(this.activityDonor.BirthDate, 'YYYY-MM-DD'), 'years');
+        //    console.log(years);
+        //    if (years === 65 || years <= 15) {
+        //        this.isBloodDonator = false;
+        //        this.notify_warning("Age is 15 and below or 65 and above, are restricted from blood donation");
+        //    } else {
+        //        this.isBloodDonator = true;
+        //    }
+        //}
+        public backToActDonor(): void {
+            let schedId = this.$route.params.schedule_id;
+            this.$router.push({ path: `/schedules/activitydonor/${schedId}` });
+          
+        }
+        public async onRegister(): Promise<void> {
+            try {
+                let schedId = this.$route.params.schedule_id;
+                this.activityDonor.ScheduleId = schedId;
+                const id = await this.scheduleService.upsertActivityDonor(this.activityDonor);
+                this.notify_success('Form successfully submitted.');
+                this.$emit('close'); // Close dialog
+            } catch (err: any) {
+                if (err.StatusCode != 500) {
+                    let errorMessage = err.Message ?? "An error occured while processing your request.";
+                    this.notify_error(errorMessage);
+                }
+            }
+        }
 
         //        @Emit('goToStep')
         //        public onNext(): number {
