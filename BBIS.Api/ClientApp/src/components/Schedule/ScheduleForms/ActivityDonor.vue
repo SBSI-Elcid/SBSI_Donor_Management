@@ -144,7 +144,7 @@ import { IDonorDto,DonorDto } from '../../../models/DonorRegistration/DonorDto';
                 const scheduleId = this.$route.params.schedule_id;
                 const result = await this.scheduleService.getSchedulesById(scheduleId);
                 this.schedules = result;
-                this.schedules.ScheduleDateTime = moment(result.ScheduleDateTime).format("YYYY-MM-DD")// populate your form-bound object
+                this.schedules.ScheduleDateTime = moment(result.ScheduleDateTime).format("YYYY-MM-DD")
 
             } catch (err) {
                 console.error('Failed to load schedule', err);

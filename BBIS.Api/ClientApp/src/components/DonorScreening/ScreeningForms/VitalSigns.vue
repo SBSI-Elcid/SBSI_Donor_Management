@@ -98,7 +98,7 @@
         protected showMobileBloodDonationFields: boolean = false;
         protected donorVitalSigns: IDonorVitalSigns = new DonorVitalSignsDto();
         protected isEditingValue: boolean = false;
-        protected isDisabled: boolean = true;
+        protected isDisabled: boolean = false;
 
         protected donorInfo: IRegisteredDonorInfoDto = new RegisteredDonorInfoDto();
        

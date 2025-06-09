@@ -70,283 +70,381 @@ namespace BBIS.Database.MigrationHelper
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 1,
-                  QuestionTagalogText = "Do you feel well and healthy today?",
+                  HeaderText = "Pre-Donation preparations",
+                  QuestionEnglishText = "Slept at least 6 hours?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakatulog kaba'g 6 ka oras o sobra?",
                   OrderNo = 1
 
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 2,
-                  QuestionTagalogText = "Have you been refused as a blood donor or told not to donate blood?",
+                  QuestionEnglishText = "Have you had any alcoholic drink in past 12 to 24 hours?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Naka-inom ka ba'g makahubog nga ilimnon sa ning-aging 12 ngadto sa 24 ka oras?",
                   OrderNo = 2
 
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 3,
-                  QuestionTagalogText = "Will you voluntary allow your blood to be extracted for testing of HIV/AIDS, Hepatitis virus or other contagious diseases?",
+                  QuestionEnglishText = "Have you smoked in the past 3-4 hours?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakasigarilyo ka ba sa ning-aging 3 o 4 ka oras?",
                   OrderNo = 3
 
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 4,
-                  QuestionTagalogText = "Are you aware that a person with HIV/Hepatitis can still infect other people even if the HIV/AIDS/Hepatitis test result is negative?",
+                  QuestionEnglishText = "Have you had a meal within the past 4 hours?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakakaon ka ba sa ning-aging 4 ka oras?",
                   OrderNo = 4
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 5,
-                  QuestionTagalogText = "Have you within the last 12 hours had alcohol?",
+                  HeaderText = "Are you...",
+                  QuestionEnglishText = "Feeling healthy today?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Maayo ra ang pamati sa panglawas karon?",
                   OrderNo = 5
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 6,
-                  QuestionTagalogText = "Have you taken aspirin within the last 3 days?",
+                  HeaderText = "Currently taking medication?",
+                  QuestionEnglishText = "Have you taken any medication from the deferral list?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Aduna ka bay tambal nga na-inom nga nalista sa deferral list?",
                   OrderNo = 6
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 7,
-                  QuestionTagalogText = "Have you taken any medication or have been vaccinated within the last 4 weeks?",
+                  QuestionEnglishText = "Have you received any vaccination?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Adunay nadawat nga bakuna?",
                   OrderNo = 7
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 8,
-                  QuestionTagalogText = "Have you donated blood, platelets or plasma for the last 3 months?",
+                  HeaderText = "In the past three days...",
+                  QuestionEnglishText = "Have you taken aspirin or anything that has aspirin in it?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakatumar ka ba ug aspirin o uban pang tambal nga adunay sagol nga aspirin",
                   OrderNo = 8
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 9,
-                  HeaderText = "FOR THE PAST 6 MONTHS HAVE YOU:",
-                  QuestionTagalogText = "Gone to places in the Philippines or other countries known to have ZIKA virus?",
+                  HeaderText = "ARE FOR FEMALE DONORS",
+                  QuestionEnglishText = "Are you pregnant or have been pregnant before? Last Menstrual Period",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Mabdob kaba o niagi ka na ba ug pamabdos? Katapusang petsa sa regla",
+                  GenderOption = "Female",
                   OrderNo = 9
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 10,
-                  QuestionTagalogText = "Had intercourse with a person known and confirmed to be infected with ZIKA virus?",
+                  HeaderText = "In the past 12 weeks have you",
+                  QuestionEnglishText = "Donated blood, platelet or plasma?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakadonar ug dugo platelet o plasma?",
                   OrderNo = 10
 
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 11,
-                  QuestionTagalogText = "Had intercource with a person who had gone to places in the Philippines or other countries known to have ZIKA virus?",
+                  HeaderText = "In the past 12 months have you",
+                  QuestionEnglishText = "Had a blood transfusion?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Na-abunchan ug dugo?",
                   OrderNo = 11
 
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 12,
-                  HeaderText = "FOR THE PAST 12 MONTHS HAVE YOU:",
-                  QuestionTagalogText = "Been a recipient of donated blood for hemophilia or have been operated on or a recipient of organ transplant?",
+                  QuestionEnglishText = "Had surgical operation, dental extraction?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Na-operahan o na-ibtan ug ngipon?",
                   OrderNo = 12
 
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 13,
-                  QuestionTagalogText = "Been medically operated on or had tooth extraction?",
+                  QuestionEnglishText = "Had a tattoo, ear or body piercing, accidental contact with blood, needle-stick, and acupuncture?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakapatatoo, patusok sa dunggan, o natuslokan ug dogum nga nahugawan ug dugo, nakapa- accupuncture?",
                   OrderNo = 13
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 14,
-                  QuestionTagalogText = "Had tattoo, ear or body piercing, acupuncture, pricked by a needle or accidentally came in contact with blood?",
+                  QuestionEnglishText = "Had sexual contact with high risk individuals?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakighilawas ug usa nga risgo nga adunay impeksyon?",
                   OrderNo = 14
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 15,
-                  QuestionTagalogText = "Had intercourse with a person with high possibility of not being safe or in exchange for monetary or material things?",
+                  QuestionEnglishText = "Had sexual contact with anyone in exchange for material or monetary gain?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakighilawas aron mobayaran ka ug kwarta o laing hulip sa kwarta?",
                   OrderNo = 15
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 16,
-                  QuestionTagalogText = "Had intercourse with a person without protected or deemed not safe?",
+                  QuestionEnglishText = "Had sexual contact with a person who has worked abroad?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakighilawas ug usa nga nakatrabaho sa gawas sa nasud?",
                   OrderNo = 16
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 17,
-                  QuestionTagalogText = "Had experience having jaundice, liver disease or mingled with those with liver diseases?",
+                  QuestionEnglishText = "Engaged in casual sex?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakighilawas bisan sa sinugdan wala tuyo-a o planoha?",
                   OrderNo = 17
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 18,
-                  QuestionTagalogText = "Been locked up or imprisoned?",
+                  QuestionEnglishText = "Lived with a person who has hepatitis?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Naka-ipon ug puyo sa usa ka adunay sakit nga hepatitis?",
                   OrderNo = 18
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 19,
-                  QuestionTagalogText = "Lived or had relatives in the United Kingdom or Europe?",
+                  QuestionEnglishText = "Have you been imprisoned??",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakasulay ug pagkapriso?",
                   OrderNo = 19
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 20,
-                  HeaderText = "HAVE YOU:",
-                  QuestionTagalogText = "Travelled or lived apart from your current residence or outside the Philippines?",
+                  QuestionEnglishText = "Have any of your relatives had Creutzfeldt-Jakob (Mad Cow) disease?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Adunay paryente nga nasakit ug Creutzfeldt-Jakob (Mad Cow) disease?",
                   OrderNo = 20
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 21,
-                  QuestionTagalogText = "Used prohibited drugs? (inducing, sniffing or injecting)",
+                  HeaderText = "Have you ever...",
+                  QuestionEnglishText = "lived outside your place of residence?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakapuyo gawas sa imong na-andan nga puloy-anan?",
                   OrderNo = 21
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 22,
-                  QuestionTagalogText = "Taken medications for stopping and treating abnormal bleeding?",
+                  QuestionEnglishText = "lived outside the Philippines?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakapuyo gawas the Pilipinas?",
                   OrderNo = 22
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 23,
-                  QuestionTagalogText = "Tested positive for HIV, Hepatitis, Syphilis or Malaria?",
+                  QuestionEnglishText = "Used needles to take drugs, steroids, or anything not prescribed by your doctor?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakagamit ug dagum para maka-indyeksyon ug druga, steroids, o laing matang sa tambal nga walay riseta sa doctor?",
                   OrderNo = 23
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 24,
-                  QuestionTagalogText = "Had malaria or liver disease?",
+                  QuestionEnglishText = "Used clotting factor concentrates?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nahatagan ug mga clotting concentrates?",
                   OrderNo = 24
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 25,
-                  QuestionTagalogText = "Had or treated warts in the sensitive parts of the body, syphilis, gonorrhea or any other sexually transmitted diseases?",
+                  QuestionEnglishText = "Known that if you have the AIDS/Hepatitis virus, you can give it to someone else though you may feel well and have a negative HIV/Hepatitis test?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nahibalo nga kung aduna kay impeksyon nga AIDS/Hepatitis, mahimo nimo kining mapanakod bisan ug wala kay gipamati sa panglawas ug negatibo ang resulta sa imong testing sa dugo?",
                   OrderNo = 25
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 26,
-                  HeaderText = "HAVE YOU HAD THE FOLLOWING:",
-                  QuestionTagalogText = "Cancer, blood disease or hemophilia?",
+                  QuestionEnglishText = "Had a positive test for the HIV/AIDS virus, Hepatitis virus, Syphilis or Malaria?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakapatesting ka sa imong dugo para sa HIV/AIDS virus, Hepatitis virus, Syphilis or Malaria ug positibo ang resulto sa bisan ha-in niini?",
                   OrderNo = 26
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 27,
-                  QuestionTagalogText = "Heart disease or chest pain?",
+                  QuestionEnglishText = "Had Hepatitis?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nagkasakit ug hepatitis?",
                   OrderNo = 27
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 28,
-                  QuestionTagalogText = "Lung disease, tuberculosis or asthma?",
+                  QuestionEnglishText = "Had malaria?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nagkasakit ug malaria?",
                   OrderNo = 28
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 29,
-                  QuestionTagalogText = "Kidney dusease, diabetes or epilepsy?",
+                  QuestionEnglishText = "Been told to have or treated for genital wart, syphilis, gonorrhea or other Sexually Transmissible Infections?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nogkasakit o nakapatambal para genital wart, syphilis, tulo (gonorrhea) o ubang laing mga sakit nga makuha sa pakighilawas?) 26. Had any type of cancer, for example leukemia? (nagkasakit ug kanser sama sa lukemya o uban pa?",
                   OrderNo = 29
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 30,
-                  QuestionTagalogText = "Small pox, canker sore or ulcers?",
+                  QuestionEnglishText = "Had any problems with your heart and lungs?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Adunay sakit o problema sa baga o kasing-kasing?",
                   OrderNo = 30
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 31,
-                  QuestionTagalogText = "Other diseases not mentioned or had an operation?",
+                  QuestionEnglishText = "Had a bleeding condition or a blood disease?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
                   OrderNo = 31
               },
+              //new MedicalQuestionnaire
+              //{
+              //    MedicalQuestionnaireId = 32,
+              //    QuestionEnglishText = "Had a bleeding condition or a blood disease?",
+              //    QuestionTagalogText = "",
+              //    QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
+              //    OrderNo = 32
+              //},
+              //new MedicalQuestionnaire
+              //{
+              //    MedicalQuestionnaireId = 33,
+              //    QuestionEnglishText = "Had a bleeding condition or a blood disease?",
+              //    QuestionTagalogText = "",
+              //    QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
+              //    OrderNo = 33
+              //},
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 32,
-                  QuestionTagalogText = "Rashes or fever? Is it simultaneous with body aches, rheumatism or eye redness?",
+                  QuestionEnglishText = "Are you giving blood because you wanted to be tested for HIV or Hepatitis virus?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Mu-donar ug dugo tungod gusto ka magpa-testing sa HIV o hepatitis?",
                   OrderNo = 32
+                  
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 33,
-                  HeaderText = "FOR FEMALE ONLY:",
-                  QuestionTagalogText = "Are you currently pregnant? Have you been pregnant in the past?",
-                  OrderNo = 33,
-                  GenderOption = "Female"
+                  QuestionEnglishText = "Would you be willing to be recalled to donate blood at VSMMC - Blood Services facility should the need arise?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Kung magkinahanglan, mutugot ka ba nga tawagon aron pag-ari sa VSMMC - Blood Services aron sa pagdonar ug dugo?",
+                  OrderNo = 33
+                  
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 34,
-                  QuestionTagalogText = "When was the last time you have given birth?",
-                  OrderNo = 34,
-                  GenderOption = "Female"
+                  HeaderText = "Additional Screening Tool for Blood Donors Based on NVBSP Guidelines (DOH-NVBSP Department Memorandum No. 2020-0124)",
+                  QuestionEnglishText = "Have you travelled outside the Philippines within the past 28 days? If YES, please indicate the specific country.",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nakabiyahe ba ka sa gawas sa Pilipinas sa nilabay nga 28 ka adlaw? Kung oo, palihug isuwot kung asa nga lugar.",
+                  OrderNo = 34
+                  
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 35,
-                  QuestionTagalogText = "For the past year, have you had miscarriage or abortion?",
-                  OrderNo = 35,
-                  GenderOption = "Female"
+                  QuestionEnglishText = "Have you experienced OR have been exposed to any of the following symptoms within the past 14 days up to present?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Aduna ka ba'y bisan unsa aning mga mosunod o nakahimamat ug bisan kinsa nga adunay usa sa mga mosunod gikan sa niaging 14 ka adlaw hangtud karon?",
+                  OrderNo = 35
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 36,
-                  QuestionTagalogText = "Are you currently breast feeding?",
-                  OrderNo = 36,
-                  GenderOption = "Female"
+                  QuestionEnglishText = "Fever, Cough, Sore throat, Shortness of breath or difficulty of breathing, Diarrhea. If YES, indicate the date symptoms started",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Hilanat,Ubo,Pagsakit sa tutunlan,Kalisud sa pagginhawa,Kalibanga. Kung aduna, isuwat ang petsa kanus-a nagsugod",
+                  OrderNo = 36
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 37,
-                  QuestionTagalogText = "When was the last time you had your menstruation?",
-                  OrderNo = 37,
-                  GenderOption = "Female"
+                  QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
+                  OrderNo = 37
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 38,
-                  HeaderText = "ACCEPTANCE CRITERIA IN RELATION TO COVID-19:",
-                  QuestionTagalogText = "Do you have colds, coughs and/or fever today?",
+                  QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
                   OrderNo = 38
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 39,
-                  QuestionTagalogText = "Were you tested for COVID 19 infection? Result and date of last test?",
+                  QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "",
                   OrderNo = 39
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 40,
-                  QuestionTagalogText = "Were you diagnosed with COVID 19 infection? Date of last test and treatment?",
+                  QuestionEnglishText = "Confirmed (+) for COVID-19. If confirmed COVID-19(+), indicate the date of recovery",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19. Kung nagpositibo sa COVID-19, isuwat ang petsa sa pagkaayo?",
                   OrderNo = 40
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 41,
-                  QuestionTagalogText = "In the last 14 days, have you had close contact with a confirmed case of COVID-19 or cared for an infected patient?",
+                  QuestionEnglishText = "Have you been exposed to somebody who is identified or has any of the following within the past 28 days?",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Aduna ka bay nahimamat nga mga tawo nga usa o adunay bisan unsa sa mga mosunod sa niaging 28 ka adlaw?",
                   OrderNo = 41
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 42,
-                  QuestionTagalogText = "In the last 14 days, have you travelled from areas with known community transmissions or any place outside the Philippines?",
+                  QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "",
                   OrderNo = 42
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 43,
-                  QuestionTagalogText = "In the last 4 weeks have you come in close contact with wild or exotic animals including its products?",
+                  QuestionEnglishText = "Confirmed (+) for COVID-19",
+                  QuestionTagalogText = "",
+                  QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19",
                   OrderNo = 43
-              },
-              new MedicalQuestionnaire
-              {
-                  MedicalQuestionnaireId = 44,
-                  QuestionTagalogText = "In the last 4 weeks, have you eaten raw or uncooked meat and drank unprocessed milk?",
-                  OrderNo = 44
               }
             );
         }

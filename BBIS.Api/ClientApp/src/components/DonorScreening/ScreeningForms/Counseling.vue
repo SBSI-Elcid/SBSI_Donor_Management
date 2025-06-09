@@ -1,63 +1,68 @@
 <template>
   <div>
-    <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
-      <table style="width:100%">
-        <tr v-for="question in donorMedicalHistories" :key="question.donorMedHistory.MedicalQuestionnaireId">
-          <td style="width: 65%;">
-            <div v-if="question.header != null" class="section-outer-container medical-header-label pa-2">{{question.header}}</div>
-            <label class="subtitle-1 pa-2">{{question.question}}</label>
-          </td>
+      <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
+          <v-row>
+              <v-col cols="12" md="12" class="d-flex justify-end align-center">
+                  <v-radio-group v-model="selectedLanguage" row class="justify-end">
+                      <v-radio label="Tagalog" value="tagalog"></v-radio>
+                      <v-radio label="English" value="english"></v-radio>
+                      <v-radio label="Other Dialect" value="other"></v-radio>
+                  </v-radio-group>
+              </v-col>
+          </v-row>
+                  <table style="width:100%">
+                      <tr v-for="question in donorMedicalHistories" :key="question.donorMedHistory.MedicalQuestionnaireId">
+                          <td style="width: 65%;">
+                              <div v-if="question.header != null" class="section-outer-container medical-header-label pa-2">{{question.header}}</div>
+                              <label class="subtitle-1 pa-2">{{question.question}}</label>
+                          </td>
 
-          <td style="width: 15%;">
-            <v-radio-group 
-              v-if ="!question.hasHistory"
-              v-model="question.donorMedHistory.Answer" 
-              :rules="[rules.required]" 
-              :disabled="isDisabled"
-              hide-details="true" 
-              row
-            >
-              <v-radio label="Yes" value="Yes" />
-              <v-radio label="No" value="No" />
-            </v-radio-group>
+                          <td style="width: 15%;">
+                              <v-radio-group v-if="!question.hasHistory"
+                                             v-model="question.donorMedHistory.Answer"
+                                             :rules="[rules.required]"
+                                             :disabled="isDisabled"
+                                             hide-details="true"
+                                             row>
+                                  <v-radio label="Yes" value="Yes" />
+                                  <v-radio label="No" value="No" />
+                              </v-radio-group>
 
-            <div v-else class="pr-2 pl-2 text-center">
-              <span>{{ question.donorMedHistory.Answer }}</span>
-              <v-icon v-if="question.donorMedHistory.Answer === 'Yes'" color="success">mdi-check</v-icon>
-              <v-icon v-else color="error">mdi-close</v-icon>
-            </div>
-          </td>
+                              <div v-else class="pr-2 pl-2 text-center">
+                                  <span>{{ question.donorMedHistory.Answer }}</span>
+                                  <v-icon v-if="question.donorMedHistory.Answer === 'Yes'" color="success">mdi-check</v-icon>
+                                  <v-icon v-else color="error">mdi-close</v-icon>
+                              </div>
+                          </td>
 
-          <td style="width: 20%;">
-            <v-text-field 
-              v-if="" 
-              v-model="question.donorMedHistory.Remarks"
-              :disabled="isDisabled"
-              placeholder="Remarks"
-              hide-details="true"
-              dense flat solo 
-            />
+                          <td style="width: 20%;">
+                              <v-text-field v-if=""
+                                            v-model="question.donorMedHistory.Remarks"
+                                            :disabled="isDisabled"
+                                            placeholder="Remarks"
+                                            hide-details="true"
+                                            dense flat solo />
 
-            <p class="pa-2 text-caption">
-              {{ question.donorMedHistory.Remarks }}
-            </p>
-          </td>
-        </tr>
-      </table>
-      <v-divider />
+                              <p class="pa-2 text-caption">
+                                  {{ question.donorMedHistory.Remarks }}
+                              </p>
+                          </td>
+                      </tr>
+                  </table>
+                  <v-divider />
 
-      <!-- BUTTONS -->
-      <div class="section-outer-container text-right pt-3 pb-2" v-if ="!isDisabled">
-        <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
-        <v-btn color="default" large tile class="mr-2" v-if="" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
-        <v-btn color="default" large tile class="mr-2" v-if="" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
-      </div>
-    </v-form>
+                  <!-- BUTTONS -->
+                  <div class="section-outer-container text-right pt-3 pb-2" v-if="!isDisabled">
+                      <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
+                      <v-btn color="default" large tile class="mr-2" v-if="" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
+                      <v-btn color="default" large tile class="mr-2" v-if="" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
+                  </div>
+</v-form>
   </div>
 </template>
 <script lang="ts">
 import VueBase from '@/components/VueBase';
-import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue,Watch } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import DonorModule from '@/store/DonorModule';
 import { IMedicalQuestionnaireDto } from '@/models/DonorRegistration/MedicalQuestionnaireDto';
@@ -79,14 +84,14 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
         protected donorRegistrationId: Guid = '';
         protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
         protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
-
+        protected selectedLanguage: string = '';
 
         protected donorCounseling: IDonorCounseling = new DonorCounselingDto();
 
         protected donorInfo?: IDonorDto;
 
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
-        protected isDisabled: boolean = true;
+        protected isDisabled: boolean = false;
 
         protected get medicalQuestionnaires(): Array<IMedicalQuestionnaireDto> {
             let questionnaires = this.donorModule.getMedicalQuestionnaire;
@@ -126,6 +131,12 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             });
         }
 
+        @Watch('selectedLanguage')
+        onSelectedLanguageChanged() {
+            
+            // If needed, you can force recomputation or trigger other logic here
+        }
+
         protected async loadDonorInfo(): Promise<void> {
             if (this.$route.params.reg_id && typeof this.$route.params.reg_id === 'string') {
                 this.donorRegistrationId = this.$route.params.reg_id;
@@ -136,7 +147,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                     this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
 
                     if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
-                        this.isDisabled = false;
+                        this.isDisabled = true;
                         this.donorModule.setDonorStatus(donorInfo.DonorStatus);
                     }
                     console.log(donorInfo);
@@ -162,15 +173,27 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                 let hasHistory = this.newDonor.MedicalHistories.some(
                     x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId
                 );
+                let questionText = '';
+                switch (this.selectedLanguage) {
+                    case 'english':
+                        questionText = question.QuestionEnglishText;
+                        break;
+                    case 'tagalog':
+                        questionText = question.QuestionTagalogText;
+                        break;
+                    default:
+                        questionText = question.QuestionOtherDialectText;
+                        break;
+                }
                 let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
                     header: question.HeaderText,
-                    question: question.QuestionTagalogText,
+                    question: questionText,
                     donorMedHistory: {
                         MedicalQuestionnaireId: question.MedicalQuestionnaireId,
                         Answer: donorMedicalHistory.Answer,
                         Remarks: donorMedicalHistory.Remarks,
                         HeaderText: question.HeaderText,
-                        QuestionText: question.QuestionTagalogText
+                        QuestionText: questionText
                     },
                     hasHistory: hasHistory
                 };

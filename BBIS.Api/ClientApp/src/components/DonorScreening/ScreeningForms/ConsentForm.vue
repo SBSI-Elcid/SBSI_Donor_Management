@@ -74,7 +74,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td v-if="DonorInformation.Age > 18">
+                    <td v-if="DonorInformation.Age >= 18">
                     </td>
                     <td v-else>
                         <label class="subtitle-1 pa-2">
@@ -231,6 +231,7 @@
         protected calculateAge(): void {
             let years = moment().diff(moment(this.DonorInformation.BirthDate, 'YYYY-MM-DD'), 'years');
             this.DonorInformation.Age = years;
+            console.log("DonorAge",this.DonorInformation.Age)
         }
 
         protected get DonorInformation(): IDonorDto {

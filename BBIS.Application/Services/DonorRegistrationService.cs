@@ -36,6 +36,7 @@ namespace BBIS.Application.Services
                         MedicalQuestionnaireId = x.MedicalQuestionnaireId,
                         OrderNo = x.OrderNo,
                         QuestionEnglishText = x.QuestionEnglishText,
+                        QuestionOtherDialectText = x.QuestionOtherDialectText,
                         QuestionTagalogText = x.QuestionTagalogText,
                         GenderOption = x.GenderOption
                     })
@@ -168,7 +169,7 @@ namespace BBIS.Application.Services
                         Answer = x.Answer,
                         HeaderText = x.MedicalQuestionnaire.HeaderText,
                         MedicalQuestionnaireId = x.MedicalQuestionnaireId,
-                        QuestionText = x.MedicalQuestionnaire.QuestionTagalogText,
+                        QuestionText = x.MedicalQuestionnaire.QuestionEnglishText,
                         Remarks = x.Remarks
                     })
                 .ToList();

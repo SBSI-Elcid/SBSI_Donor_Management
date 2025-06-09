@@ -105,7 +105,7 @@ namespace BBIS.Database
                 entity.HasKey(e => e.MedicalQuestionnaireId);
                 entity.Property(e => e.QuestionTagalogText).IsRequired().HasColumnType("varchar(500)");
                 entity.Property(e => e.QuestionEnglishText).HasColumnType("varchar(500)");
-                entity.Property(e => e.QuestionBisayaText).HasColumnType("varchar(500)");
+                entity.Property(e => e.QuestionOtherDialectText).HasColumnType("varchar(500)");
                 entity.Property(e => e.HeaderText).HasColumnType("varchar(200)");
                 entity.Property(e => e.GenderOption).HasColumnType("varchar(10)");
 

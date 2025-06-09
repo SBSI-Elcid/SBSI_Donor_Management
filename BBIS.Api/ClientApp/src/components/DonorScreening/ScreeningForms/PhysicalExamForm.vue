@@ -78,7 +78,7 @@
         protected canAddReason: boolean = false;
         protected donorPhysicalExam: IDonorPhysicalExaminationDto = new DonorPhysicalExaminationDto();
         protected isEditingValue: boolean = false;
-        protected isDisabled: boolean = true;
+        protected isDisabled: boolean = false;
 
         protected get isEditable(): boolean {
             return this.donorPhysicalExam.DonorStatus === DonorStatus.ForPhysicalExamination;
@@ -125,7 +125,7 @@
 
                 // Enable the fields when Donor Status is not deferred and not for initial screening.
                 if (Common.hasValue(this.donorPhysicalExam.DonorStatus) && this.donorPhysicalExam.DonorStatus !== DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForVitalSigns) {
-                    this.isDisabled = false;
+                    this.isDisabled = true;
                     if (this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
                         this.isEditingValue = true;
                     }

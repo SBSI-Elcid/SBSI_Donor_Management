@@ -36,7 +36,7 @@
 
                         <v-row>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="schedule.ScheduleDateTime" type="date"
+                                <v-text-field v-model="schedule.ScheduleDateTime" type="datetime-local"
                                               label="Date and Time"
                                               dense
                                               outlined></v-text-field>

@@ -3,6 +3,7 @@ using System;
 using BBIS.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BBIS.Database.Migrations
 {
     [DbContext(typeof(BBDbContext))]
-    partial class BBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250609061933_ChangesOnSeederForQuestionarres")]
+    partial class ChangesOnSeederForQuestionarres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2144,95 +2146,111 @@ namespace BBIS.Database.Migrations
                         {
                             MedicalQuestionnaireId = 32,
                             OrderNo = 32,
-                            QuestionEnglishText = "Are you giving blood because you wanted to be tested for HIV or Hepatitis virus?",
-                            QuestionOtherDialectText = "Mu-donar ug dugo tungod gusto ka magpa-testing sa HIV o hepatitis?",
+                            QuestionEnglishText = "Had a bleeding condition or a blood disease?",
+                            QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 33,
                             OrderNo = 33,
-                            QuestionEnglishText = "Would you be willing to be recalled to donate blood at VSMMC - Blood Services facility should the need arise?",
-                            QuestionOtherDialectText = "Kung magkinahanglan, mutugot ka ba nga tawagon aron pag-ari sa VSMMC - Blood Services aron sa pagdonar ug dugo?",
+                            QuestionEnglishText = "Had a bleeding condition or a blood disease?",
+                            QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 34,
-                            HeaderText = "Additional Screening Tool for Blood Donors Based on NVBSP Guidelines (DOH-NVBSP Department Memorandum No. 2020-0124)",
                             OrderNo = 34,
-                            QuestionEnglishText = "Have you travelled outside the Philippines within the past 28 days? If YES, please indicate the specific country.",
-                            QuestionOtherDialectText = "Nakabiyahe ba ka sa gawas sa Pilipinas sa nilabay nga 28 ka adlaw? Kung oo, palihug isuwot kung asa nga lugar.",
+                            QuestionEnglishText = "Are you giving blood because you wanted to be tested for HIV or Hepatitis virus?",
+                            QuestionOtherDialectText = "Mu-donar ug dugo tungod gusto ka magpa-testing sa HIV o hepatitis?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 35,
                             OrderNo = 35,
-                            QuestionEnglishText = "Have you experienced OR have been exposed to any of the following symptoms within the past 14 days up to present?",
-                            QuestionOtherDialectText = "Aduna ka ba'y bisan unsa aning mga mosunod o nakahimamat ug bisan kinsa nga adunay usa sa mga mosunod gikan sa niaging 14 ka adlaw hangtud karon?",
+                            QuestionEnglishText = "Would you be willing to be recalled to donate blood at VSMMC - Blood Services facility should the need arise?",
+                            QuestionOtherDialectText = "Kung magkinahanglan, mutugot ka ba nga tawagon aron pag-ari sa VSMMC - Blood Services aron sa pagdonar ug dugo?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 36,
+                            HeaderText = "Additional Screening Tool for Blood Donors Based on NVBSP Guidelines (DOH-NVBSP Department Memorandum No. 2020-0124)",
                             OrderNo = 36,
-                            QuestionEnglishText = "Fever, Cough, Sore throat, Shortness of breath or difficulty of breathing, Diarrhea. If YES, indicate the date symptoms started",
-                            QuestionOtherDialectText = "Hilanat,Ubo,Pagsakit sa tutunlan,Kalisud sa pagginhawa,Kalibanga. Kung aduna, isuwat ang petsa kanus-a nagsugod",
+                            QuestionEnglishText = "Have you travelled outside the Philippines within the past 28 days? If YES, please indicate the specific country.",
+                            QuestionOtherDialectText = "Nakabiyahe ba ka sa gawas sa Pilipinas sa nilabay nga 28 ka adlaw? Kung oo, palihug isuwot kung asa nga lugar.",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 37,
                             OrderNo = 37,
-                            QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
-                            QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
+                            QuestionEnglishText = "Have you experienced OR have been exposed to any of the following symptoms within the past 14 days up to present?",
+                            QuestionOtherDialectText = "Aduna ka ba'y bisan unsa aning mga mosunod o nakahimamat ug bisan kinsa nga adunay usa sa mga mosunod gikan sa niaging 14 ka adlaw hangtud karon?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 38,
                             OrderNo = 38,
-                            QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
-                            QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
+                            QuestionEnglishText = "Fever, Cough, Sore throat, Shortness of breath or difficulty of breathing, Diarrhea. If YES, indicate the date symptoms started",
+                            QuestionOtherDialectText = "Hilanat,Ubo,Pagsakit sa tutunlan,Kalisud sa pagginhawa,Kalibanga. Kung aduna, isuwat ang petsa kanus-a nagsugod",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 39,
                             OrderNo = 39,
-                            QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
-                            QuestionOtherDialectText = "",
+                            QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
+                            QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 40,
                             OrderNo = 40,
-                            QuestionEnglishText = "Confirmed (+) for COVID-19. If confirmed COVID-19(+), indicate the date of recovery",
-                            QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19. Kung nagpositibo sa COVID-19, isuwat ang petsa sa pagkaayo?",
+                            QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
+                            QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
                             QuestionTagalogText = ""
                         },
                         new
                         {
                             MedicalQuestionnaireId = 41,
                             OrderNo = 41,
-                            QuestionEnglishText = "Have you been exposed to somebody who is identified or has any of the following within the past 28 days?",
-                            QuestionOtherDialectText = "Aduna ka bay nahimamat nga mga tawo nga usa o adunay bisan unsa sa mga mosunod sa niaging 28 ka adlaw?",
-                            QuestionTagalogText = ""
-                        },
-                        new
-                        {
-                            MedicalQuestionnaireId = 42,
-                            OrderNo = 42,
                             QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
                             QuestionOtherDialectText = "",
                             QuestionTagalogText = ""
                         },
                         new
                         {
+                            MedicalQuestionnaireId = 42,
+                            OrderNo = 42,
+                            QuestionEnglishText = "Confirmed (+) for COVID-19. If confirmed COVID-19(+), indicate the date of recovery",
+                            QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19. Kung nagpositibo sa COVID-19, isuwat ang petsa sa pagkaayo?",
+                            QuestionTagalogText = ""
+                        },
+                        new
+                        {
                             MedicalQuestionnaireId = 43,
                             OrderNo = 43,
+                            QuestionEnglishText = "Have you been exposed to somebody who is identified or has any of the following within the past 28 days?",
+                            QuestionOtherDialectText = "Aduna ka bay nahimamat nga mga tawo nga usa o adunay bisan unsa sa mga mosunod sa niaging 28 ka adlaw?",
+                            QuestionTagalogText = ""
+                        },
+                        new
+                        {
+                            MedicalQuestionnaireId = 44,
+                            OrderNo = 44,
+                            QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
+                            QuestionOtherDialectText = "",
+                            QuestionTagalogText = ""
+                        },
+                        new
+                        {
+                            MedicalQuestionnaireId = 45,
+                            OrderNo = 45,
                             QuestionEnglishText = "Confirmed (+) for COVID-19",
                             QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19",
                             QuestionTagalogText = ""

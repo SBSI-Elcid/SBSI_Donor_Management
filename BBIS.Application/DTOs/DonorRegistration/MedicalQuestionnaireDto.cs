@@ -6,7 +6,7 @@
         public string HeaderText { get; set; }
         public string QuestionTagalogText { get; set; }
         public string QuestionEnglishText { get; set; }
-        public string QuestionBisayaText { get; set; }
+        public string QuestionOtherDialectText { get; set; }
         public int OrderNo { get; set; }
         public string GenderOption { get; set; }
     }
