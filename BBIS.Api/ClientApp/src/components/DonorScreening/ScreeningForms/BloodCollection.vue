@@ -41,8 +41,8 @@
         <v-row align="center">
             <!-- Success Radio -->
             <v-col cols="12" md="2" class="mb-7">
-                <label class="font-weight-bold">Success?</label>
-                <v-radio-group row v-model ="donorBloodCollection.Success"> 
+                <label class="font-weight-bold">Success?</label> 
+                <v-radio-group row v-model ="donorBloodCollection.Success" :disabled="isEditingValue"> 
                     <v-radio label="Yes" :value="true" />
                     <v-radio label="No" :value="false" />
                 </v-radio-group>

@@ -1,5 +1,7 @@
-﻿using BBIS.Application.Contracts;
+﻿using AutoMapper;
+using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.Dashboard;
+using BBIS.Application.DTOs.Schedule;
 using BBIS.Common.Enums;
 using BBIS.Common.Extensions;
 using BBIS.Database;
@@ -28,6 +30,24 @@ namespace BBIS.Application.Services
             return await dbContext.DonorTransactions.AsNoTracking().CountAsync(x => x.DateOfDonation.HasValue);
         }
 
+        public async Task<List<ScheduleDto>> GetSchedules()
+        {
+            var dtoList = await dbContext.Schedules
+                         .Select(s => new ScheduleDto
+                         {
+                             ScheduleId = s.ScheduleId,
+                             ActivityName = s.ActivityName,
+                             ActivityType = s.ActivityType,
+                             ActivityVenue = s.ActivityVenue,
+                             ScheduleDateTime = s.ScheduleDateTime,
+                             PartnerInstitutionName = s.PartnerInstitutionName,
+                             PointPersonName = s.PointPersonName,
+                             ExpectedDonorNumber = s.ExpectedDonorNumber
+                         })
+                         .ToListAsync();
+            return dtoList;
+        }
+
         public async Task<InventoryCountDto> GetInventoryItemsCount()
         {
             var inventoryCount = new InventoryCountDto { TotalItems = 0, TotalNearlyExpiredItems = 0, TotalExpiredItems = 0 };
@@ -38,7 +58,7 @@ namespace BBIS.Application.Services
                     InventoryItemId = x.InventoryItemId,
                     Status = x.Status
                 }).AsNoTracking().ToListAsync();
-            
+
             if (items.Any())
             {
                 var totalAvailableItems = items.Where(x => x.Status != InventoryStatus.Expired && x.Status != InventoryStatus.Acquired).Count();
@@ -68,7 +88,7 @@ namespace BBIS.Application.Services
             if (items.Any())
             {
                 var groupedByType = items.GroupBy(x => x.BloodType);
-                foreach(var group in groupedByType)
+                foreach (var group in groupedByType)
                 {
                     var bloodTypeCount = new BloodTypeCountDto();
                     bloodTypeCount.BloodType = group.Key;
@@ -80,7 +100,7 @@ namespace BBIS.Application.Services
 
             return bloodTypeCountDto;
         }
-        
+
         public async Task<DonorCountDto> GetMonthlyDonorCount()
         {
             var donorCount = new DonorCountDto { Donors = new List<MonthlyDonorCountDto>(), DeferredDonors = new List<MonthlyDonorCountDto>() };
@@ -101,7 +121,7 @@ namespace BBIS.Application.Services
                 var monthlyDonors = new List<MonthlyDonorCountDto>();
 
                 foreach (var month in months)
-                {                  
+                {
                     var donorsByMonth = donors.Where(x => x.Month == month).ToList();
 
                     var monthlyCount = new MonthlyDonorCountDto();

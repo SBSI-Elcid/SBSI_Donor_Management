@@ -126,7 +126,7 @@ import { IDonorDto,DonorDto } from '../../../models/DonorRegistration/DonorDto';
 
         protected mounted() {
             this.pagedSearchDto.ScheduleId = this.$route.params.reg_id;
-            console.log("pagedSearchDto",this.pageSearchDto);
+          
             this.loadrecords();
 
         }
@@ -159,7 +159,6 @@ import { IDonorDto,DonorDto } from '../../../models/DonorRegistration/DonorDto';
         }
 
         protected onRegister(item: any): void {
-            console.log('Selected donor:', item);
             this.newDonor(item);
             this.donorModule.setDonorInformation(this.expectedDonor);
             this.$router.push({
@@ -207,8 +206,7 @@ import { IDonorDto,DonorDto } from '../../../models/DonorRegistration/DonorDto';
            
 
             try {
-                this.pagedResult = await this.scheduleService.getActivityDonor(this.pagedSearchDto);
-                console.log(this.pagedResult);
+                this.pagedResult = await this.scheduleService.getActivityDonor(this.pagedSearchDto);  
                 this.loading = false;
                 this.records = this.pagedResult.Results;
                 this.dataLoaded = true;

@@ -145,12 +145,10 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                     const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
 
                     this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
-
-                    if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus === DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
+                    if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus !== DonorStatus.Deferred && donorInfo.DonorStatus !== DonorStatus.ForCounseling) {
                         this.isDisabled = true;
-                        this.donorModule.setDonorStatus(donorInfo.DonorStatus);
                     }
-                    console.log(donorInfo);
+                   
                     donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
                     this.donorModule.setDonorInformation(donorInfo);
 
@@ -160,6 +158,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
 
              
             }
+          
         }
 
         protected get newDonor(): IDonorDto {
@@ -182,7 +181,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                         questionText = question.QuestionTagalogText;
                         break;
                     default:
-                        questionText = question.QuestionOtherDialectText;
+                        questionText = question.QuestionEnglishText;
                         break;
                 }
                 let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
@@ -243,15 +242,18 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
         }
 
-        public async onSubmit(): Promise<void> {
-            let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
-            this.newDonor.MedicalHistories = donorMedicalHistory;
-            this.donorModule.setDonorInformation(this.newDonor);
+        public async onSubmit(confirm: boolean): Promise<void> {
+            if (confirm) {
+                let donorMedicalHistory: Array<IDonorMedicalHistoryDto> = this.donorMedicalHistories.map(x => x.donorMedHistory);
+                this.newDonor.MedicalHistories = donorMedicalHistory;
+                this.donorModule.setDonorInformation(this.newDonor);
 
+
+                this.donorCounseling.medicalHistories = this.newDonor.MedicalHistories;
+                this.donorCounseling.DonorRegistrationId = this.$route.params.reg_id;
+                await this.insertData();
+            }
             
-            this.donorCounseling.medicalHistories = this.newDonor.MedicalHistories;
-            this.donorCounseling.DonorRegistrationId = this.$route.params.reg_id;
-            await this.insertData();
         }
 
         public async insertData(): Promise<void> {

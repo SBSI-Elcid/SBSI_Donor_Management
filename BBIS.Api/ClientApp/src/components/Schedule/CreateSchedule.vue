@@ -3,13 +3,13 @@
 
         <v-dialog v-model="dialog" max-width="900px" persistent>
             <v-card>
-                <v-card-title class="red lighten-2 white--text justify-center">
+                <v-card-title class="white--text justify-center" style="background-color: rgb(185, 47, 47);">
                     <strong>CREATE / EDIT / VIEW SCHEDULE</strong>
                 </v-card-title>
 
                 <v-card-actions v-if="isEditing" class="text-left; ml-5">
-                    <v-btn color="red darken-2" class="white--text" @click ="openActivityDonor">VIEW DONORS</v-btn>
-                    <v-btn color="red darken-2" class="white--text" @click="openChecklist">
+                    <v-btn style="background-color: rgb(185, 47, 47);" class="white--text" @click ="openActivityDonor">VIEW DONORS</v-btn>
+                    <v-btn style="background-color: rgb(185, 47, 47);" class="white--text" @click="openChecklist">
                         VIEW CHECKLIST
                     </v-btn>
                 </v-card-actions>
@@ -18,14 +18,14 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field v-model="schedule.ActivityName" label="Name of Activity" dense outlined></v-text-field>
+                                <v-text-field :disabled ="isDisabled" v-model="schedule.ActivityName" label="Name of Activity" dense outlined></v-text-field>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col cols="12">
                                 <label class="font-weight-bold mb-2">Type of Voluntary Non-Remunerated Blood Donation</label>
-                                <v-radio-group v-model="schedule.ActivityType" row>
+                                <v-radio-group :disabled ="isDisabled" v-model="schedule.ActivityType" row>
                                     <v-radio label="Walk-In" value="Walk-In"></v-radio>
                                     <v-radio label="In-House" value="In-House"></v-radio>
                                     <v-radio label="Mobile Blood Donation" value="Mobile"></v-radio>
@@ -36,28 +36,28 @@
 
                         <v-row>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="schedule.ScheduleDateTime" type="datetime-local"
+                                <v-text-field :disabled ="isDisabled" v-model="schedule.ScheduleDateTime" type="datetime-local"
                                               label="Date and Time"
                                               dense
                                               outlined></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="schedule.ActivityVenue" label="Venue" dense outlined></v-text-field>
+                                <v-text-field :disabled ="isDisabled" v-model="schedule.ActivityVenue" label="Venue" dense outlined></v-text-field>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="schedule.PartnerInstitutionName" label="Name of Partner Institution" dense outlined></v-text-field>
+                                <v-text-field :disabled ="isDisabled" v-model="schedule.PartnerInstitutionName" label="Name of Partner Institution" dense outlined></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="schedule.PointPersonName" label="Name of Point Person" dense outlined></v-text-field>
+                                <v-text-field :disabled ="isDisabled" v-model="schedule.PointPersonName" label="Name of Point Person" dense outlined></v-text-field>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Expected Number of Donors / Audience"
+                                <v-text-field :disabled ="isDisabled" label="Expected Number of Donors / Audience"
                                               dense
                                               v-model="schedule.ExpectedDonorNumber"
                                               outlined></v-text-field>
@@ -67,13 +67,14 @@
                 </v-card-text>
 
                 <v-card-actions class="justify-end">
-                    <v-btn color="red darken-2" @click="createSchedule" class="white--text">{{labelUpdate}}</v-btn>
+                    <v-btn v-if ="!isDisabled" color="red darken-2" @click="createSchedule" class="white--text">{{labelUpdate}}</v-btn>
                     <v-btn color="red darken-2" @click="$emit('close')" class="white--text">CANCEL</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <CheckList v-if="showChecklist"
                    :value="showChecklist"
+                   :isDisabled ="isDisabled"
                    :schedule_id="schedule.ScheduleId"
                    @close="handleClose" />
 
@@ -100,6 +101,7 @@
 
         @Prop({ default: false }) readonly isEditing!: boolean;
 
+        @Prop({ default: false }) readonly isDisabled!: boolean;
 
         @Prop({ default: "" }) readonly scheduleId!: string;
         protected dialog: boolean = false;
@@ -155,7 +157,7 @@
             try {
                 const result = await this.scheduleService.getSchedulesById(this.scheduleId);
                 this.schedule = result;
-                this.schedule.ScheduleDateTime = moment(result.ScheduleDateTime).format("YYYY-MM-DD")// populate your form-bound object
+                this.schedule.ScheduleDateTime = moment(result.ScheduleDateTime).format("YYYY-MM-DDTHH:mm");// populate your form-bound object
     
             } catch (err) {
                 console.error('Failed to load schedule', err);
@@ -167,7 +169,6 @@
             try {
                 
                 moment(this.schedule.ScheduleDateTime).format("YYYY-MM-DD");
-                console.log(this.schedule);
                 const id = await this.scheduleService.upsertSchedule(this.schedule);
                 this.notify_success('Form successfully submitted.');
                 this.$emit('close'); // Close dialog

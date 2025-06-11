@@ -2,6 +2,7 @@ import { ApiClient } from "./ApiClient";
 import { IInventoryCountDto } from '@/models/Dashboard/InventoryCountDto';
 import { IBloodTypeCountDto } from "@/models/Dashboard/BloodTypeCountDto";
 import { IDonorCountDto } from "@/models/Dashboard/DonorCountDto";
+import { ISchedule } from "../models/Schedules/ScheduleDto";
 
 export default class DashboardService {
 	baseUrl: string = 'api/dashboard/';
@@ -17,6 +18,10 @@ export default class DashboardService {
 
     async getInventoryCount(): Promise<IInventoryCountDto> {
 		return this.apiClient.get<IInventoryCountDto>(`inventoryCount`);
+	}
+
+	async getScheduleList(): Promise<Array<ISchedule>> {
+		return this.apiClient.get<Array<ISchedule>>(`scheduleList`);
 	}
 
     async getBloodTypeCount(): Promise<Array<IBloodTypeCountDto>> {

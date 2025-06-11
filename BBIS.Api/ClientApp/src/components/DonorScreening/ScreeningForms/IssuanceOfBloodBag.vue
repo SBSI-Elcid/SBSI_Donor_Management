@@ -256,7 +256,7 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
 
         protected onPrint(): void {
 
-            this.generatedSerialNumber = this.donorBloodBagIssuance.SegmentSerialNumber;
+            this.generatedSerialNumber = this.donorBloodBagInfo.UnitSerialNumber;
             if (Common.hasValue(this.generatedSerialNumber)) {
                 JsBarcode("#barcode", `${this.generatedSerialNumber}`, {
                     width: 2,

@@ -1,5 +1,6 @@
 ﻿using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.Dashboard;
+using BBIS.Application.DTOs.Schedule;
 using BBIS.Common;
 using BBIS.Common.Logging;
 using Microsoft.AspNetCore.Authorization;
@@ -61,6 +62,21 @@ namespace BBIS.Api.Controllers
             catch (Exception ex)
             {
                 logger.LogError($"Something went wrong retrieving blood type count: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet("scheduleList")]
+        public async Task<ActionResult<RequestResult<List<ScheduleDto>>>> GetSchedules()
+        {
+            try
+            {
+                var results = await this.dashboardService.GetSchedules();
+                return this.Json(results);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving schedules: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
             }
         }

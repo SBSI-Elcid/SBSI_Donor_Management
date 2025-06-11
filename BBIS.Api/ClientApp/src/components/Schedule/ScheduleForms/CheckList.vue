@@ -2,49 +2,49 @@
     <v-dialog v-model="dialog" max-width="1000px" persistent >
         <v-container fluid>
             <v-card outlined>
-                <v-card-title class="headline font-weight-bold justify-center red lighten-4">
+                <v-card-title class="headline font-weight-bold justify-center white--text" style="background-color: rgb(185, 47, 47);">
                     CHECKLIST
                 </v-card-title>
 
                 <v-card-text>
                     <v-form>
                         <v-row>
-                            <v-col cols="12">
+                            <v-col cols="12" class="mt-3">
                                 <v-card outlined>
-                                    <v-card-title class="red white--text py-2 px-4 font-weight-bold">
+                                    <v-card-title class="white--text py-2 px-4 font-weight-bold" style="background-color: rgb(185, 47, 47)">
                                         CONFIRMATION CALL
                                     </v-card-title>
                                     <v-card-text>
-                                        <v-textarea v-model ="checklist.ConfirmationCall" class="ma-2" label="Input details" outlined dense></v-textarea>
+                                        <v-textarea :disabled ="isDisabled" v-model ="checklist.ConfirmationCall" class="ma-2" label="Input details" outlined dense></v-textarea>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
 
                             <v-col cols="12">
                                 <v-card outlined>
-                                    <v-card-title class="red white--text py-2 px-4 font-weight-bold">
+                                    <v-card-title class="white--text py-2 px-4 font-weight-bold" style="background-color: rgb(185, 47, 47)">
                                         VERIFICATION CALL
                                     </v-card-title>
                                     <v-card-text>
-                                        <v-textarea v-model ="checklist.VerificationCall" class="ma-2" label="Input details" outlined dense></v-textarea>
+                                        <v-textarea :disabled ="isDisabled" v-model ="checklist.VerificationCall" class="ma-2" label="Input details" outlined dense></v-textarea>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
 
                             <v-col cols="12">
                                 <v-card outlined>
-                                    <v-card-title class="red white--text py-2 px-4 font-weight-bold">
+                                    <v-card-title class="white--text py-2 px-4 font-weight-bold" style="background-color: rgb(185, 47, 47)">
                                         FINAL CALL
                                     </v-card-title>
                                     <v-card-text>
-                                        <v-textarea v-model ="checklist.FinalCall" class="ma-2" label="Input details" outlined dense></v-textarea>
+                                        <v-textarea :disabled ="isDisabled" v-model ="checklist.FinalCall" class="ma-2" label="Input details" outlined dense></v-textarea>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
 
                             <v-col cols="12" class="text-right">
-                                <v-btn color="red" dark large @click="createChecklist"> SAVE </v-btn>
-                                <v-btn color="red" dark large @click="$emit('close')" class="white--text; ma-2">CANCEL</v-btn>
+                                <v-btn v-if="!isDisabled" style="background-color: rgb(185, 47, 47);" dark large @click="createChecklist"> SAVE </v-btn>
+                                <v-btn style="background-color: rgb(185, 47, 47);" dark large @click="$emit('close')" class="white--text; ma-2">CANCEL</v-btn>
                             </v-col>
                         </v-row>
                     </v-form>
@@ -68,7 +68,7 @@
 
         @Prop({ default: "" }) readonly schedule_id!: string;
         protected dialog: boolean = false;
-       
+        @Prop({ default: false }) readonly isDisabled!: boolean;
         @Prop({ default: false }) readonly value!: boolean;
         protected schedule: ISchedule = new ScheduleDto();
         protected scheduleService = new ScheduleService();

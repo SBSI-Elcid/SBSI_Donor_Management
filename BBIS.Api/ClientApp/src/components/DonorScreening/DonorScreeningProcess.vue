@@ -135,7 +135,7 @@
         }
 
         protected get showScreeningTabs(): boolean {
-            console.log("showScreeningTabs",this.donorModule.hasDonorTransaction);
+            
             return Common.hasValue(this.donorRegistrationId) && this.donorModule.hasDonorTransaction;
 
         }

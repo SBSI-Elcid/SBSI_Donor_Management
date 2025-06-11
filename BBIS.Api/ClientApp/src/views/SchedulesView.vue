@@ -3,14 +3,32 @@
         <v-row justify="center">
             <v-col cols="12" md="12">
                 <v-card>
-                    <v-card-title class="red white--text">
+                    <v-card-title class="white--text" style="background-color: rgb(185, 47, 47);">
                         PARTNER ACQUISITION AND RETENTION SERVICES - SCHEDULES
                     </v-card-title>
 
+                    <v-card-text>
+                        <div>
+                            <v-expansion-panels class="elevation-2">
+                                <v-expansion-panel>
+                                    <v-expansion-panel-header class="grey--text text-subtitle-2">Search Filters</v-expansion-panel-header>
+                                    <v-expansion-panel-content>
+                                        <v-row no-gutters>
+                                            <v-col cols="12">
+                                                <v-text-field v-model="search" label="Search" class="mx-4" />
+                                            </v-col>
+                                            <v-spacer></v-spacer>
+                                        </v-row>
+
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </div>
+                    </v-card-text>
                     <v-card-actions>
                         <v-btn color="red darken-2" class="white--text" @click="createSchedule">Create Schedule</v-btn>
                         <!--<v-btn color="red darken-2" class="white--text" @click="">Edit Schedule</v-btn>
-                    <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>-->
+                        <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>-->
                     </v-card-actions>
 
                     <v-data-table :headers="[
@@ -23,6 +41,7 @@
                                             ]"
                                   :items="records"
                                   class="elevation-1"
+                                   :search="search"
                                   :loading="loading"
                                   dense>
 
@@ -62,6 +81,8 @@
         protected scheduleId: Guid | null = null;
         protected pagedResult!: PagedSearchResultDto<ISchedule>;
         protected isEditing: boolean = false;
+
+        protected search: string = '';
         private options: any = {
             page: 1,
             itemsPerPage: 10,
@@ -77,7 +98,7 @@
             this.isEditing = false;
             this.scheduleId = null;
             this.showCreateDialog = true;
-           
+
         }
 
         protected async openSchedule(scheduleId: Guid): Promise<void> {
@@ -112,13 +133,13 @@
                     ...record,
                     ScheduleDateTime: moment(record.ScheduleDateTime).format("YYYY-MM-DD")
                 }));
-                
+
             } catch (error: any) {
                 if (error.StatusCode != 500) {
                     let errorMessage = error.Message ?? "An error occured while processing your request.";
                     this.notify_error(errorMessage);
                 }
-             } finally {
+            } finally {
                 this.loading = false;
             }
         }

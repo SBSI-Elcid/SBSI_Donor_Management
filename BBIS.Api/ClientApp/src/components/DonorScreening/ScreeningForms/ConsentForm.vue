@@ -191,7 +191,7 @@
 
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
-        protected isDisabled: boolean = true;
+        protected isDisabled: boolean = false;
         /*protected donorInfo?: IDonorDto;*/
 
         protected async created() {
@@ -202,12 +202,16 @@
 
                 this.donorModule.setTransactionId(RegisteredDonorInfo.DonorTransactionId);
 
-                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus === DonorStatus.Deferred && this.RegisteredDonorInfo.DonorStatus !== DonorStatus.ForCounseling) {
-                    this.isDisabled = false;
-                    this.donorModule.setDonorStatus(RegisteredDonorInfo.DonorStatus);
+                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus !== DonorStatus.Deferred && RegisteredDonorInfo.DonorStatus !== DonorStatus.ForVitalSigns) {
+                    this.isDisabled = true;
                 }
 
-                
+                //if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus === DonorStatus.Deferred && RegisteredDonorInfo.DonorStatus !== DonorStatus.ForConsent) {
+                //    this.isDisabled = true;
+                //    this.donorModule.setDonorStatus(RegisteredDonorInfo.DonorStatus);
+                //}
+
+                //console.log(this.isDisabled);
                 this.donorModule.setDonorInformation(RegisteredDonorInfo);
                 
             } catch (error) {
@@ -231,7 +235,6 @@
         protected calculateAge(): void {
             let years = moment().diff(moment(this.DonorInformation.BirthDate, 'YYYY-MM-DD'), 'years');
             this.DonorInformation.Age = years;
-            console.log("DonorAge",this.DonorInformation.Age)
         }
 
         protected get DonorInformation(): IDonorDto {
@@ -250,8 +253,7 @@
         }
 
         protected async onApprove(): void {
-            console.log(this.DonorInformation.Age)
-
+         
             let dto: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
             let transactionId = await this.donorScreeningService.uMethodBloodCollection(dto);
 
