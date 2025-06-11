@@ -122,7 +122,6 @@
                 return scheduleDate.getTime() === tomorrow.getTime();
             });
 
-            
             return schedulesTomorrow.length;
         }
 

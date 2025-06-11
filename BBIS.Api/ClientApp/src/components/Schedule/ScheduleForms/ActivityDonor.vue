@@ -164,7 +164,8 @@ import { IDonorDto,DonorDto } from '../../../models/DonorRegistration/DonorDto';
             this.$router.push({
                 path: '/register',
                 query: {
-                    showRegistrationForm: 'true'
+                    showRegistrationForm: 'true',
+                    scheduleId: this.$route.params.schedule_id
                 }
             });
         }

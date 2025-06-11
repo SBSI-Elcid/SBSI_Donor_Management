@@ -29,6 +29,7 @@ export interface IDonorDto {
     SssGsisBirNo: string | null,
     OtherNo: string | null,
     MedicalHistories: Array<DonorMedicalHistoryDto>
+
 }
 
 export class DonorDto implements IDonorDto{

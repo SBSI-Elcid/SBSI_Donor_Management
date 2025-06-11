@@ -80,14 +80,39 @@
             const filterDays = new Date(today);
             filterDays.setDate(today.getDate() + this.dateFilter);
 
-        
-                     
+           
+            switch (this.dateFilter) {
+                case 7:
+                    return this.scheduleList.filter(s => {
+                        const scheduleDate = new Date(s.ScheduleDateTime);
+                        scheduleDate.setHours(0, 0, 0, 0);
+                        return scheduleDate >= today && scheduleDate <= filterDays ;
 
-            return this.scheduleList.filter(s => {
-                const scheduleDate = new Date(s.ScheduleDateTime);
-                scheduleDate.setHours(0, 0, 0, 0);
-                return scheduleDate >= today && scheduleDate <= filterDays;
-            });
+                    });
+                    break;
+                case 1:
+                  
+                    return this.scheduleList.filter(s => {
+                    const scheduleDate = new Date(s.ScheduleDateTime);
+                        scheduleDate.setHours(0, 0, 0, 0);
+                      
+                        return scheduleDate.getTime() === filterDays.getTime();
+
+                });
+                    break;
+                default:
+                    return this.scheduleList = [];
+                    break;
+
+
+            }
+            //return this.scheduleList.filter(s => {
+            //    const scheduleDate = new Date(s.ScheduleDateTime);
+            //    scheduleDate.setHours(0, 0, 0, 0);
+            //    return scheduleDate >= today && scheduleDate <= filterDays;
+
+            //});
+            
         }
 
         protected async openSchedule(scheduleId: Guid): Promise<void> {

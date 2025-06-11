@@ -11,7 +11,7 @@
 
       <v-stepper-items> 
         <v-stepper-content step="1">
-          <PersonalData :inReviewPage="false" @goToStep="goToStep" @submit="onSubmit" />
+          <PersonalData :inReviewPage="false" @goToStep="goToStep" @submit="onSubmit" :scheduleId ="scheduleId" />
         </v-stepper-content>
 
         <!--<v-stepper-content step="2">
@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import VueBase from '../VueBase';
-import { Component, Emit } from 'vue-property-decorator';
+import { Component, Emit,Prop } from 'vue-property-decorator';
 import { getModule } from 'vuex-module-decorators';
 import PersonalData from '@/components/DonorRegistration/RegistrationForms/PersonalDataForm.vue';
 import MedicalHistoryForm from '@/components/DonorRegistration/RegistrationForms/MedicalHistoryForm.vue';
@@ -43,6 +43,8 @@ import moment from 'moment';
    components: { PersonalData, MedicalHistoryForm, ConsentData }
 })
 export default class DonorRegistration extends VueBase { 
+
+    @Prop({ default: "" }) readonly scheduleId!: string;
   protected donorModule: DonorModule = getModule(DonorModule, this.$store);
   protected authModule: AuthModule = getModule(AuthModule, this.$store);
   protected donorRegistrationService: DonorRegistrationService = new DonorRegistrationService();
@@ -51,6 +53,7 @@ export default class DonorRegistration extends VueBase {
   protected currentStep: number = 1;
   protected donorCanProceed: boolean = false;
   protected errorMessage: string = '';
+  
 
   protected get newDonor(): IDonorDto {
     return this.donorModule.getDonorInformation;
