@@ -5,6 +5,7 @@
         public Guid DonorTransactionId { get; set; }
         public Guid DonorRegistrationId { get; set; }
         public Guid DonorId { get; set; }
+        public Guid? ScheduleId { get; set; }
         //public string PRCBloodDonorNumber { get; set; }
         //public string DOHNBBNetsBarcode { get; set; }
         public DateTime? DateOfDonation { get; set; }
@@ -32,7 +33,7 @@
         public virtual DonorDeferral DonorDeferral { get; set; }
         public virtual DonorTestOrder DonorTestOrder { get; set; }
         public virtual DonorVitalSigns DonorVitalSigns { get; set; }
-
+        public virtual Schedule Schedule { get; set; }
         public virtual DonorPostDonationCare DonorPostDonationCare { get; set; }
         public virtual ICollection<InventorySource> InventorySources { get; set; }
 

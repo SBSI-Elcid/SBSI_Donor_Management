@@ -34,9 +34,10 @@
         public string DriverLicenseNo { get; set; }
         public string SssGsisBirNo { get; set; }
         public string OtherNo { get; set; }
-
+        public Guid? ScheduleId { get; set; }
         public DateTime RegistrationDate { get; set; }
 
+        public virtual Schedule Schedule { get; set; }
         public virtual ICollection<DonorMedicalHistory> DonorMedicalHistories { get; set; }
         public virtual ICollection<DonorTransaction> DonorTransactions { get; set; }
     }

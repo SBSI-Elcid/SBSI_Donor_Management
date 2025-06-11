@@ -370,7 +370,7 @@
         }
 
         protected mounted(): void {
-            console.log("ScheduleIdFrompersonalData",this.scheduleId);
+          /*  console.log("ScheduleIdFrompersonalData",this.scheduleId);*/
             this.calculateAge();
         }
 

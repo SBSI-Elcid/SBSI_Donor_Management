@@ -330,22 +330,7 @@ namespace BBIS.Database.MigrationHelper
                   QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
                   OrderNo = 31
               },
-              //new MedicalQuestionnaire
-              //{
-              //    MedicalQuestionnaireId = 32,
-              //    QuestionEnglishText = "Had a bleeding condition or a blood disease?",
-              //    QuestionTagalogText = "",
-              //    QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
-              //    OrderNo = 32
-              //},
-              //new MedicalQuestionnaire
-              //{
-              //    MedicalQuestionnaireId = 33,
-              //    QuestionEnglishText = "Had a bleeding condition or a blood disease?",
-              //    QuestionTagalogText = "",
-              //    QuestionOtherDialectText = "Adunay problema sa pag-dugo or sakit sa dugo?",
-              //    OrderNo = 33
-              //},
+              
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 32,
@@ -401,50 +386,42 @@ namespace BBIS.Database.MigrationHelper
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 38,
-                  QuestionEnglishText = "Have you been identified as one of the following for COVID-19?",
+                  QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
                   QuestionTagalogText = "",
-                  QuestionOtherDialectText = "Nailhan ka ba nga usa sa mga mosunod alang sa COVID-19?",
+                  QuestionOtherDialectText = "COVID-19 suspect COVID-19 probable",
                   OrderNo = 38
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 39,
-                  QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
+                  QuestionEnglishText = "Confirmed (+) for COVID-19. If confirmed COVID-19(+), indicate the date of recovery",
                   QuestionTagalogText = "",
-                  QuestionOtherDialectText = "",
+                  QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19. Kung nagpositibo sa COVID-19, isuwat ang petsa sa pagkaayo?",
                   OrderNo = 39
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 40,
-                  QuestionEnglishText = "Confirmed (+) for COVID-19. If confirmed COVID-19(+), indicate the date of recovery",
+                  QuestionEnglishText = "Have you been exposed to somebody who is identified or has any of the following within the past 28 days?",
                   QuestionTagalogText = "",
-                  QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19. Kung nagpositibo sa COVID-19, isuwat ang petsa sa pagkaayo?",
+                  QuestionOtherDialectText = "Aduna ka bay nahimamat nga mga tawo nga usa o adunay bisan unsa sa mga mosunod sa niaging 28 ka adlaw?",
                   OrderNo = 40
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 41,
-                  QuestionEnglishText = "Have you been exposed to somebody who is identified or has any of the following within the past 28 days?",
+                  QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
                   QuestionTagalogText = "",
-                  QuestionOtherDialectText = "Aduna ka bay nahimamat nga mga tawo nga usa o adunay bisan unsa sa mga mosunod sa niaging 28 ka adlaw?",
+                  QuestionOtherDialectText = "COVID-19 suspect COVID-19 probable",
                   OrderNo = 41
               },
               new MedicalQuestionnaire
               {
                   MedicalQuestionnaireId = 42,
-                  QuestionEnglishText = "COVID-19 suspect COVID-19 probable",
-                  QuestionTagalogText = "",
-                  QuestionOtherDialectText = "",
-                  OrderNo = 42
-              },
-              new MedicalQuestionnaire
-              {
-                  MedicalQuestionnaireId = 43,
                   QuestionEnglishText = "Confirmed (+) for COVID-19",
                   QuestionTagalogText = "",
                   QuestionOtherDialectText = "Napamatud-an nga Positibo sa COVID-19",
-                  OrderNo = 43
+                  OrderNo = 42
               }
             );
         }

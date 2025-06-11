@@ -95,6 +95,8 @@ export default class DonorRegistration extends VueBase {
   }
 
   public onSubmit(): void {
+
+      console.log(this.scheduleId);
     this.confirm('Please make sure all entered data is correct, click Cancel to edit or Submit to continue.', '', 'Submit', 'Cancel', this.onSubmitConfirmation)
   }
 
@@ -103,6 +105,8 @@ export default class DonorRegistration extends VueBase {
       let loader = this.showLoader();
       try {
         let createDto: IDonorDto = this.donorModule.getDonorInformation;
+
+        createDto.ScheduleId = this.scheduleId;
         let registrationNumber = await this.donorRegistrationService.register(createDto);
         this.donorModule.resetDonor();
         this.notify_success('Donor successfully registered.');

@@ -28,6 +28,7 @@ export interface IDonorDto {
     DriverLicenseNo: string | null,
     SssGsisBirNo: string | null,
     OtherNo: string | null,
+    ScheduleId: string,
     MedicalHistories: Array<DonorMedicalHistoryDto>
 
 }
@@ -60,5 +61,6 @@ export class DonorDto implements IDonorDto{
     DriverLicenseNo: string | null = null;
     SssGsisBirNo: string | null = null;
     OtherNo: string | null = null;
+    ScheduleId: string = "";
     MedicalHistories: Array<DonorMedicalHistoryDto> = [];
 }
