@@ -348,6 +348,7 @@ namespace BBIS.Application.Services
             {
                 DonorId = donor.DonorId,
                 DonorRegistrationId = model.DonorRegistrationId,
+                ScheduleId = model.ScheduleId ?? null,
                 BloodIsSafeToTransfuse = true,
                 //DOHNBBNetsBarcode = "",
                 DonorStatus = DonorStatus.ForVitalSigns,
