@@ -107,6 +107,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
            
             await this.loadDonorInfo(); // Load donor info before mounting
             await this.donorModule.loadMedicalQuestionnaire(); // Fetch medical questionnaires
+            this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
         }
 
         

@@ -21,6 +21,8 @@ namespace BBIS.Application.Contracts
         Task<DonorBloodCollectionDto> GetBloodCollectionInfo(Guid transactionId);
         Task<DonorPostDonationCareDto> GetPostDonationCare(Guid transactionId);
 
+        Task<Guid?> GetScheduleIdFromTransaction(Guid transactionId);
+
         Task<Guid> CreateUpdateDonorInitialScreening(DonorInitialScreeningDto dto, Guid userId);
         Task<Guid> CreateUpdateDonorVitalSigns(DonorVitalSignsDto dto, Guid userId);
         Task<Guid> CreateUpdateDonorBloodBagIssuance(DonorBloodBagIssuanceDto dto, Guid userId);

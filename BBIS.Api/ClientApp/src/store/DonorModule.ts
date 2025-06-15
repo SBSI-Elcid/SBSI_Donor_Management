@@ -2,6 +2,9 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import { DonorDto, IDonorDto } from '@/models/DonorRegistration/DonorDto';
 import { IMedicalQuestionnaireDto } from '@/models/DonorRegistration/MedicalQuestionnaireDto';
 import DonorRegistrationService from '@/services/DonorRegistrationService';
+import DonorScreeningService from '../services/DonorScreeningService';
+import ScheduleService from '../services/ScheduleService';
+import { ISchedule } from '../models/Schedules/ScheduleDto';
 
 @Module({ namespaced: true, name: 'DonorModule' })
 export default class DonorModule extends VuexModule {
@@ -12,7 +15,8 @@ export default class DonorModule extends VuexModule {
     protected donorTransactionId: Guid | null = null;
     protected donorStatus: string = '';
     protected donorActivityType: string = '';
-
+    protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
+    protected scheduleService: ScheduleService = new ScheduleService();
 
     @Mutation
     public SET_DONOR_STATUS(status: string): void {
@@ -68,9 +72,35 @@ export default class DonorModule extends VuexModule {
     public setDonorStatus(status: string): string {
         return status;
     }
+    //@Action({ commit: 'SET_DONOR_ACTIVITY_TYPE' })
+    //public setDonorActivityType(type: string): string {
+    //    return type;
+    //}
+    //@Action({ commit: 'SET_DONOR_ACTIVITY_TYPE' })
+    //public async fetchDonorActivityType(id: Guid): Promise<string> {
+    //    const scheduleId: string | null = await this.donorScreeningService.getDonorActivityScheduleId(id);
+
+    //    // If scheduleId is null, treat as "Walk-In"
+    //    if (!scheduleId) return "Walk-In";
+
+    //    const activityType: ISchedule = await this.scheduleService.getSchedulesById(scheduleId);
+    //    return activityType.ActivityType;
+    //}
+
     @Action({ commit: 'SET_DONOR_ACTIVITY_TYPE' })
-    public setDonorActivityType(type: string): string {
-        return type;
+    public async fetchDonorActivityType(id: Guid): Promise<string> {
+        try {
+            const scheduleId = await this.donorScreeningService.getDonorActivityScheduleId(id);
+
+            const activityType = scheduleId
+                ? (await this.scheduleService.getSchedulesById(scheduleId)).ActivityType
+                : "Walk-In";
+
+            return activityType;
+        } catch (error) {
+            return "Walk-In"; 
+        }
+        
     }
 
 

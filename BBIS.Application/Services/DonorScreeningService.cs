@@ -385,6 +385,15 @@ namespace BBIS.Application.Services
             return dto;
         }
 
+        public async Task<Guid?> GetScheduleIdFromTransaction(Guid id)
+        {
+            var scheduleId = await dbContext.DonorTransactions
+                .Where(x => x.DonorRegistrationId == id)
+                .Select(x => (Guid?)x.ScheduleId)
+                .FirstOrDefaultAsync();
+
+            return scheduleId;
+        }
 
         public async Task<Guid> CreateUpdateDonorInitialScreening(DonorInitialScreeningDto dto, Guid userId)
         {

@@ -60,6 +60,27 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpGet("scheduleactivityid/{id}")]
+        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        public async Task<ActionResult<RequestResult<Guid?>>> GetScheduleIdFromTransaction(Guid id)
+        {
+            try
+            {
+                var result = await this.donorScreeningService.GetScheduleIdFromTransaction(id);
+                return this.Json(result);
+            }
+            catch (RecordNotFoundException ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving Initial Screening info: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
         [HttpGet("vitalsigns/{id}")]
         [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<DonorVitalSignsDto>>> GetDonorVitalSignsInfo(Guid id)

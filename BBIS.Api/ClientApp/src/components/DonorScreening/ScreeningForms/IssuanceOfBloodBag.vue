@@ -132,6 +132,7 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
             try {
 
                 await this.getDonorBloodBagIssuance();
+                this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
             }
             catch (error) {
                 console.log(error);

@@ -103,7 +103,6 @@
         protected donorInfo: IRegisteredDonorInfoDto = new RegisteredDonorInfoDto();
        
         protected get isEditable(): boolean {
-            console.log("DonorVitalStatus", this.donorVitalSigns.DonorStatus);
             return this.donorVitalSigns.DonorStatus === DonorStatus.ForVitalSigns;
         }
 
@@ -114,6 +113,8 @@
             try {
                 
                 await this.getDonorVitalSignsInfo();
+
+                this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
                 //await this.getLatestDonorStatusWithSameDonor();
             }
             catch (error) {

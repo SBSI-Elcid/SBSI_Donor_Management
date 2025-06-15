@@ -57,6 +57,15 @@ export default class DonorScreeningService {
 		return this.apiClient.get<IDonorBloodCollectionDto>(`bloodcollection/${id}`);
 	}
 
+	async getDonorActivityScheduleId(id: Guid): Promise<string | null> {
+		const scheduleId = await this.apiClient.get<string | null>(`scheduleactivityid/${id}`);
+		return scheduleId ?? null;
+	}
+
+	//async getDonorActivityScheduleId(id: Guid): Promise<string> {
+	//	return this.apiClient.get<string>(`scheduleactivityid/${id}`) ?? null;
+	//}
+
 	async upsertInitialScreening(dto: IDonorInitialScreeningDto): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-initialscreening`, dto);
 		return response.Data as Guid; 

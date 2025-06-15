@@ -107,6 +107,7 @@
 
             try {
                 await this.getPhysicalExamInfo();
+                this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
             }
             catch (error) {
                 console.log(error);
