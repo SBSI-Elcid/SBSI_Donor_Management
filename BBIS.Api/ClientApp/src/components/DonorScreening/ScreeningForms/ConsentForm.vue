@@ -203,7 +203,7 @@
                 this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
                 this.donorModule.setTransactionId(RegisteredDonorInfo.DonorTransactionId);
 
-                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus !== DonorStatus.Deferred && RegisteredDonorInfo.DonorStatus !== DonorStatus.ForVitalSigns) {
+                if (Common.hasValue(RegisteredDonorInfo.DonorStatus) && RegisteredDonorInfo.DonorStatus !== DonorStatus.Deferred && RegisteredDonorInfo.DonorStatus !== DonorStatus.ForConsent) {
                     this.isDisabled = true;
                 }
 

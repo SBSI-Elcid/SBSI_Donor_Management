@@ -115,6 +115,10 @@
             this.success = false;
             this.showRegistrationForm = false;
             this.donorModule.resetDonor();
+
+            if (this.scheduleId) {
+                this.$router.push({ path: `/registrations` });
+}
         }
     }
 </script>

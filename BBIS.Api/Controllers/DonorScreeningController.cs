@@ -40,7 +40,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("initialscreening/{id}")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.MethodBloodCollectionPolicy)]
         public async Task<ActionResult<RequestResult<DonorInitialScreeningDto>>> GetInitialScreeningInfo(Guid id)
         {
             try
@@ -61,7 +61,6 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("scheduleactivityid/{id}")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<Guid?>>> GetScheduleIdFromTransaction(Guid id)
         {
             try
@@ -82,7 +81,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("vitalsigns/{id}")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.VitalSignsPolicy)]
         public async Task<ActionResult<RequestResult<DonorVitalSignsDto>>> GetDonorVitalSignsInfo(Guid id)
         {
             try
@@ -103,7 +102,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("issuanceofbloodbag/{id}")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.IssuanceOfBloodBagPolicy)]
         public async Task<ActionResult<RequestResult<DonorBloodBagIssuanceDto>>> getDonorBloodBagIssuance(Guid id)
         {
             try
@@ -124,7 +123,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("counseling/{id}")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.CounselorPolicy)]
         public async Task<ActionResult<RequestResult<DonorCounselingDto>>> GetDonorCounselingInfo(Guid id)
         {
             try
@@ -145,7 +144,6 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("initialscreening/recentdonation/{id}")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<List<DonorRecentDonationDto>>>> GetDonorRecentDonations(Guid id)
         {
             try
@@ -208,7 +206,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("postdonationcare/{id}")]
-        [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
+        [Authorize(Policy = ApplicationRoles.PostDonationCarePolicy)]
         public async Task<ActionResult<RequestResult<DonorBloodCollectionDto>>> GetPostDonationCare(Guid id)
         {
             try
@@ -281,7 +279,7 @@ namespace BBIS.Api.Controllers
         //}
 
         [HttpPost("upsert-counseling/")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.CounselorPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorCounseling([FromBody] DonorCounselingDto dto, Guid id)
         {
             Console.WriteLine("Hit endpoint");
@@ -309,7 +307,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-vitalsigns")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.VitalSignsPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorVitalSigns([FromBody] DonorVitalSignsDto dto)
         {
             try
@@ -335,7 +333,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-bloodbagissuance")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        [Authorize(Policy = ApplicationRoles.IssuanceOfBloodBagPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorBloodBagIssuance([FromBody] DonorBloodBagIssuanceDto dto)
         {
             try
@@ -361,7 +359,6 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("u-methodbloodcollection")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> UpdateDonorTransactionForBloodCollection([FromBody] RegisteredDonorDto dto)
         {
             try
@@ -438,7 +435,7 @@ namespace BBIS.Api.Controllers
             }
         }
         [HttpPost("upsert-donorpostdonationcare")]
-        [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
+        [Authorize(Policy = ApplicationRoles.PostDonationCarePolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorPostDonationCare([FromBody] DonorPostDonationCareDto dto)
         {
             try

@@ -120,6 +120,10 @@ namespace BBIS.Api.Extensions
                         ApplicationRoles.DonorAdminRole,
                         ApplicationRoles.InitialScreenerRole,
                         ApplicationRoles.PhysicalExamScreenerRole,
+                        ApplicationRoles.VitalSignsRole,
+                        ApplicationRoles.CounselorRole,
+                        ApplicationRoles.IssuanceOfBloodBagRole,
+                        ApplicationRoles.PostDonationCareRole,
                         ApplicationRoles.BloodCollectorRole);
                 });
 
@@ -157,6 +161,32 @@ namespace BBIS.Api.Extensions
                         ApplicationRoles.AdminRole,
                         ApplicationRoles.DonorAdminRole,
                         ApplicationRoles.BloodCollectorRole);
+                });
+
+                // New roles
+                options.AddPolicy(ApplicationRoles.VitalSignsPolicy, policy =>
+                {
+                    policy.RequireRole(ApplicationRoles.AdminRole,ApplicationRoles.VitalSignsRole);
+                });
+
+                options.AddPolicy(ApplicationRoles.CounselorPolicy, policy =>
+                {
+                    policy.RequireRole(ApplicationRoles.AdminRole, ApplicationRoles.CounselorRole);
+                });
+
+                options.AddPolicy(ApplicationRoles.MethodBloodCollectionPolicy, policy =>
+                {
+                    policy.RequireRole(ApplicationRoles.AdminRole, ApplicationRoles.MethodBloodCollectionRole,ApplicationRoles.InitialScreenerRole);
+                });
+
+                options.AddPolicy(ApplicationRoles.IssuanceOfBloodBagPolicy, policy =>
+                {
+                    policy.RequireRole(ApplicationRoles.AdminRole, ApplicationRoles.IssuanceOfBloodBagRole);
+                });
+
+                options.AddPolicy(ApplicationRoles.PostDonationCarePolicy, policy =>
+                {
+                    policy.RequireRole(ApplicationRoles.AdminRole, ApplicationRoles.PostDonationCareRole);
                 });
 
             });

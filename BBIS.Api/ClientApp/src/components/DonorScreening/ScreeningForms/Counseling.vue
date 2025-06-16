@@ -6,7 +6,7 @@
                   <v-radio-group v-model="selectedLanguage" row class="justify-end">
                       <v-radio label="Tagalog" value="tagalog"></v-radio>
                       <v-radio label="English" value="english"></v-radio>
-                      <v-radio label="Other Dialect" value="other"></v-radio>
+                      <v-radio label="Other Dialect" value="otherDialect"></v-radio>
                   </v-radio-group>
               </v-col>
           </v-row>
@@ -174,6 +174,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                     x => x.MedicalQuestionnaireId === question.MedicalQuestionnaireId
                 );
                 let questionText = '';
+ 
                 switch (this.selectedLanguage) {
                     case 'english':
                         questionText = question.QuestionEnglishText;
@@ -181,10 +182,14 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                     case 'tagalog':
                         questionText = question.QuestionTagalogText;
                         break;
+                    case 'otherDialect':
+                        questionText = question.QuestionOtherDialectText;
+                        break;
                     default:
                         questionText = question.QuestionEnglishText;
                         break;
                 }
+               
                 let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
                     header: question.HeaderText,
                     question: questionText,

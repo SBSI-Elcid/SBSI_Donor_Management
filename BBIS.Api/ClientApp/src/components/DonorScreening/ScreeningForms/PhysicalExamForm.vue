@@ -125,7 +125,7 @@
                 this.donorModule.setTransactionId(this.donorPhysicalExam.DonorTransactionId);
 
                 // Enable the fields when Donor Status is not deferred and not for initial screening.
-                if (Common.hasValue(this.donorPhysicalExam.DonorStatus) && this.donorPhysicalExam.DonorStatus !== DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForVitalSigns) {
+                if (Common.hasValue(this.donorPhysicalExam.DonorStatus) && this.donorPhysicalExam.DonorStatus !== DonorStatus.Deferred && this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
                     this.isDisabled = true;
                     if (this.donorPhysicalExam.DonorStatus !== DonorStatus.ForPhysicalExamination) {
                         this.isEditingValue = true;

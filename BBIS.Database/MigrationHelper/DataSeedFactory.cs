@@ -30,7 +30,14 @@ namespace BBIS.Database.MigrationHelper
                new Role { RoleId = Guid.Parse("69e19e84-eeae-4361-bf8d-53456def3994"), RoleName = "BloodCollector" },
                new Role { RoleId = Guid.Parse("b42f4287-089a-41f9-89ef-a5a3f474f754"), RoleName = "InventoryUser" },
                new Role { RoleId = Guid.Parse("84148d25-7e25-4bdc-bfb5-d0f3cd729ab7"), RoleName = "RequisitionUser" },
-               new Role { RoleId = Guid.Parse("c3f8818a-7a67-4d54-ba8e-3a5bd247e730"), RoleName = "MedTech" }
+               new Role { RoleId = Guid.Parse("c3f8818a-7a67-4d54-ba8e-3a5bd247e730"), RoleName = "MedTech" },
+
+               // New Roles
+               new Role { RoleId = Guid.Parse("6bd4aadf-4a7c-11f0-82bc-1c697a39b59b"), RoleName = "VitalSigns" },
+               new Role { RoleId = Guid.Parse("6c5fac31-4a7c-11f0-82bc-1c697a39b59b"), RoleName = "Counselor" },
+               new Role { RoleId = Guid.Parse("aa2ed04a-4a7b-11f0-82bc-1c697a39b59b"), RoleName = "MethodBloodCollection" },
+               new Role { RoleId = Guid.Parse("b20c470c-4a7b-11f0-82bc-1c697a39b59b"), RoleName = "IssuanceOfBloodBag" },
+               new Role { RoleId = Guid.Parse("c7b02c83-4a7b-11f0-82bc-1c697a39b59b"), RoleName = "PostDonationCare" }
            );
         }
 
