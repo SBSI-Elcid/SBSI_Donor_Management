@@ -3,6 +3,12 @@
         <v-row class="pa-3">
 
             <v-col cols="4">
+                <div @click="openScheduleModal(-1)" style="cursor: pointer;">
+                    <DashboardTile :count="returnAllScheduleCount" text="Total Number of Schedule" vicon="mdi-calendar-clock" iconColor="primary" />
+                </div>
+            </v-col>
+
+            <v-col cols="4">
                 <div @click="openScheduleModal(7)" style="cursor: pointer;">
                     <DashboardTile :count="returnNumbersWithinSevenDays" text="Number of Scheduled blood donation 7 days before the date of scheduled" vicon="mdi-account-group-outline" iconColor="primary" />
                 </div>
@@ -12,10 +18,6 @@
                 <div @click="openScheduleModal(1)" style="cursor: pointer;">
                     <DashboardTile :count="returnNumbersForTomorrow" text="Number of Scheduled blood donation 1 day before the date of scheduled" vicon="mdi-checkbox-marked-circle" iconColor="success" />
                 </div>
-            </v-col>
-
-            <v-col cols="4">
-                <DashboardTile :count="returnAdvocacyOrMobileCount" text="Number of scheduled mobile blood donation / advocacy" vicon="mdi-alert-circle" iconColor="warning" />
             </v-col>
 
         </v-row>
@@ -68,7 +70,7 @@
         protected donorLabels: Array<string> = [];
         protected donorData: Array<number> = [];
         protected deferredData: Array<number> = [];
-        protected dateFilter: number = 0;
+        protected dateFilter: number = -1;
         protected showSevenDayDialog: boolean = false;
 
         protected openScheduleModal(dateFilter: number): void {
@@ -84,14 +86,19 @@
         protected width: number = 400;
         protected height: number = 400;
 
-        protected get returnAdvocacyOrMobileCount(): number {
-            const filtered = this.schedulesList.filter(s =>
-                s.ActivityType?.toLowerCase() === 'advocacy' ||
-                s.ActivityType?.toLowerCase() === 'mobile'
-            );
+        //protected get returnAdvocacyOrMobileCount(): number {
+        //    const filtered = this.schedulesList.filter(s =>
+        //        s.ActivityType?.toLowerCase() === 'advocacy' ||
+        //        s.ActivityType?.toLowerCase() === 'mobile'
+        //    );
 
-            return filtered.length;
+        //    return filtered.length;
+        //}
+
+        protected get returnAllScheduleCount(): number {
+            return this.schedulesList.length;
         }
+
         protected get returnNumbersWithinSevenDays(): number {
             const today = new Date();
             today.setHours(0, 0, 0, 0); // normalize to 00:00:00

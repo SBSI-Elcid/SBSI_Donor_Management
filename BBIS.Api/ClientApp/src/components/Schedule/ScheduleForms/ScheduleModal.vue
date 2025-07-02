@@ -28,7 +28,14 @@
             </v-data-table>
         </v-card>
 
-        <CreateSchedule v-model="showCreateDialog" :isEditing="isEditing" :isDisabled ="isDisabled" :scheduleId="scheduleId" @close="handleClose" />
+        <CreateSchedule 
+                        v-model="showCreateDialog" 
+                        :isEditing="isEditing" 
+                        :isDisabled ="isDisabled" 
+                        :scheduleId="scheduleId" 
+                        :action="action" 
+                        @close="handleClose" 
+        />
     </v-container>
 </template>
 
@@ -61,6 +68,7 @@
         protected scheduleList: Array<ISchedule> = [];
         protected isEditing: boolean = false;
         protected isFromModal: boolean = false;
+        protected action!: string = '';
 
         protected showSevenDayDialog: boolean = false;
 
@@ -82,6 +90,9 @@
 
            
             switch (this.dateFilter) {
+                case -1:
+                    return this.scheduleList;
+                    break;
                 case 7:
                     return this.scheduleList.filter(s => {
                         const scheduleDate = new Date(s.ScheduleDateTime);
@@ -101,9 +112,7 @@
                 });
                     break;
                 default:
-                    return this.scheduleList = [];
-                    break;
-
+                    return [];
 
             }
             //return this.scheduleList.filter(s => {
@@ -120,7 +129,7 @@
             this.scheduleId = scheduleId;
             this.isFromModal = true;
             this.showCreateDialog = true;
-
+            this.action = 'View';
 
         }
 

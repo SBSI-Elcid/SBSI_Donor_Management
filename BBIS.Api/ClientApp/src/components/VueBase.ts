@@ -22,7 +22,7 @@ export default class VueBase extends Vue {
       showConfirmButton: false,
       toast: true,
       timer: 5000
-    })
+    })          
   }
 
   protected notify_info(message: string): void {

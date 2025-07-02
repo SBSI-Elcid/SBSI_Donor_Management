@@ -6,14 +6,18 @@
     <AddToInventory :toggle="showAddToInventoryDialog" :transactionId="selectedId" @onClose="onAddToInventoryClose" v-if="showAddToInventoryDialog" :donorName="selectedDonorName" />
 
     <v-card>
-      <v-card-actions>
-        <h2 class="ml-2 mt-1 head-title ms-4 grey--text">Donors</h2> 
-        <v-spacer></v-spacer>
-        <v-btn color="default" @click="onSyncClick" class="mr-5" v-if="!isSyncInProgress && isOffline">
-          <v-icon>mdi-database-sync</v-icon> Sync Data
-        </v-btn>
-        <v-progress-circular v-if="isSyncInProgress" :size="55" color="primary" indeterminate class="mr-5"></v-progress-circular>
-      </v-card-actions>
+        <v-card-actions>
+            <h2 class="ml-2 mt-1 head-title ms-4 grey--text">Donors</h2>
+            <v-spacer></v-spacer>
+            <v-btn color="default" @click="onSyncClick" class="mr-5" v-if="!isSyncInProgress && isOffline">
+                <v-icon>mdi-database-sync</v-icon> Sync Data
+            </v-btn>
+            <v-progress-circular v-if="isSyncInProgress" :size="55" color="primary" indeterminate class="mr-5"></v-progress-circular>
+
+            <v-btn color="default" class="mt-2 mr-2" @click="fetchSchedules">
+                <v-icon color="primary" size="25">mdi-refresh</v-icon> Refresh
+            </v-btn>
+        </v-card-actions>
 
       <v-card-text>
         <div> 

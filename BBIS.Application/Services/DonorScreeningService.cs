@@ -10,6 +10,7 @@ using BBIS.Common.Extensions;
 using BBIS.Database;
 using BBIS.Domain.Contracts;
 using BBIS.Domain.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using NinjaNye.SearchExtensions;
 using System.Linq.Dynamic.Core;
@@ -133,7 +134,8 @@ namespace BBIS.Application.Services
 
             if (query.Donor != null)
             {
-                dto.DonorName = $"{query.Donor.Firstname} {query.Donor.Middlename.Substring(0, 1)}. {query.Donor.Lastname}";
+                string middlename = query.Donor.Middlename?.Substring(0, 1) ?? "";
+                dto.DonorName = $"{query.Donor.Firstname} {middlename}. {query.Donor.Lastname}";
             }
 
             if (query.DonorTestOrder != null)

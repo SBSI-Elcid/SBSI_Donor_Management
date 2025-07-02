@@ -4,7 +4,7 @@
         <v-dialog v-model="dialog" max-width="900px" persistent>
             <v-card>
                 <v-card-title class="white--text justify-center" style="background-color: rgb(185, 47, 47);">
-                    <strong>CREATE / EDIT / VIEW SCHEDULE</strong>
+                    <strong>{{headerTitle}} Schedule</strong>
                 </v-card-title>
 
                 <v-card-actions v-if="isEditing" class="text-left; ml-5">
@@ -104,6 +104,9 @@
         @Prop({ default: false }) readonly isDisabled!: boolean;
 
         @Prop({ default: "" }) readonly scheduleId!: string;
+
+        @Prop({ default: "" }) readonly action!: string;
+
         protected dialog: boolean = false;
         protected schedule: ISchedule = new ScheduleDto();
         protected scheduleService = new ScheduleService();
@@ -147,6 +150,11 @@
         protected get labelUpdate(): string {
             return this.isEditing ? "UPDATE SCHEDULE" : "CREATE SCHEDULE";
         }
+
+        protected get headerTitle(): string {
+            return this.action;
+        }
+
         protected async loadScheduleById(): Promise<void> {
 
             if (!this.isEditing || !this.scheduleId) {

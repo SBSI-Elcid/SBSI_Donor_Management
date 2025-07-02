@@ -7,28 +7,39 @@
                         PARTNER ACQUISITION AND RETENTION SERVICES - SCHEDULES
                     </v-card-title>
 
-                    <v-card-text>
-                        <div>
-                            <v-expansion-panels class="elevation-2">
-                                <v-expansion-panel>
-                                    <v-expansion-panel-header class="grey--text text-subtitle-2">Search Filters</v-expansion-panel-header>
-                                    <v-expansion-panel-content>
-                                        <v-row no-gutters>
-                                            <v-col cols="12">
-                                                <v-text-field v-model="search" label="Search" class="mx-4" />
-                                            </v-col>
-                                            <v-spacer></v-spacer>
-                                        </v-row>
+                    <!--<v-card-text>
+        <div>
+            <v-expansion-panels class="elevation-2">
+                <v-expansion-panel>
+                    <v-expansion-panel-header class="grey--text text-subtitle-2">Search Filters</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row no-gutters>
+                            <v-col cols="12">
+                                <v-text-field v-model="search" label="Search" class="mx-4" />
+                            </v-col>
+                            <v-spacer></v-spacer>
+                        </v-row>
 
-                                    </v-expansion-panel-content>
-                                </v-expansion-panel>
-                            </v-expansion-panels>
-                        </div>
-                    </v-card-text>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </div>
+    </v-card-text>-->
+                    <v-row no-gutters class="mx-3 pt-3">
+                        <v-col md="3" sm="9">
+                            <v-text-field type="text" label="Search" v-model="search"/>
+                        </v-col>
+                        <!--<v-col md="2" sm="2" class="pl-2">
+                            <v-btn color="default" @click="fetchSchedules" depressed><v-icon size="25" color="primary" left>mdi-magnify</v-icon> Search</v-btn>
+                        </v-col>-->
+                    </v-row>
+
                     <v-card-actions>
-                        <v-btn color="red darken-2" class="white--text" @click="createSchedule">Create Schedule</v-btn>
+                        <v-btn color="default" class="mt-2 mr-2" @click="fetchSchedules"> <v-icon color="primary" size="25">mdi-refresh</v-icon> Refresh</v-btn>
+                        <v-btn color="default" class="mt-2 mr-2" @click="createSchedule"> <v-icon color="primary" size="25">mdi-calendar</v-icon> Create Schedule</v-btn>
                         <!--<v-btn color="red darken-2" class="white--text" @click="">Edit Schedule</v-btn>
-                        <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>-->
+        <v-btn color="red darken-2" class="white--text" @click="">Cancel Schedule</v-btn>-->
+
                     </v-card-actions>
 
                     <v-data-table :headers="[
@@ -41,7 +52,7 @@
                                             ]"
                                   :items="records"
                                   class="elevation-1"
-                                   :search="search"
+                                  :search="search"
                                   :loading="loading"
                                   dense>
 
@@ -55,7 +66,13 @@
             </v-col>
         </v-row>
 
-        <CreateSchedule v-model="showCreateDialog" :isEditing="isEditing" :scheduleId="scheduleId" @close="handleClose" />
+        <CreateSchedule 
+                        v-model="showCreateDialog" 
+                        :isEditing="isEditing" 
+                        :scheduleId="scheduleId" 
+                        :action="action" 
+                        @close="handleClose" 
+        />
         <router-view />
     </v-container>
 </template>
@@ -81,6 +98,7 @@
         protected scheduleId: Guid | null = null;
         protected pagedResult!: PagedSearchResultDto<ISchedule>;
         protected isEditing: boolean = false;
+        protected action!: string = '';
 
         protected search: string = '';
         private options: any = {
@@ -98,15 +116,14 @@
             this.isEditing = false;
             this.scheduleId = null;
             this.showCreateDialog = true;
-
+            this.action = 'Create';
         }
 
         protected async openSchedule(scheduleId: Guid): Promise<void> {
             this.isEditing = true;
             this.scheduleId = scheduleId;
             this.showCreateDialog = true;
-
-
+            this.action = 'Edit';
         }
 
         protected handleClose(): void {
@@ -144,6 +161,7 @@
             }
         }
 
+       
 
     }
 
