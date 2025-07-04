@@ -68,7 +68,7 @@
             <v-row class="ml-2 mt-2"><h4>Current Home Address</h4><v-divider></v-divider></v-row>
             <v-row>
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <label class="caption font-weight-medium">* House Number</label>
+                    <label class="caption font-weight-medium">House Number</label>
                     <v-text-field v-model="newDonor.AddressNo"
                                   :rules="[rules.maxLength(20)]"
                                   :disabled="inReviewPage"
@@ -76,9 +76,9 @@
                 </v-col>
 
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <label class="caption font-weight-medium">* Street</label>
+                    <label class="caption font-weight-medium">Street</label>
                     <v-text-field v-model="newDonor.AddressStreet"
-                                  :rules="[rules.maxLength(50), rules.required]"
+                                  :rules="[rules.maxLength(50)]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -180,9 +180,13 @@
                 </v-col>
 
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <label class="caption font-weight-medium">Mobile No.</label>
+                    <label class="caption font-weight-medium">* Mobile No.</label>
                     <v-text-field v-model="newDonor.MobileNo"
-                                  :rules="[rules.maxLength(20), rules.required]"
+                                  :rules="[
+                                                rules.maxLength(13),
+                                                rules.required,
+                                                rules.validMobile
+                                          ]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -296,7 +300,13 @@
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
 
         protected formValid: boolean = true;
-        protected rules: any = { ...Common.ValidationRules }
+        protected rules: any = {
+            ...Common.ValidationRules,
+            validMobile: (value: string) => {
+                const pattern = /^(?:\d{11}|\+63\d{10})$/;
+                return pattern.test(value) || 'Invalid mobile number format';
+            }
+        }
         protected genderOptions: any = CommonOptions.GenderOptions;
 
         protected get newDonor(): IDonorDto {

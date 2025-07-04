@@ -1,16 +1,16 @@
 <template>
     <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
-        <v-row class="mb-4" align="center">
+        <v-row class="mb-4; mt-5" align="center">
             <!-- Blood Bag to be Used -->
             <v-col cols="12" md="4">
-                <label class="font-weight-bold">Blood Bag to be Used</label>
+                <!--<label class="font-weight-bold">Blood Bag to be Used</label>-->
                 <v-select :items="bloodBagCollectionOptions"
                           label="Blood Bag to be Used"
                           v-model="donorBloodBagInfo.BloodBagToBeUsed"
                           dense
                           outlined />
             </v-col>
-            <v-col cols="12" md="8">
+            <v-col cols="12" md="8" class="mt-n7">
                 <v-radio-group row v-model="donorBloodBagInfo.BloodBagType">
 
                     <v-radio v-for="(type, index) in bloodBagCollectionSubOptions"
@@ -20,33 +20,39 @@
                 </v-radio-group>
             </v-col>
         </v-row>
-
-        <v-row align="center">
+        
+        <v-row align="center" class="mt-n5">
             <v-col cols="12" sm="6" md="4">
-                <label class="font-weight-bold">Segment Serial Number</label>
+                <label class="font-weight-bold">Serial Numbers</label>
+            </v-col>
+        </v-row>
+
+        <v-row align="center" class="mt-n3">
+            <v-col cols="12" sm="6" md="4">
+                <!--<label class="font-weight-bold">Segment Serial Number</label>-->
                 <v-text-field dense
                               outlined
                               label="Segment Serial Number"
                               v-model="donorBloodBagInfo.SegmentSerialNumber" />
             </v-col>
             <v-col cols="12" sm="6" md="4">
-                <label class="font-weight-bold">Unit Serial Number</label>
+                <!--<label class="font-weight-bold">Unit Serial Number</label>-->
                 <v-text-field dense
                               outlined
                               label="Unit Serial Number"
                               v-model="donorBloodBagInfo.UnitSerialNumber" />
             </v-col>
 
-            <v-col cols="12" md="4" class="text-left; mb-7">
+            <v-col cols="12" md="4" class="text-left; mb-7; mt-n13">
                 <v-btn color="red darken-2" class="white--text mt-6" rounded @click="onPrint">
                     PRINT BARCODE
                 </v-btn>
 
             </v-col>
-            <div class="section-outer-container mt-3 pb-5">
+            <div class="section-outer-container pb-5 ml-3">
                 <div class="text-right">
                     <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Issue Blood Bag</v-btn>
-                    <v-btn color="red" @click="$emit('close')">Close</v-btn>
+                    <v-btn color="default" large tile class="mr-2" @click="$emit('close')"><v-icon color="error" size="25" left>mdi-close</v-icon> Close</v-btn>
                 </div>
             </div>
         </v-row>

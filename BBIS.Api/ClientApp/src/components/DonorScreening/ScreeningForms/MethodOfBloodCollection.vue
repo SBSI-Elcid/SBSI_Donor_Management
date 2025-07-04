@@ -105,53 +105,65 @@
             </v-col>-->
         </v-row>
 
+
+        <v-row>
+            <v-col cols="12" sm="6" md="2">
+                <label class="font-weight-bold">Complete Blood Count</label>
+            </v-col>
+        </v-row>
+
         <v-row>
             <!-- HGB -->
             <v-col cols="12" sm="6" md="2">
-                <label class="font-weight-bold">HGB</label>
+                <!--<label class="font-weight-bold">HGB</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
+                              :rules="[rules.numberRequired, rules.positiveNumber]"
                               label="Hemoglobin"
                               v-model="donorInitialScreening.HGB" />
             </v-col>
 
             <!-- HCT -->
-            <v-col cols="12" sm="6" md="2">
-                <label class="font-weight-bold">HCT</label>
+            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+                <!--<label class="font-weight-bold">HCT</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
+                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="Hematocrit"
                               v-model="donorInitialScreening.HCT" />
             </v-col>
 
             <!-- RBC -->
-            <v-col cols="12" sm="6" md="2">
-                <label class="font-weight-bold">RBC</label>
+            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+                <!--<label class="font-weight-bold">RBC</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
+                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="Red Blood Cells"
                               v-model="donorInitialScreening.RBC" />
             </v-col>
 
             <!-- WBC -->
-            <v-col cols="12" sm="6" md="2">
-                <label class="font-weight-bold">WBC</label>
+            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+                <!--<label class="font-weight-bold">WBC</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
+                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="White Blood Cells"
                               v-model="donorInitialScreening.WBC" />
             </v-col>
 
             <!-- PLT -->
-            <v-col cols="12" sm="6" md="2">
-                <label class="font-weight-bold">PLT</label>
+            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+                <!--<label class="font-weight-bold">PLT</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
+                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="Platelet Count"
                               v-model="donorInitialScreening.PLTCount" />
             </v-col>
@@ -187,7 +199,12 @@
         protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
 
         protected formValid: boolean = true;
-        protected rules: any = { ...Common.ValidationRules }
+        protected rules: any = {
+            ...Common.ValidationRules,
+
+            numberRequired: (v: any) => (!!v || v === 1) || 'This field is required.',
+            positiveNumber: (v: number) => v >= 1 || 'Must be a positive number',
+        }
         protected errorMessage: string = '';
         protected showInHouseOptions: boolean = false;
         protected showRecentDonations: boolean = false;
@@ -197,6 +214,10 @@
         protected recentDonations: Array<IDonorRecentDonationDto> = new Array<IDonorRecentDonationDto>();
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
+
+        protected pangdisable: boolean = false;
+        protected selectedMethod: string = '';
+
 
         protected get selectedDonorName(): string {
             return this.donorInitialScreening.DonorName;
@@ -237,6 +258,11 @@
             }
         }
 
+        @Watch('donorInitialScreening.MethodOfBloodCollection')
+        onMethodChange(newValue: string): void {
+            this.pangdisable = newValue === 'whole';
+        }
+
         @Watch("showPatientDirectedFields")
         public onPatentDirectedSelected(): void {
             if (this.showPatientDirectedFields === false) {
@@ -258,6 +284,7 @@
 
         public async created(): Promise<void> {
             let loader = this.showLoader();
+            this.selectedMethod = this.donorInitialScreening.MethodOfBloodCollection;
 
             try {
                 await this.getInitialScreeningInfo();
@@ -269,6 +296,8 @@
             finally {
                 loader.hide();
             }
+
+            this.donorInitialScreening.MethodOfBloodCollection = "whole";
         }
 
         protected async getInitialScreeningInfo(): Promise<void> {

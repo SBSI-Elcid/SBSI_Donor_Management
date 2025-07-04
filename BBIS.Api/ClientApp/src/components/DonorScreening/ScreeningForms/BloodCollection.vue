@@ -3,7 +3,7 @@
         <v-row>
             <!-- Start Time -->
             <v-col cols="12" md="4">
-                <label class="font-weight-bold">Start Time</label>
+                <!--<label class="font-weight-bold">Start Time</label>-->
                 <v-text-field dense
                               outlined
                                :disabled="isEditingValue"
@@ -14,7 +14,7 @@
 
             <!-- End Time -->
             <v-col cols="12" md="4">
-                <label class="font-weight-bold">End Time</label>
+                <!--<label class="font-weight-bold">End Time</label>-->
                 <v-text-field 
                               dense 
                               outlined 
@@ -27,7 +27,7 @@
 
             <!-- Donor Reaction -->
             <v-col cols="12" md="4">
-                <label class="font-weight-bold">Donor Reaction</label>
+                <!--<label class="font-weight-bold">Donor Reaction</label>-->
                 <v-text-field 
                               dense 
                               outlined

@@ -1,28 +1,33 @@
 <template>
     <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
-        <v-row class="mb-4" align="center">
+
+        <v-row align="center" >
+            <v-col cols="12" sm="6" md="4">
+                <label class="font-weight-bold">Blood Bag Option</label>
+            </v-col>
+        </v-row>
+
+        <v-row class="mb-4; mt-n7;" align="center">
             <!-- Blood Bag to be Used -->
             <v-col cols="12" md="4">
-                <label class="font-weight-bold">Blood Bag to be Used</label>
+                <!--<label class="font-weight-bold">Blood Bag to be Used</label>-->
                 <v-select :items="bloodBagCollectionOptions"
                           label="Blood Bag to be Used"
-                           dense
+                          dense
                           :disabled="isEditingValue"
-                            outlined 
-                          v-model="donorBloodBagInfo.BloodBagToBeUsed"
-                          />
-                          <!--v-model="donorBloodBagInfo.BloodBagToBeUsed"-->
-                         
+                          outlined
+                          v-model="donorBloodBagInfo.BloodBagToBeUsed" />
+                <!--v-model="donorBloodBagInfo.BloodBagToBeUsed"-->
                 <!--<v-text-field dense outlined label="Blood Bag to be used" v-model ="donorBloodBagIssuance.BloodBagToBeUsed"></v-text-field>-->
 
             </v-col>
 
             <!-- Bag Type Options -->
-            <v-col cols="12" md="8">
-                <v-radio-group 
-                               row 
+            <v-col cols="12" md="8" class="mt-n6">
+                <v-radio-group row
                                v-model="donorBloodBagInfo.BloodBagType"
-                               :disabled="isEditingValue"> <!--v-model="donorBloodBagIssuance.BloodBagType"-->
+                               :disabled="isEditingValue">
+                    <!--v-model="donorBloodBagIssuance.BloodBagType"-->
                     <!--<v-radio label="Single" value="single" />
                 <v-radio label="Double" value="double" />
                 <v-radio label="Triple" value="triple" />
@@ -35,40 +40,49 @@
             </v-col>
         </v-row>
 
-        <v-row align="center">
+        <v-row align="center" class="mt-n5">
+            <v-col cols="12" sm="6" md="4">
+                <label class="font-weight-bold">Serial Number</label>
+            </v-col>
+        </v-row>
+
+        <v-row align="center" class="mt-n7">
+
             <!-- Segment Serial Number -->
             <v-col cols="12" sm="6" md="4">
-                <label class="font-weight-bold">Segment Serial Number</label>
+                <!--<label class="font-weight-bold">Segment Serial Number</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
                               label="Segment Serial Number"
-                              v-model="donorBloodBagInfo.SegmentSerialNumber"
-                              />
-                              <!--v-model="donorBloodBagIssuance.SegmentSerialNumber"--> 
+                              v-model="donorBloodBagInfo.SegmentSerialNumber" />
+                <!--v-model="donorBloodBagIssuance.SegmentSerialNumber"-->
             </v-col>
 
             <!-- Unit Serial Number -->
             <v-col cols="12" sm="6" md="4">
-                <label class="font-weight-bold">Unit Serial Number</label>
+                <!--<label class="font-weight-bold">Unit Serial Number</label>-->
+                <label>{{ donorBloodBagIssuance.DonorStatus }}</label>
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
                               label="Unit Serial Number"
-                              v-model="donorBloodBagInfo.UnitSerialNumber"
-                              />
-                              <!--v-model="donorBloodBagIssuance.UnitSerialNumber"--> 
+                              v-model="donorBloodBagInfo.UnitSerialNumber" />
+                <!--v-model="donorBloodBagIssuance.UnitSerialNumber"-->
             </v-col>
 
             <!-- Print Button -->
-            <v-col cols="12" md="4" class="text-left; mb-7">
+            <v-col cols="12" md="4" class="text-left; mb-13">
                 <v-btn color="red darken-2" class="white--text mt-6" rounded @click="onPrint">
                     PRINT BARCODE
                 </v-btn>
 
+               
             </v-col>
-            <div class="section-outer-container mt-3">
-                <div class="text-right" v-if="!isEditingValue">
+
+
+            <div class="section-outer-container mt-3" v-if="isEditable">
+                <div class="text-right">
                     <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
                     <v-btn color="default" large tile class="mr-2" @click="onDeferred"><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
                 </div>
@@ -123,7 +137,11 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
         protected donorBloodBagIssuance: IDonorBloodBagIssuance = new DonorBloodBagIssuanceDto();
         protected donorBloodBagInfo: IDonorIssuedBloodBags = new DonorIssuedBloodBagsDto();
         protected isEditingValue: boolean = false;
-        protected isDisabled: boolean = true;
+        protected isDisabled: boolean = false;
+
+        protected get isEditable(): boolean {
+            return this.donorBloodBagIssuance.DonorStatus === DonorStatus.ForBloodIssuance;
+        }
 
         public async created(): Promise<void> {
 
@@ -133,6 +151,7 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
 
                 await this.getDonorBloodBagIssuance();
                 this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
+                console.log(this.donorBloodBagIssuance.DonorStatus);
             }
             catch (error) {
                 console.log(error);
@@ -156,9 +175,9 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
                 this.donorBloodBagInfo = this.donorBloodBagIssuance.BloodBagInfos[0] || new DonorIssuedBloodBagsDto();
 
                 if (Common.hasValue(this.donorBloodBagIssuance.DonorStatus) && this.donorBloodBagIssuance.DonorStatus !== DonorStatus.Deferred && this.donorBloodBagIssuance.DonorStatus !== DonorStatus.ForBloodIssuance) {
-                    this.isDisabled = false;
+                    this.isDisabled = true;
                      this.isEditingValue = true;
-                    
+
                 }
 
                 this.donorModule.setTransactionId(this.donorBloodBagIssuance.DonorTransactionId);
