@@ -134,7 +134,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
 
         @Watch('selectedLanguage')
         onSelectedLanguageChanged() {
-            
+
             // If needed, you can force recomputation or trigger other logic here
         }
 
@@ -192,13 +192,13 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                
                 let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
                     header: question.HeaderText,
-                    question: questionText,
+                    question: question.QuestionEnglishText,
                     donorMedHistory: {
                         MedicalQuestionnaireId: question.MedicalQuestionnaireId,
                         Answer: donorMedicalHistory.Answer,
                         Remarks: donorMedicalHistory.Remarks,
                         HeaderText: question.HeaderText,
-                        QuestionText: questionText
+                        QuestionText: question.QuestionEnglishText,
                     },
                     hasHistory: hasHistory
                 };

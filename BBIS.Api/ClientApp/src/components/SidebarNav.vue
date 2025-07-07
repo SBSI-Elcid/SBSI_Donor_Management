@@ -86,7 +86,8 @@ export default class Sidebar extends VueBase {
     return this.authState.userJwtData;
   }
  
-  protected async mounted(): Promise<void> {
+    protected async mounted(): Promise<void> {
+        console.log(this.isOffline);
     if (!this.isOffline) {
       if (this.authState.userModules.length == 0) {
           const userModules = await this.userAccountService.getUserModules(this.authState.userId);

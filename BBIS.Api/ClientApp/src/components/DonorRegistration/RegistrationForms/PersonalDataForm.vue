@@ -7,7 +7,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12">
                     <label class="caption font-weight-medium">* Last Name</label>
                     <v-text-field v-model="newDonor.Lastname"
-                                  :rules="[rules.required, rules.maxLength(90)]"
+                                  :rules="[rules.required, rules.maxLength(90), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -15,7 +15,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12">
                     <label class="caption font-weight-medium">* First Name</label>
                     <v-text-field v-model="newDonor.Firstname"
-                                  :rules="[rules.required, rules.maxLength(90)]"
+                                  :rules="[rules.required, rules.maxLength(90), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -23,7 +23,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12">
                     <label class="caption font-weight-medium">* Middle Name</label>
                     <v-text-field v-model="newDonor.Middlename"
-                                  :rules="[rules.maxLength(90)]"
+                                  :rules="[rules.maxLength(90), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -48,7 +48,7 @@
                     <label class="caption font-weight-medium">* Civil Status</label>
                     <v-autocomplete :items="civilStatusOptions"
                                     v-model="newDonor.CivilStatus"
-                                    :rules="[rules.required]"
+                                    :rules="[rules.required, rules.noSpaces]"
                                     :disabled="inReviewPage"
                                     dense outlined />
                 </v-col>
@@ -56,7 +56,7 @@
                     <label class="caption font-weight-medium">* Gender</label>
                     <v-radio-group class="row-radio-group-container"
                                    v-model="newDonor.Gender"
-                                   :rules="[rules.required]"
+                                   :rules="[rules.required, rules.noSpaces]"
                                    :disabled="inReviewPage"
                                    row>
                         <v-radio v-for="(option, index) in genderOptions" :key="index" :label="option.text" :value="option.value" />
@@ -70,7 +70,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">House Number</label>
                     <v-text-field v-model="newDonor.AddressNo"
-                                  :rules="[rules.maxLength(20)]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -78,7 +78,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Street</label>
                     <v-text-field v-model="newDonor.AddressStreet"
-                                  :rules="[rules.maxLength(50)]"
+                                  :rules="[rules.maxLength(50), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -86,7 +86,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">* Barangay</label>
                     <v-text-field v-model="newDonor.AddressBarangay"
-                                  :rules="[rules.maxLength(60), rules.required]"
+                                  :rules="[rules.maxLength(60), rules.required, rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -97,7 +97,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">* Town/Municipality</label>
                     <v-text-field v-model="newDonor.AddressMunicipality"
-                                  :rules="[rules.maxLength(50), rules.required]"
+                                  :rules="[rules.maxLength(50), rules.required, rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -105,7 +105,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">* Province/City</label>
                     <v-text-field v-model="newDonor.AddressProvinceOrCity"
-                                  :rules="[rules.maxLength(70), rules.required]"
+                                  :rules="[rules.maxLength(70), rules.required, rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -113,7 +113,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">* Zip Code</label>
                     <v-text-field v-model="newDonor.AddressZipcode"
-                                  :rules="[rules.maxLength(10), rules.required]"
+                                  :rules="[rules.maxLength(10), rules.required, rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -125,7 +125,7 @@
                 <v-col cols="12" lg="6" md="6" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Office Address</label>
                     <v-text-field v-model="newDonor.OfficeAddress"
-                                  :rules="[rules.maxLength(250)]"
+                                  :rules="[rules.maxLength(250), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -133,7 +133,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Profession</label>
                     <v-text-field v-model="newDonor.WorkName"
-                                  :rules="[rules.maxLength(90)]"
+                                  :rules="[rules.maxLength(90), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -144,7 +144,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Religion</label>
                     <v-text-field v-model="newDonor.Religion"
-                                  :rules="[rules.maxLength(60)]"
+                                  :rules="[rules.maxLength(60), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -154,7 +154,7 @@
                     <v-autocomplete v-model="newDonor.Nationality" auto-select-first
                                     :items="nationalityOptions"
                                     :disabled="inReviewPage"
-                                    :rules="[rules.required]"
+                                    :rules="[rules.required, rules.noSpaces]"
                                     :item-value="newDonor.Nationality[0]"
                                     dense outlined />
                 </v-col>
@@ -162,7 +162,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Education</label>
                     <v-text-field v-model="newDonor.Education"
-                                  :rules="[rules.maxLength(70)]"
+                                  :rules="[rules.maxLength(70), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -174,7 +174,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Telephone No.</label>
                     <v-text-field v-model="newDonor.TelNo"
-                                  :rules="[rules.maxLength(30)]"
+                                  :rules="[rules.maxLength(30), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -185,7 +185,8 @@
                                   :rules="[
                                                 rules.maxLength(13),
                                                 rules.required,
-                                                rules.validMobile
+                                                rules.validMobile,
+                                                rules.noSpaces
                                           ]"
                                   :disabled="inReviewPage"
                                   dense outlined />
@@ -194,7 +195,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Email Address</label>
                     <v-text-field v-model="newDonor.EmailAddress"
-                                  :rules="[rules.emailFormat, rules.maxLength(60)]"
+                                  :rules="[rules.emailFormat, rules.maxLength(60), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -206,7 +207,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">School ID No.</label>
                     <v-text-field v-model="newDonor.SchoolIdNo"
-                                  :rules="[rules.maxLength(20)]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -214,7 +215,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Company ID No.</label>
                     <v-text-field v-model="newDonor.CompanyIdNo"
-                                  :rules="[rules.maxLength(20)]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -222,7 +223,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">PRC ID No.</label>
                     <v-text-field v-model="newDonor.PRCNo"
-                                  :rules="[rules.maxLength(30)]"
+                                  :rules="[rules.maxLength(30), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -233,7 +234,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Driver's License No.</label>
                     <v-text-field v-model="newDonor.DriverLicenseNo"
-                                  :rules="[rules.maxLength(30)]"
+                                  :rules="[rules.maxLength(30), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -241,7 +242,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">SSS/GSIS/BIR No.</label>
                     <v-text-field v-model="newDonor.SssGsisBirNo"
-                                  :rules="[rules.maxLength(40)]"
+                                  :rules="[rules.maxLength(40), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -249,7 +250,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Others</label>
                     <v-text-field v-model="newDonor.OtherNo"
-                                  :rules="[rules.maxLength(20)]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -305,7 +306,8 @@
             validMobile: (value: string) => {
                 const pattern = /^(?:\d{11}|\+63\d{10})$/;
                 return pattern.test(value) || 'Invalid mobile number format';
-            }
+            },
+            noSpaces: v => !/\s/.test(v) || 'No spaces allowed'
         }
         protected genderOptions: any = CommonOptions.GenderOptions;
 

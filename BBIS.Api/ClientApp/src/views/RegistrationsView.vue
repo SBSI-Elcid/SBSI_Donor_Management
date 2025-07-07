@@ -1,45 +1,84 @@
 <template>
   <v-container fluid>
 
-    <v-card class="">
-      <v-card-actions>
-        <h2 class="ml-2 mt-1 head-title ms-4 grey--text">Donor Registrations</h2> 
-        <v-spacer></v-spacer>
-        <v-btn color="default" class="mt-2 mr-2" depressed @click="addClick"><v-icon size="25" color="primary" left>mdi-account-plus</v-icon> Register Donor</v-btn>
-      </v-card-actions>
+      <v-card class="">
+          <v-card-actions>
+              <h2 class="ml-2 mt-1 head-title ms-4 grey--text">Donor Registrations</h2>
+              <v-spacer></v-spacer>
+              <v-btn color="default" class="mt-2 mr-2" depressed @click="addClick"><v-icon size="25" color="primary" left>mdi-account-plus</v-icon> Register Donor</v-btn>
+          </v-card-actions>
 
-      <v-row no-gutters class="mx-3 pt-3">
+          <!--<v-row no-gutters class="mx-3 pt-3">
         <v-col md="3" sm="9">
-          <v-text-field type="text" label="Search" v-model.trim="pagedSearchDto.SearchText" dense outlined />
+            <v-text-field type="text" label="Search" v-model.trim="pagedSearchDto.SearchText" dense outlined />
         </v-col>
-        <v-col md="2" sm="2" class="pl-2" >
-          <v-btn color="default" @click="loadrecords" depressed><v-icon size="25" color="primary" left>mdi-magnify</v-icon> Search</v-btn>
+
+        <v-col md="2" sm="2" class="pl-2">
+            <v-btn color="default" @click="loadrecords" depressed><v-icon size="25" color="primary" left>mdi-magnify</v-icon> Search</v-btn>
         </v-col>
-      </v-row>
-               
-       <v-data-table
-          :headers="columnHeaders"
-          :items="records"
-          :options.sync="options"
-          :server-items-length="dataLoaded ? pagedResult.TotalCount : 0"
-          :loading="loading"            
-          class="elevation-2 pl-2 pr-2">
 
-          <template v-slot:[`progress`]>
-            <v-progress-linear color="#B92F2F" indeterminate></v-progress-linear>
-          </template>
-         
-          <template v-slot:[`item.RegistrationNumber`]="{ item }">
-            <v-btn class="pa-0 mx-0" text dense color="primary" @click="onRegNumberClick(item.DonorRegistrationId)"> {{ item.RegistrationNumber }}</v-btn>
-          </template>
+        <v-col md="2" sm="2" class="pl-2">
+            <v-btn color="default" @click="loadrecords" depressed><v-icon size="25" color="primary" left>mdi-refresh</v-icon> Refresh</v-btn>
+        </v-col>-->
+          <!--<v-col md="2" cla">
+        <v-btn color="default" class="" @click="loadrecords">
+            <v-icon color="primary" size="25">mdi-refresh</v-icon> Refresh
+        </v-btn>
+    </v-col>-->
+          <!--</v-row>-->
 
-          <template v-slot:[`item.RegistrationDate`]="{ item }">
-            <span>{{ formatDate(item.RegistrationDate) }}</span>
-          </template>
-         
-        </v-data-table>
-      
-    </v-card>
+          <v-row no-gutters class="mx-3 pt-3">
+              <v-col md="3" sm="9">
+                  <v-text-field type="text"
+                                label="Search"
+                                v-model.trim="pagedSearchDto.SearchText"
+                                dense
+                                outlined />
+              </v-col>
+
+              <v-col md="auto" sm="auto" class="pl-1">
+                  <v-btn color="default" @click="loadrecords" depressed>
+                      <v-icon size="25" color="primary" left>mdi-magnify</v-icon>
+                      Search
+                  </v-btn>
+              </v-col>
+
+              <v-col md="auto" sm="auto" class="pl-1">
+                  <v-btn color="default" @click="loadrecords" depressed>
+                      <v-icon size="25" color="primary" left>mdi-refresh</v-icon>
+                      Refresh
+                  </v-btn>
+              </v-col>
+          </v-row>
+
+
+
+
+
+
+
+          <v-data-table :headers="columnHeaders"
+                        :items="records"
+                        :options.sync="options"
+                        :server-items-length="dataLoaded ? pagedResult.TotalCount : 0"
+                        :loading="loading"
+                        class="elevation-2 pl-2 pr-2">
+
+              <template v-slot:[`progress`]>
+                  <v-progress-linear color="#B92F2F" indeterminate></v-progress-linear>
+              </template>
+
+              <template v-slot:[`item.RegistrationNumber`]="{ item }">
+                  <v-btn class="pa-0 mx-0" text dense color="primary" @click="onRegNumberClick(item.DonorRegistrationId)"> {{ item.RegistrationNumber }}</v-btn>
+              </template>
+
+              <template v-slot:[`item.RegistrationDate`]="{ item }">
+                  <span>{{ formatDate(item.RegistrationDate) }}</span>
+              </template>
+
+          </v-data-table>
+
+      </v-card>
  
   </v-container>
 </template>
