@@ -104,7 +104,7 @@
 
             try {
                 this.apiRequestActive = true;
-                this.verifyDonorResult = await this.donorRegistrationService.verifyDonor({ FirstName: this.newDonor.Firstname, MiddleName: this.newDonor.Middlename, LastName: this.newDonor.Lastname, BirthDate: this.newDonor.BirthDate })
+                this.verifyDonorResult = await this.donorRegistrationService.verifyDonor({ FirstName: this.newDonor.Firstname.trim(), MiddleName: this.newDonor.Middlename.trim(), LastName: this.newDonor.Lastname.trim(), BirthDate: this.newDonor.BirthDate })
                 if (!Common.isNull(this.verifyDonorResult.Donor)) {
                     this.newDonor = this.verifyDonorResult.Donor;
                     this.newDonor.MedicalHistories = new Array<DonorMedicalHistoryDto>();

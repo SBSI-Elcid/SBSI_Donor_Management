@@ -125,45 +125,45 @@
             </v-col>
 
             <!-- HCT -->
-            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+            <v-col v-if="!disableOptions" cols="12" sm="6" md="2">
                 <!--<label class="font-weight-bold">HCT</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
-                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
+                              :rules="disableOptions ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="Hematocrit"
                               v-model="donorInitialScreening.HCT" />
             </v-col>
 
             <!-- RBC -->
-            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+            <v-col v-if="!disableOptions" cols="12" sm="6" md="2">
                 <!--<label class="font-weight-bold">RBC</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
-                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
+                              :rules="disableOptions ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="Red Blood Cells"
                               v-model="donorInitialScreening.RBC" />
             </v-col>
 
             <!-- WBC -->
-            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+            <v-col v-if="!disableOptions" cols="12" sm="6" md="2">
                 <!--<label class="font-weight-bold">WBC</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
-                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
+                              :rules="disableOptions ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="White Blood Cells"
                               v-model="donorInitialScreening.WBC" />
             </v-col>
 
             <!-- PLT -->
-            <v-col v-if="!pangdisable" cols="12" sm="6" md="2">
+            <v-col v-if="!disableOptions" cols="12" sm="6" md="2">
                 <!--<label class="font-weight-bold">PLT</label>-->
                 <v-text-field dense
                               outlined
                               :disabled="isEditingValue"
-                              :rules="pangdisable ? [] : [rules.numberRequired, rules.positiveNumber]"
+                              :rules="disableOptions ? [] : [rules.numberRequired, rules.positiveNumber]"
                               label="Platelet Count"
                               v-model="donorInitialScreening.PLTCount" />
             </v-col>
@@ -215,7 +215,7 @@
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
 
-        protected pangdisable: boolean = false;
+        protected disableOptions: boolean = false;
         protected selectedMethod: string = '';
 
 
@@ -260,7 +260,7 @@
 
         @Watch('donorInitialScreening.MethodOfBloodCollection')
         onMethodChange(newValue: string): void {
-            this.pangdisable = newValue === 'whole';
+            this.disableOptions = newValue === 'whole';
         }
 
         @Watch("showPatientDirectedFields")

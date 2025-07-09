@@ -307,7 +307,7 @@
                 const pattern = /^(?:\d{11}|\+63\d{10})$/;
                 return pattern.test(value) || 'Invalid mobile number format';
             },
-            noSpaces: v => !/\s/.test(v) || 'No spaces allowed'
+            noSpaces: v => v === v.trim() || 'No leading or trailing spaces allowed'
         }
         protected genderOptions: any = CommonOptions.GenderOptions;
 

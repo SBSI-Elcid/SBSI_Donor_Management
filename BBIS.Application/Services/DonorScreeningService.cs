@@ -13,6 +13,7 @@ using BBIS.Domain.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using NinjaNye.SearchExtensions;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace BBIS.Application.Services
@@ -37,7 +38,7 @@ namespace BBIS.Application.Services
                 throw new ArgumentNullException(nameof(PagedSearchDto));
             }
 
-            var sortBy = string.IsNullOrEmpty(searchDto.SortBy) ? "FullName asc" : searchDto.SortBy + (searchDto.SortDesc ? " desc" : " asc");
+            var sortBy = string.IsNullOrEmpty(searchDto.SortBy) ? "RegistrationDate desc" : searchDto.SortBy + (searchDto.SortDesc ? " desc" : " asc");
             var pagedResult = new PagedSearchResultDto<DonorListDto>(searchDto);
 
             var statuses = roles.GetDonorStatusByRoles();
@@ -234,6 +235,7 @@ namespace BBIS.Application.Services
 
                 }
                 else {
+                    dto.DonorStatus = query?.DonorStatus;
                     dto.DonorRegistrationId = query.DonorRegistrationId;
                     dto.DonorTransactionId = query.DonorTransactionId;
                 }

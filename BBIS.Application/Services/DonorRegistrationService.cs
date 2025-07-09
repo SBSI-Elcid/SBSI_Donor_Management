@@ -275,6 +275,7 @@ namespace BBIS.Application.Services
                         {
                             result = GetVerificationResultForRegisteredDonor(donorLatestTransaction.DonorStatus, registrant.RegistrationNumber);
                         }
+                        result.Donor = donorDto;
                         result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
                         return result;
                     }

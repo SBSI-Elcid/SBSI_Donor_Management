@@ -16,7 +16,7 @@
                     <v-text-field type="number"
                                   :disabled="isDisabled"
                                   v-model ="donorVitalSigns.Temperature"
-                                  :rules="[rules.numberRequired, rules.temperatureRange]"
+                                  :rules="[rules.numberRequired,rules.positiveNumber]"
                                   dense outlined />
                 </v-col>
 
@@ -54,11 +54,11 @@
                 </v-col>
 
                 <v-col cols="2" class="py-0">
-                    <label class="label-container">Oxygen Saturation</label>
+                    <label class="label-container">Oxygen Saturation(%)</label>
                     <v-text-field type="number"
                                   :disabled="isDisabled"
                                   v-model ="donorVitalSigns.OxygenSaturation"
-                                  :rules="[rules.numberRequired, rules.oxygenRange]"
+                                  :rules="[rules.numberRequired,rules.positiveNumber]"
                                   dense outlined />
                 </v-col>
 
@@ -103,11 +103,11 @@
 
             positiveNumber: (v: number) => v >= 0 || 'Must be a positive number',
 
-            temperatureRange: (v: number) =>
-                (v >= 30 && v <= 50) || 'Temperature should be between 30\u00B0C and 50\u00B0C ',
+            //temperatureRange: (v: number) =>
+            //    (v >= 30 && v <= 50) || 'Temperature should be between 30\u00B0C and 50\u00B0C ',
 
-            oxygenRange: (v: number) =>
-                (v >= 80 && v <= 100) || 'Oxygen saturation should be 80% - 100%',
+            //oxygenRange: (v: number) =>
+            //    (v >= 80 && v <= 100) || 'Oxygen saturation should be 80% - 100%',
 
             bloodPressurePattern: (v: string) => {
                 const pattern = /^\d{2,3}\/\d{2,3}$/;

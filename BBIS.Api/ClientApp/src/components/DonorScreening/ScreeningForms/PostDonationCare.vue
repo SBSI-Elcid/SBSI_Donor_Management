@@ -4,6 +4,7 @@
             <v-row>
                 <v-col cols="6">
                     <v-combobox label="Type of Reaction"
+                                 :disabled ="!isEditable"
                                 :items="['Local', 'Vasovagal', 'Apheresis related', 'Allergic']"
                                 solo
                                 v-model="donorPostDonationCare.TypeOfReaction"
@@ -11,6 +12,7 @@
                 </v-col>
                 <v-col cols="6">
                     <v-combobox label="Severity of Reaction"
+                                 :disabled ="!isEditable"
                                 :items="['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5']"
                                 solo
                                 v-model="donorPostDonationCare.SeverityOfReaction"
@@ -21,6 +23,7 @@
             <v-row>
                 <v-col cols="6">
                     <v-combobox label="Reaction Manifestation"
+                                 :disabled ="!isEditable"
                                 :items="['Dizziness','Fainting','Convulsion']"
                                 solo
                                 v-model="donorPostDonationCare.ReactionManifestation"
@@ -28,6 +31,7 @@
                 </v-col>
                 <v-col cols="6">
                     <v-combobox label="Action / Interventions"
+                                 :disabled ="!isEditable"
                                 :items="['Positioned Supine','Leg Elevated','Muscle Contraction','Oxygen Inhalation','Iv Fluids']"
                                 solo
                                 v-model="donorPostDonationCare.ActionInterventions"
@@ -58,10 +62,10 @@
                             </tbody>-->
                             <tbody>
                                 <tr v-for="(item, index) in vitalSignsMonitoringDetails" :key="index">
-                                    <td><v-text-field v-model="item.Time" type="time" dense hide-details /></td>
-                                    <td><v-text-field v-model="item.BP" dense hide-details /></td>
-                                    <td><v-text-field v-model="item.PR" dense hide-details /></td>
-                                    <td><v-text-field v-model="item.Others" dense hide-details /></td>
+                                    <td><v-text-field :disabled ="!isEditable" v-model="item.Time" type="time" dense hide-details /></td>
+                                    <td><v-text-field :disabled ="!isEditable" v-model="item.BP" dense hide-details /></td>
+                                    <td><v-text-field :disabled ="!isEditable" v-model="item.PR" dense hide-details /></td>
+                                    <td><v-text-field :disabled ="!isEditable" v-model="item.Others" dense hide-details /></td>
                                 </tr>
                                 <!--<tr v-for="(detail, i) in vitalSignsMonitoringDetails" :key="i">
                                     <td><v-text-field v-model="vitalSignsMonitoringDetails.Time" type="time" dense hide-details /></td>
@@ -75,14 +79,14 @@
                 </v-col>
 
                 <v-col>
-                    <v-textarea v-model="donorPostDonationCare.DoctorsNote" label="Doctor's Notes" rows="4" outlined />
-                    <v-text-field v-model="donorPostDonationCare.DischargeStatus" label="Discharge Status" />
+                    <v-textarea :disabled ="!isEditable" v-model="donorPostDonationCare.DoctorsNote" label="Doctor's Notes" rows="4" outlined />
+                    <v-text-field :disabled ="!isEditable" v-model="donorPostDonationCare.DischargeStatus" label="Discharge Status" />
                     <v-row>
                         <!--<v-col>
                             <v-text-field v-model = "donorPostDonationCare.DoctorsNote" label="Monitored By" />
                         </v-col>-->
                         <v-col>
-                            <v-text-field v-model="donorPostDonationCare.DoctorName" label="Doctor's Name" />
+                            <v-text-field :disabled ="!isEditable" v-model="donorPostDonationCare.DoctorName" label="Doctor's Name" />
                         </v-col>
                     </v-row>
                 </v-col>
@@ -90,20 +94,20 @@
 
             <v-row v-if="postDonationDetail.length >= 3">
                 <v-col>
-                    <v-textarea v-model="postDonationDetail[0].Details" label="Day 1 Post Donation" rows="2" outlined />
+                    <v-textarea :disabled ="!isEditable" v-model="postDonationDetail[0].Details" label="Day 1 Post Donation" rows="2" outlined />
                 </v-col>
                 <v-col>
-                    <v-textarea v-model="postDonationDetail[1].Details" label="Day 2 Post Donation" rows="2" outlined />
+                    <v-textarea :disabled ="!isEditable" v-model="postDonationDetail[1].Details" label="Day 2 Post Donation" rows="2" outlined />
                 </v-col>
                 <v-col>
-                    <v-textarea v-model="postDonationDetail[2].Details" label="Day 3 Post Donation" rows="2" outlined />
+                    <v-textarea :disabled ="!isEditable" v-model="postDonationDetail[2].Details" label="Day 3 Post Donation" rows="2" outlined />
                 </v-col>
                 <v-col>
-                    <v-textarea label="Supervisor's Note" rows="2" outlined />
+                    <v-textarea :disabled ="!isEditable" label="Supervisor's Note" rows="2" outlined />
                 </v-col>
             </v-row>
 
-            <div class="section-outer-container text-right pt-3 pb-2">
+            <div class="section-outer-container text-right pt-3 pb-2" v-if="isEditable">
                 <v-btn color="default" large tile class="mr-2" @click="onDischarge"><v-icon color="success" size="25" left>mdi-medication</v-icon> Discharge</v-btn>
                 <v-btn color="default" large tile class="mr-2" @click="onApprove"><v-icon color="success" size="25" left>mdi-check</v-icon> Save</v-btn>
             </div>
@@ -147,6 +151,10 @@
         protected postDonationDetail: IPostDonationDetail[] = [];
         protected isEditingValue: boolean = false;
         protected isDisabled: boolean = true;
+
+        protected get isEditable(): boolean {
+            return this.donorPostDonationCare.DonorStatus === DonorStatus.ForPostDonationCare;
+        }
 
 
         public async created(): Promise<void> {
