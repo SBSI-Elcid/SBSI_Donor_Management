@@ -487,7 +487,8 @@ namespace BBIS.Database.MigrationHelper
                 new Module { OrderNo = 9, ModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302"), Menu = "Setting", Icon = "mdi-cog", Link = "/setting", IsActive = true, IsParentMenu = true },    
                 new Module { OrderNo = 10, ModuleId = Guid.Parse("53223248-2221-4d48-a551-8477a33e96c4"), Menu = "Users", Icon = "mdi-account-cog-outline", Link = "/users", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") },    
                 new Module { OrderNo = 11, ModuleId = Guid.Parse("22a8eb15-168c-470a-a680-71e85b8514c6"), Menu = "App Setting", Icon = "mdi-cogs", Link = "/app-settings/unit-of-measurement", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") },   
-                new Module { OrderNo = 12, ModuleId = Guid.Parse("68b94e71-abf0-4989-aa29-9ec6d6419a9c"), Menu = "Signatories", Icon = "mdi-draw", Link = "/signatories", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") }    
+                new Module { OrderNo = 12, ModuleId = Guid.Parse("68b94e71-abf0-4989-aa29-9ec6d6419a9c"), Menu = "Signatories", Icon = "mdi-draw", Link = "/signatories", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") },
+                new Module { OrderNo = 13, ModuleId = Guid.Parse("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"), Menu = "Libraries", Icon = "mdi-library", Link = "/libraries", IsActive = true, IsParentMenu = true, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") }
             );
         }
     }

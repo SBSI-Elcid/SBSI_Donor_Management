@@ -89,14 +89,16 @@ export default class Sidebar extends VueBase {
     protected async mounted(): Promise<void> {
         console.log(this.isOffline);
     if (!this.isOffline) {
-      if (this.authState.userModules.length == 0) {
+        if (this.authState.userModules.length == 0) {
+            console.log("FirstIF");
           const userModules = await this.userAccountService.getUserModules(this.authState.userId);
           
           this.userModules = [{ Menu: 'Dashboard', Icon: 'mdi-table', Link: '/home', IsParentMenu: false, ModuleId: '', OrderNo: 0, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null }, ...userModules]
          
         await this.authState.setUserModules(this.userModules);
       }
-      else {
+        else {
+            console.log("SecondIF");
         this.userModules = this.authState.userModules;
       }
     }

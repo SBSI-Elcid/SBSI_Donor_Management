@@ -44,7 +44,7 @@
                                             dense flat solo />
 
                               <p class="pa-2 text-caption">
-                                  {{ question.donorMedHistory.Remarks }}
+                                  <!--{{ question.donorMedHistory.Remarks }}-->
                               </p>
                           </td>
                       </tr>
@@ -104,7 +104,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
 
        
         protected async created() {
-           
+            this.selectedLanguage = "english";
             await this.loadDonorInfo(); // Load donor info before mounting
             await this.donorModule.loadMedicalQuestionnaire(); // Fetch medical questionnaires
             this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
@@ -134,7 +134,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
 
         @Watch('selectedLanguage')
         onSelectedLanguageChanged() {
-
+            
             // If needed, you can force recomputation or trigger other logic here
         }
 
@@ -192,13 +192,13 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                
                 let medicalQuestion: { header: string, question: string, donorMedHistory: IDonorMedicalHistoryDto } = {
                     header: question.HeaderText,
-                    question: question.QuestionEnglishText,
+                    question: questionText,
                     donorMedHistory: {
                         MedicalQuestionnaireId: question.MedicalQuestionnaireId,
                         Answer: donorMedicalHistory.Answer,
                         Remarks: donorMedicalHistory.Remarks,
                         HeaderText: question.HeaderText,
-                        QuestionText: question.QuestionEnglishText,
+                        QuestionText: questionText,
                     },
                     hasHistory: hasHistory
                 };
