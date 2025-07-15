@@ -9,6 +9,7 @@ import { IInstitutionDto } from "@/models/ApplicationSetting/InstitutionDto";
 import { ITestOrderTypeSettingDto } from "@/models/ApplicationSetting/ITestOrderTypeSettingDto";
 import { PagedSearchDto, PagedSearchResultDto } from "@/models/PagedSearchDto";
 import { ApiClient } from "./ApiClient";
+import { IRoleDto } from "../models/ApplicationSetting/RoleDto";
 
 export default class ApplicationSettingService {
 	baseUrl: string = 'api/applicationSetting/';
@@ -21,8 +22,8 @@ export default class ApplicationSettingService {
 	async getApplicationSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IApplicationSettingDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IApplicationSettingDto>>(`settings`, dto);
 	}
-	async getLibrariesRoleSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IApplicationSettingDto>> {
-		return this.apiClient.getPostData<PagedSearchResultDto<IApplicationSettingDto>>(`libraries-role`, dto);
+	async getLibrariesRoleSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IRoleDto>> {
+		return this.apiClient.getPostData<PagedSearchResultDto<IRoleDto>>(`libraries-role`, dto);
 	}
 
 	async getBloodComponentSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IBloodComponentSettingDto>> {

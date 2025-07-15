@@ -380,27 +380,27 @@ namespace BBIS.Application.Services
             return mapper.Map<TestOrderTypeSettingDto>(checklist);
         }
 
-        public async Task<Guid> UpdateLibrariesRoles(RoleDto dto)
-        {
-            try
-            {
-                if (dto == null) throw new ArgumentNullException(nameof(RoleDto));
+        //public async Task<Guid> UpdateLibrariesRoles(RoleDto dto)
+        //{
+        //    try
+        //    {
+        //        if (dto == null) throw new ArgumentNullException(nameof(RoleDto));
 
-                var librariesRole = await repository.ApplicationSetting.FindOneByConditionAsync(x => x.ApplicationSettingId == dto.ApplicationSettingId);
-                if (applicationSetting == null) throw new RecordNotFoundException($"Application setting {dto.SettingKey} does not exist.");
+        //        var librariesRole = await repository.ApplicationSetting.FindOneByConditionAsync(x => x.ApplicationSettingId == dto.ApplicationSettingId);
+        //        if (applicationSetting == null) throw new RecordNotFoundException($"Application setting {dto.SettingKey} does not exist.");
 
-                var setting = mapper.Map<ApplicationSetting>(dto);
-                repository.ApplicationSetting.Update(setting);
+        //        var setting = mapper.Map<ApplicationSetting>(dto);
+        //        repository.ApplicationSetting.Update(setting);
 
-                await repository.SaveAsync();
+        //        await repository.SaveAsync();
 
-                return applicationSetting.ApplicationSettingId;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //        return applicationSetting.ApplicationSettingId;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         public async Task<Guid> UpdateApplicationSetting(ApplicationSettingDto dto)
         {

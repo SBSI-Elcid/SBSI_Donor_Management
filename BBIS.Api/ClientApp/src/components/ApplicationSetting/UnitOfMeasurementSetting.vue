@@ -24,6 +24,7 @@
         <template v-slot:[`item.SettingValue`]="{ item }">
           <v-text-field v-if="item.ApplicationSettingId === editedItem.ApplicationSettingId" 
                         v-model="editedItem.SettingValue" 
+                        label ="HelloWOrlds"
                         hide-details="auto"
                         :rules="[rules.required, rules.maxLength(100)]"
                         outlined dense />

@@ -270,11 +270,11 @@ namespace BBIS.Application.Repositories
         {
             get
             {
-                if (_applicationSetting == null)
+                if (_role == null)
                 {
-                    _applicationSetting = new ApplicationSettingRepository(_dbContext);
+                    _role = new LibrariesRoleRepository(_dbContext);
                 }
-                return _applicationSetting;
+                return _role;
             }
         }
 

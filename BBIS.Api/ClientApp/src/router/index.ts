@@ -258,7 +258,7 @@ const routes: Array<RouteConfig> = [
                     {
                         path: 'roles',
                         name: 'Roles',
-                        component: () => import('@/components/ApplicationSetting/BloodComponentChecklist.vue')
+                        component: () => import('@/components/Libraries/RoleManagementSettings.vue')
                     },
                     {
                         path: 'questionnare',
