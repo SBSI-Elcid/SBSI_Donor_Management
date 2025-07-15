@@ -450,8 +450,9 @@ namespace BBIS.Application.Services
                     result.Add(dto);
                 }
             }
-
+            Console.WriteLine(result);
             return result.OrderBy(x => x.OrderNo).ToList();
+
         }
 
         #region private methods

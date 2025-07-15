@@ -28,7 +28,12 @@
 
             <v-row no-gutters>
                 <v-col cols="12" class="py-0">
-                    <BirthdatePicker v-model="newDonor.BirthDate" :rules="[rules.required]" :labelText="'Birthdate'" />
+                    <v-text-field :rules="[rules.required]" v-model="newDonor.BirthDate" type="date"
+                                  label="BirthDate"
+                                  dense
+                                  outlined></v-text-field>
+
+                    <!--<BirthdatePicker v-model="newDonor.BirthDate" :rules="[rules.required]" :labelText="'Birthdate'" />-->
                 </v-col>
             </v-row>
 

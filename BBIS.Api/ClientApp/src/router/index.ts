@@ -249,6 +249,26 @@ const routes: Array<RouteConfig> = [
                 ]
             },
             {
+                path: 'libraries',
+                meta: {
+                    requiresAuth: true
+                },
+                component: () => import('../views/LibrariesView.vue'),
+                children: [
+                    {
+                        path: 'roles',
+                        name: 'Roles',
+                        component: () => import('@/components/ApplicationSetting/BloodComponentChecklist.vue')
+                    },
+                    {
+                        path: 'questionnare',
+                        name: 'Questionnare',
+                        component: () => import('@/components/ApplicationSetting/TestOrderType.vue')
+                    }
+                ]
+            },
+
+            {
                 path: '/forbidden',
                 name: 'forbidden',
                 meta: {
