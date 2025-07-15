@@ -5,6 +5,7 @@ namespace BBIS.Application.Contracts
 {
     public interface IApplicationSettingService
     {
+        Task<PagedSearchResultDto<RoleDto>> GetRoleSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<ApplicationSettingDto>> GetApplicationSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<BloodComponentSettingDto>> GetBloodComponentSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<InstitutionDto>> GetInstitutions(PagedSearchDto searchDto);

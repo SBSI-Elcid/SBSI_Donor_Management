@@ -24,6 +24,7 @@ namespace BBIS.Application.Repositories
         private IDonorVitalSignsMonitoring _vitalSignsMonitoring ;
         private IDonorDeferralRepository _donorDeferral;
         private IDonorRegistrationRepository _donorRegistration;
+        private ILibrariesRole _role;
         private IApplicationSettingRepository _applicationSetting;
         private IBloodComponentRespository _bloodComponent;
         private IInstitutionRepository _institution;
@@ -264,6 +265,19 @@ namespace BBIS.Application.Repositories
                 return _donorRegistration;
             }
         }
+
+        public ILibrariesRole Role
+        {
+            get
+            {
+                if (_applicationSetting == null)
+                {
+                    _applicationSetting = new ApplicationSettingRepository(_dbContext);
+                }
+                return _applicationSetting;
+            }
+        }
+
 
         public IApplicationSettingRepository ApplicationSetting
         {

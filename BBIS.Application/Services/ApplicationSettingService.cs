@@ -25,6 +25,52 @@ namespace BBIS.Application.Services
             this.mapper = mapper;
         }
 
+        public async Task<PagedSearchResultDto<RoleDto>> GetRoleSettings(PagedSearchDto searchDto)
+        {
+            if (searchDto == null)
+            {
+                throw new ArgumentNullException(nameof(PagedSearchDto));
+            }
+
+            var sortBy = string.IsNullOrEmpty(searchDto.SortBy) ? "Rolename asc" : searchDto.SortBy + (searchDto.SortDesc ? " desc" : " asc");
+            var pagedResult = new PagedSearchResultDto<RoleDto>(searchDto);
+
+            var searchText = searchDto.SearchText;
+
+            var query = dbContext.Roles
+                .Search(t => t.RoleName)
+                    .Containing(searchText);
+
+            // If the items per page selected is "All" the underlying value of it is -1, so use the total count of data as page size.
+            if (searchDto.PageSize == -1)
+            {
+                searchDto.PageSize = query.Count();
+            }
+
+            var results = await query
+                .Skip((searchDto.PageNumber - 1) * searchDto.PageSize)
+                .Take(searchDto.PageSize)
+                .Select(x =>
+                        new RoleDto
+                        {
+                           RoleName = x.RoleName
+                        }
+                    ).ToListAsync();
+
+            var totalRecords = query.Count();
+
+            if (results == null || !results.Any()) return pagedResult;
+
+            pagedResult.TotalCount = totalRecords;
+            pagedResult.Results = results.AsQueryable()
+                                         .OrderBy(sortBy)
+                                         .ToList();
+
+            return pagedResult;
+        }
+
+
+
         public async Task<PagedSearchResultDto<ApplicationSettingDto>> GetApplicationSettings(PagedSearchDto searchDto)
         {
             if (searchDto == null)
@@ -332,6 +378,28 @@ namespace BBIS.Application.Services
             }
 
             return mapper.Map<TestOrderTypeSettingDto>(checklist);
+        }
+
+        public async Task<Guid> UpdateLibrariesRoles(RoleDto dto)
+        {
+            try
+            {
+                if (dto == null) throw new ArgumentNullException(nameof(RoleDto));
+
+                var librariesRole = await repository.ApplicationSetting.FindOneByConditionAsync(x => x.ApplicationSettingId == dto.ApplicationSettingId);
+                if (applicationSetting == null) throw new RecordNotFoundException($"Application setting {dto.SettingKey} does not exist.");
+
+                var setting = mapper.Map<ApplicationSetting>(dto);
+                repository.ApplicationSetting.Update(setting);
+
+                await repository.SaveAsync();
+
+                return applicationSetting.ApplicationSettingId;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<Guid> UpdateApplicationSetting(ApplicationSettingDto dto)

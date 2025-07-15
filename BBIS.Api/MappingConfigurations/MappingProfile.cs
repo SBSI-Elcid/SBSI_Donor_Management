@@ -48,6 +48,9 @@ namespace BBIS.Api.MappingConfigurations
             CreateMap<Transfusion, TransfusionDto>().ReverseMap();
             CreateMap<TransfusionVitalSign, TransfusionVitalSignDto>().ReverseMap();
             CreateMap<SignatoryDto, Signatory>().ReverseMap();
+
+            //Libraries
+            CreateMap<RoleDto, Role>().ReverseMap();
         }
     }
 }

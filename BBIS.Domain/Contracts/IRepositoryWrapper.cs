@@ -20,6 +20,7 @@
         IDonorRecentDonationRepository DonorRecentDonation { get; }
         IDonorDeferralRepository DonorDeferral { get; }
         IDonorRegistrationRepository DonorRegistration { get; }
+        ILibrariesRole Roles { get; }
         IApplicationSettingRepository ApplicationSetting { get; }
         IBloodComponentRespository BloodComponent { get; }
         IInstitutionRepository Institution { get; }

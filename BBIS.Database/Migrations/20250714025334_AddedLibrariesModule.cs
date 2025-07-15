@@ -12,7 +12,7 @@ namespace BBIS.Database.Migrations
             migrationBuilder.InsertData(
                 table: "Module",
                 columns: new[] { "ModuleId", "Icon", "IsActive", "IsParentMenu", "Link", "Menu", "OrderNo", "ParentModuleId" },
-                values: new object[] { new Guid("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"), "mdi-library", true, false, "/libraries", "Libraries", 13, new Guid("f0fa95f2-2288-434f-8df6-71f00e9be302") });
+                values: new object[] { new Guid("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"), "mdi-library", true, false, "/libraries/roles", "Libraries", 13, new Guid("f0fa95f2-2288-434f-8df6-71f00e9be302") });
 
             migrationBuilder.InsertData(
                 table: "Role",

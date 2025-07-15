@@ -2402,7 +2402,7 @@ namespace BBIS.Database.Migrations
                             Icon = "mdi-library",
                             IsActive = true,
                             IsParentMenu = false,
-                            Link = "/libraries",
+                            Link = "/libraries/roles",
                             Menu = "Libraries",
                             OrderNo = 13,
                             ParentModuleId = new Guid("f0fa95f2-2288-434f-8df6-71f00e9be302")

@@ -21,6 +21,9 @@ export default class ApplicationSettingService {
 	async getApplicationSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IApplicationSettingDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IApplicationSettingDto>>(`settings`, dto);
 	}
+	async getLibrariesRoleSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IApplicationSettingDto>> {
+		return this.apiClient.getPostData<PagedSearchResultDto<IApplicationSettingDto>>(`libraries-role`, dto);
+	}
 
 	async getBloodComponentSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IBloodComponentSettingDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IBloodComponentSettingDto>>(`settings/bloodComponents`, dto);

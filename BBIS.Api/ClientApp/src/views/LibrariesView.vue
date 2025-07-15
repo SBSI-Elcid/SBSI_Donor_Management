@@ -29,7 +29,7 @@ export default class LibrariesView extends VueBase {
     {
       name: 'Roles',
       icon: 'mdi-account-card',
-      route: '',
+      route: '/libraries/roles',
     },
     {
       name: 'Questionnare',

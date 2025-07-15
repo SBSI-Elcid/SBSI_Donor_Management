@@ -27,6 +27,21 @@ namespace BBIS.Api.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
+        /// 
+        [HttpPost("roles")]
+        public async Task<ActionResult<RequestResult<PagedSearchResultDto<RoleDto>>>> GetRoleSettings([FromBody] PagedSearchDto dto)
+        {
+            try
+            {
+                var results = await this.applicationSettingService.GetRoleSettings(dto);
+                return this.Json(results);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving the list of application settings: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
         [HttpPost("settings")]
         public async Task<ActionResult<RequestResult<PagedSearchResultDto<ApplicationSettingDto>>>> GetApplicationSettings([FromBody] PagedSearchDto dto)
         {
