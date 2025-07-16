@@ -22,8 +22,9 @@ export default class ApplicationSettingService {
 	async getApplicationSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IApplicationSettingDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IApplicationSettingDto>>(`settings`, dto);
 	}
+
 	async getLibrariesRoleSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IRoleDto>> {
-		return this.apiClient.getPostData<PagedSearchResultDto<IRoleDto>>(`libraries-role`, dto);
+		return this.apiClient.getPostData<PagedSearchResultDto<IRoleDto>>(`roles`, dto);
 	}
 
 	async getBloodComponentSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IBloodComponentSettingDto>> {
@@ -69,6 +70,11 @@ export default class ApplicationSettingService {
 	async upsertBloodComponentSetting(dto: IBloodComponentSettingDto): Promise<Guid>  {
 		let response = await this.apiClient.postJson(`upsert-bloodcomponent`, dto);
 		return response.Data as Guid; 
+	}
+
+	async upsertLibrariesRole(dto: IRoleDto): Promise<Guid> {
+		let response = await this.apiClient.postJson(`upsert-librariesrole`, dto);
+		return response.Data as Guid;
 	}
 
 	async upsertInstitutionSetting(dto: IInstitutionDto): Promise<Guid>  {

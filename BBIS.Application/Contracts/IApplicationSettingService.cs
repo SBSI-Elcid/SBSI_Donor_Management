@@ -18,6 +18,7 @@ namespace BBIS.Application.Contracts
         Task<TestOrderTypeSettingDto> GetTestOrderTypeById(Guid id);
         Task<Guid> UpdateApplicationSetting(ApplicationSettingDto dto);
         Task<Guid> UpsertBloodComponentSetting(BloodComponentSettingDto dto);
+        Task<Guid> UpsertLibrariesRole(RoleDto dto);
         Task<Guid> UpsertInstitution(InstitutionDto dto);
         Task<Guid> UpsertBloodComponentChecklist(BloodComponentChecklistDto dto);
         Task<Guid> UpsertTestOrderType(TestOrderTypeSettingDto dto);

@@ -1,5 +1,6 @@
 <template>
     <v-container fluid>
+        <RoleManagementUpsertModal v-if="showUpsertRoleManagement" :toggle="showUpsertRoleManagement" :id="selectedId"  @onClose="onCreateDialogClose" />
         <v-card>
             <v-row class="mx-3 pt-3">
                 <v-col cols="6">
@@ -7,6 +8,9 @@
                 </v-col>
                 <v-col cols="2">
                     <v-btn class="pr-2" color="default" @click="loadrecords" depressed><v-icon left>mdi-magnify</v-icon> Search</v-btn>
+                </v-col>
+                <v-col cols="3" class="mx-1 text-right ">
+                    <v-btn class="pr-2" color="default" @click="onAdd" depressed><v-icon size="25" color="primary" left>mdi-playlist-plus</v-icon>Add New Role</v-btn>
                 </v-col>
             </v-row>
 
@@ -21,109 +25,130 @@
                     {{addSpaceBetweenUpperCaseLetters(item.SettingKey)}}
                 </template>
 
+                <template v-slot:[`item.Actions`]="{ item }">
+                    <v-icon @click="onEdit(item.BloodComponentChecklistId)"  class="mr-3">mdi-pencil</v-icon>
+                </template>
+
                 <!--<template v-slot:[`item.SettingValue`]="{ item }">
-                    <v-text-field
-                                  v-model="editedItem.SettingValue"
-                                    
-                                  outlined dense />-->
-                    <!--<span v-else>{{item.SettingValue}}</span>-->
+    <v-text-field
+                  v-model="editedItem.SettingValue"
+
+                  outlined dense />-->
+                <!--<span v-else>{{item.SettingValue}}</span>-->
                 <!--</template>-->
 
-               
+
             </v-data-table>
         </v-card>
     </v-container>
 </template>
 
-<script lang="ts">import Common from '@/common/Common';
-import VueBase from '@/components/VueBase';
-import { ApplicationSettingDto, IApplicationSettingDto } from '@/models/ApplicationSetting/ApplicationSettingDto';
-import { PagedSearchDto, PagedSearchResultDto } from '@/models/PagedSearchDto';
-import ApplicationSettingService from '@/services/ApplicationSettingService';
-import { Component, Watch } from 'vue-property-decorator';
-import { IRoleDto, RoleDto } from '../../models/ApplicationSetting/RoleDto';
+<script lang="ts">
+    import Common from '@/common/Common';
+    import VueBase from '@/components/VueBase';
+    import { ApplicationSettingDto, IApplicationSettingDto } from '@/models/ApplicationSetting/ApplicationSettingDto';
+    import { PagedSearchDto, PagedSearchResultDto } from '@/models/PagedSearchDto';
+    import ApplicationSettingService from '@/services/ApplicationSettingService';
+    import { Component, Watch } from 'vue-property-decorator';
+    import { IRoleDto, RoleDto } from '../../models/ApplicationSetting/RoleDto';
+    import LibrariesService from '../../services/LibrariesService';
 
-@Component
-export default class RoleManagementSettings extends VueBase {
-  protected applicationSettingService: ApplicationSettingService = new ApplicationSettingService();
-  protected dataLoaded: boolean = false;
-  protected loading: boolean = false;
-  protected showError: boolean = false;
-  protected errorMessage: string = 'Error while loading records';
-  protected columnHeaders: any = [
-    { text: 'Role Name', value: 'RoleName', sortable: true, width: '40%' }
-  ];
-  protected records: Array<IApplicationSettingDto> = [];
-  protected pagedSearchDto: PagedSearchDto = new PagedSearchDto();
-    protected pagedResult!: PagedSearchResultDto<IRoleDto>;
-  protected options: any = {};
-  protected selectedId: Guid | null = null;
-  protected editedIndex: number = -1;
-  protected editedItem: IRoleDto = new RoleDto();
-  protected rules: any = {...Common.ValidationRules }
+    import RoleManagementUpsertModal from './RoleManagementUpsertModal.vue';
 
-  @Watch('options')
-  protected async optionChange(): Promise<void> {
-    await this.loadrecords();
-  }
+    @Component({ components: { RoleManagementUpsertModal } })
+    export default class RoleManagementSettings extends VueBase {
+        protected librariesService: ApplicationSettingService = new ApplicationSettingService();
+        protected dataLoaded: boolean = false;
+        protected loading: boolean = false;
+        protected showError: boolean = false;
+        protected errorMessage: string = 'Error while loading records';
+        protected columnHeaders: any = [
+            { text: 'Role Name', value: 'RoleName', sortable: true, width: '90%' },
+            { text: '', value: 'Actions', sortable: false, width: '10%' }
+        ];
+        protected records: Array<IApplicationSettingDto> = [];
+        protected pagedSearchDto: PagedSearchDto = new PagedSearchDto();
+        protected pagedResult!: PagedSearchResultDto<IRoleDto>;
+        protected options: any = {};
+        protected selectedId: Guid | null = null;
+        protected showUpsertRoleManagement: boolean = false;
+        protected rules: any = { ...Common.ValidationRules }
 
-  //  protected onEdit(item: IRoleDto): void {
-  //  this.editedIndex = this.records.indexOf(item);
-  //  this.editedItem = Object.assign({}, item);
-  //}
+        @Watch('options')
+        protected async optionChange(): Promise<void> {
+            await this.loadrecords();
+        }
 
-  //protected close(): void {
-  //  this.editedItem = Object.assign({}, new ApplicationSettingDto());
-  //  this.editedIndex = -1;
-  //}
+        protected onAdd(): void {
+            this.showUpsertRoleManagement = true;
+        }
 
-  //protected async save(): Promise<void> {
-  //  if (this.editedIndex > -1) {
+        protected async onCreateDialogClose(refreshRecord: boolean): Promise<void> {
+            this.showUpsertRoleManagement = false;
+            this.selectedId = '';
+      
 
-  //    let loader = this.showLoader();
-  //    try {
-  //      await this.applicationSettingService.updateApplicationSetting(this.editedItem);
-  //      Object.assign(this.records[this.editedIndex], this.editedItem)
-  //      this.notify_success('Application Setting successfully updated.');
-  //      this.close()
-  //    }
-  //    catch(error: any) {
-  //      if (error.StatusCode != 500) {
-  //        this.errorMessage = error.Message;
-  //        this.notify_error(this.errorMessage);
-  //      }
-  //    }
-  //    finally {
-  //      loader.hide();
-  //    }
-  //  }
-  //}
+            if (refreshRecord) {
+                await this.loadrecords();
+            }
+        }
 
-  protected async loadrecords(): Promise<void> {
-    const { page, itemsPerPage, sortBy, sortDesc } = this.options;
-    this.pagedSearchDto.PageNumber = page;
-    this.pagedSearchDto.PageSize = itemsPerPage;
-    this.pagedSearchDto.SortBy = sortBy[0] || '';
-    this.pagedSearchDto.SortDesc = sortDesc[0];
-    this.dataLoaded = false;
-    this.loading = true;
-    this.showError = false;
+          protected onEdit(item: IRoleDto): void {
+              this.showUpsertRoleManagement = true;
+        }
 
-    try {
-      this.pagedResult = await this.applicationSettingService.getLibrariesRoleSettings(this.pagedSearchDto);
-      this.loading = false;
-      this.records = this.pagedResult.Results;
-      this.dataLoaded = true;
-    }
-    catch (error) {
-      this.showError = true;
-      this.loading = false;
-      this.dataLoaded = false;
-    }
-  }
+        //protected close(): void {
+        //  this.editedItem = Object.assign({}, new ApplicationSettingDto());
+        //  this.editedIndex = -1;
+        //}
 
-  protected async mounted(): Promise<void> {
-    //await this.loadrecords();
-  }
+        //protected async save(): Promise<void> {
+        //  if (this.editedIndex > -1) {
 
-}</script>
+        //    let loader = this.showLoader();
+        //    try {
+        //      await this.applicationSettingService.updateApplicationSetting(this.editedItem);
+        //      Object.assign(this.records[this.editedIndex], this.editedItem)
+        //      this.notify_success('Application Setting successfully updated.');
+        //      this.close()
+        //    }
+        //    catch(error: any) {
+        //      if (error.StatusCode != 500) {
+        //        this.errorMessage = error.Message;
+        //        this.notify_error(this.errorMessage);
+        //      }
+        //    }
+        //    finally {
+        //      loader.hide();
+        //    }
+        //  }
+        //}
+
+        protected async loadrecords(): Promise<void> {
+            const { page, itemsPerPage, sortBy, sortDesc } = this.options;
+            this.pagedSearchDto.PageNumber = page;
+            this.pagedSearchDto.PageSize = itemsPerPage;
+            this.pagedSearchDto.SortBy = sortBy[0] || '';
+            this.pagedSearchDto.SortDesc = sortDesc[0];
+            this.dataLoaded = false;
+            this.loading = true;
+            this.showError = false;
+
+            try {
+                this.pagedResult = await this.librariesService.getLibrariesRoleSettings(this.pagedSearchDto);
+                this.loading = false;
+                this.records = this.pagedResult.Results;
+                this.dataLoaded = true;
+            }
+            catch (error) {
+                this.showError = true;
+                this.loading = false;
+                this.dataLoaded = false;
+            }
+        }
+
+        protected async mounted(): Promise<void> {
+            //await this.loadrecords();
+        }
+
+    }</script>

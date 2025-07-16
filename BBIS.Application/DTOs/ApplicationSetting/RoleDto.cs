@@ -8,7 +8,7 @@ namespace BBIS.Application.DTOs.ApplicationSetting
 {
     public class RoleDto
     {
-        public string RoleId { get; set; }
+        public Guid? RoleId { get; set; }
         public string RoleName { get; set; }
     }
 }

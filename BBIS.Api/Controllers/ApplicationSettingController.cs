@@ -298,6 +298,27 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpPost("upsert-librariesrole")]
+        public async Task<ActionResult<RequestResult<Guid>>> UpsertLibrariesRole([FromBody] RoleDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.applicationSettingService.UpsertLibrariesRole(dto);
+                return this.Json(result);
+            }
+ 
+            catch (Exception ex)
+            {
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+
         /// <summary>
         /// This adds a new or updates an existing institution.
         /// </summary>

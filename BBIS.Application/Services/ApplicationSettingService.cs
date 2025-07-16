@@ -2,6 +2,8 @@
 using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.Common;
+using BBIS.Application.DTOs.DonorScreening;
+using BBIS.Common.Enums;
 using BBIS.Common.Exceptions;
 using BBIS.Database;
 using BBIS.Domain.Contracts;
@@ -456,6 +458,30 @@ namespace BBIS.Application.Services
                 throw;
             }
         }
+
+        public async Task<Guid> UpsertLibrariesRole(RoleDto dto)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            var librariesDto = await repository.Role.FindOneByConditionAsync(
+                x => x.RoleId == dto.RoleId);
+    
+
+            var entity = mapper.Map<Role>(dto);
+           
+            if (dto.RoleId.HasValue)
+            {
+                repository.Role.Update(entity);
+            }
+            else
+            {
+                repository.Role.Create(entity);
+            }
+
+            await repository.SaveAsync();
+            return entity.RoleId;
+        }
+
 
         public async Task<Guid> UpsertInstitution(InstitutionDto dto)
         {
