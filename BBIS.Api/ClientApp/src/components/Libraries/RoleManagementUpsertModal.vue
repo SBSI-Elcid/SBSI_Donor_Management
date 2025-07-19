@@ -41,6 +41,15 @@ export default class RoleManagementUpsertModal extends VueBase {
     @Prop({ required: true })
     public toggle!: boolean;
 
+
+    @Prop({ default: '' })
+    public id!: string;
+
+    @Prop({ default: '' })
+    public roleName!: string;
+
+  
+
     protected librariesService: ApplicationSettingService = new ApplicationSettingService();
 
     protected librariesRole: IRoleDto = new RoleDto();
@@ -80,6 +89,11 @@ export default class RoleManagementUpsertModal extends VueBase {
         }
     }
 
+    created() {
+        this.librariesRole.RoleId = this.id;
+        this.librariesRole.RoleName = this.roleName;
+    }
+
     public async onSubmit(): Promise<void> {
         console.log(this.librariesRole);
         let loader = this.showLoader();
@@ -88,7 +102,8 @@ export default class RoleManagementUpsertModal extends VueBase {
             await this.librariesService.upsertLibrariesRole(this.librariesRole);
             this.notify_success('Form successfully submitted.');
 
-            this.$router.push({ path: '/libraries/roles' });
+
+          
         }
         catch (error: any) {
             if (error.StatusCode != 500) {
@@ -110,6 +125,8 @@ export default class RoleManagementUpsertModal extends VueBase {
     if (!Common.isNull(form)) {
       form.resetValidation();
     }
+
+      this.librariesRole = new RoleDto();
  
     return refresh;
   }

@@ -5,14 +5,14 @@
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">Skin</label>
                     <v-text-field v-model="donorPhysicalExam.Skin"
-                                  :rules="[rules.maxLength(10)]"
+                                  :rules="[rules.maxLength(50),rules.required]"
                                   :disabled="isDisabled"
                                   dense outlined />
                 </v-col>
 
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">HEENT</label>
-                    <v-text-field 
+                    <v-text-field :rules="[rules.maxLength(50),rules.required]"
                                   v-model="donorPhysicalExam.HEENT"
                                   :disabled="isDisabled"
                                   dense outlined />
@@ -20,7 +20,7 @@
 
                 <v-col cols="3" lg="3" md="3" sm="12" class="py-0">
                     <label class="label-container">HEART and Lungs</label>
-                    <v-text-field 
+                    <v-text-field  :rules="[rules.maxLength(50),rules.required]"
                                   v-model="donorPhysicalExam.HeartAndLungs"
                                   :disabled="isDisabled"
                                   dense outlined />
@@ -30,7 +30,7 @@
             <v-row>
                 <v-col cols="12" lg="12" md="10" sm="12" class="py-0">
                     <label class="label-container">General appearance</label>
-                    <v-text-field :rules="[rules.maxLength(50)]"
+                    <v-text-field :rules="[rules.maxLength(50),rules.required]"
                                   v-model="donorPhysicalExam.GeneralStatus"
                                   :disabled="isDisabled"
                                   dense outlined />

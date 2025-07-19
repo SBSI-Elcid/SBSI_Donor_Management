@@ -34,7 +34,7 @@ export default class LibrariesView extends VueBase {
     {
       name: 'Questionnare',
       icon: 'mdi-cloud-question',
-      route: '',
+      route: '/libraries/questionnare',
     }
   ];
 
@@ -43,7 +43,7 @@ export default class LibrariesView extends VueBase {
 <style lang="scss" scoped>
     .tabs-name {
         text-align: left;
-        width: 200px;
+        width: 100px;
     }
 
     .header-wrapper {

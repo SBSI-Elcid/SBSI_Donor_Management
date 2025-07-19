@@ -33,7 +33,12 @@
             <v-row>
                 <v-col cols="12" lg="2" md="2" sm="12" class="py-0">
                     <label class="caption font-weight-medium">* Birthdate</label>
-                    <BirthdatePicker v-model="newDonor.BirthDate" :rules="[rules.required]" :disabled="inReviewPage" />
+                    <!--<BirthdatePicker v-model="newDonor.BirthDate" :rules="[rules.required, rules.birthDateRules()]" :disabled="inReviewPage" />-->
+                    <v-text-field :rules="[rules.required]" v-model="newDonor.BirthDate" type="date"
+                                  label="BirthDate"
+                                  :disabled="inReviewPage" 
+                                  dense
+                                  outlined></v-text-field>
                 </v-col>
 
                 <v-col cols="12" lg="1" md="1" sm="12" class="py-0">
@@ -95,7 +100,7 @@
             <!-- THIRD SECTION: ADDRESS -->
             <v-row>
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <label class="caption font-weight-medium">* Town/Municipality</label>
+                    <label class="caption font-weight-medium">* City/Municipality</label>
                     <v-text-field v-model="newDonor.AddressMunicipality"
                                   :rules="[rules.maxLength(50), rules.required, rules.noSpaces]"
                                   :disabled="inReviewPage"
@@ -103,7 +108,7 @@
                 </v-col>
 
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
-                    <label class="caption font-weight-medium">* Province/City</label>
+                    <label class="caption font-weight-medium">* Province</label>
                     <v-text-field v-model="newDonor.AddressProvinceOrCity"
                                   :rules="[rules.maxLength(70), rules.required, rules.noSpaces]"
                                   :disabled="inReviewPage"
@@ -203,11 +208,14 @@
 
             <!-- SEVENTH SECTION: IDENTIFICATION NO -->
             <v-row><h4>* Provide Atleast One (1) Valid ID</h4><v-divider></v-divider></v-row>
+            <v-text-field v-model="dummyIdValidator"
+                          :rules="[rules.atLeastOneIdProvided]"
+                          style="display: none" />
             <v-row>
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">School ID No.</label>
                     <v-text-field v-model="newDonor.SchoolIdNo"
-                                  :rules="[rules.maxLength(20), rules.noSpaces]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces,rules.atLeastOneIdRequired]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -215,7 +223,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Company ID No.</label>
                     <v-text-field v-model="newDonor.CompanyIdNo"
-                                  :rules="[rules.maxLength(20), rules.noSpaces]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces,rules.atLeastOneIdRequired]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -223,7 +231,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">PRC ID No.</label>
                     <v-text-field v-model="newDonor.PRCNo"
-                                  :rules="[rules.maxLength(30), rules.noSpaces]"
+                                  :rules="[rules.maxLength(30), rules.noSpaces,rules.atLeastOneIdRequired]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -234,7 +242,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Driver's License No.</label>
                     <v-text-field v-model="newDonor.DriverLicenseNo"
-                                  :rules="[rules.maxLength(30), rules.noSpaces]"
+                                  :rules="[rules.maxLength(30), rules.noSpaces,rules.atLeastOneIdRequired]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -242,7 +250,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">SSS/GSIS/BIR No.</label>
                     <v-text-field v-model="newDonor.SssGsisBirNo"
-                                  :rules="[rules.maxLength(40), rules.noSpaces]"
+                                  :rules="[rules.maxLength(40), rules.noSpaces,rules.atLeastOneIdRequired]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -250,7 +258,7 @@
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
                     <label class="caption font-weight-medium">Others</label>
                     <v-text-field v-model="newDonor.OtherNo"
-                                  :rules="[rules.maxLength(20), rules.noSpaces]"
+                                  :rules="[rules.maxLength(20), rules.noSpaces,rules.atLeastOneIdRequired]"
                                   :disabled="inReviewPage"
                                   dense outlined />
                 </v-col>
@@ -258,8 +266,8 @@
             <v-divider></v-divider>
             <!-- BUTTONS -->
             <!--<div class="section-outer-container text-right mt-2 pb-2">
-              <v-btn color="default" large class="mt-2 mr-2" @click="checkForNext">Next <v-icon size="25" color="primary" right>mdi-chevron-right</v-icon></v-btn>
-            </div>-->
+      <v-btn color="default" large class="mt-2 mr-2" @click="checkForNext">Next <v-icon size="25" color="primary" right>mdi-chevron-right</v-icon></v-btn>
+    </div>-->
             <div class="section-outer-container text-right pt-3 pb-2">
                 <v-btn v-if="!inReviewPage" color="primary" large class="mr-2 pa-2" @click="checkForSubmit"><v-icon size="25" left>mdi-content-save</v-icon>{{submitLabel}}</v-btn>
             </div>
@@ -296,7 +304,7 @@
         protected get submitLabel(): string {
             return this.inProcess ? "Update and Set for Screening" : "I Agree and Submit";
         }
-
+        public dummyIdValidator: string = "";
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
 
@@ -307,7 +315,32 @@
                 const pattern = /^(?:\d{11}|\+63\d{10})$/;
                 return pattern.test(value) || 'Invalid mobile number format';
             },
-            noSpaces: v => (v ?? '') === (v ?? '').trim() || 'No leading or trailing spaces allowed'
+            noSpaces: v => (v ?? '') === (v ?? '').trim() || 'No leading or trailing spaces allowed',
+            //birthDateRules: () => {
+            //    const birthDate = this.newDonor?.BirthDate;
+
+            //    if (!birthDate) return 'Birthdate is required';
+
+            //    const years = moment().diff(moment(birthDate, 'YYYY-MM-DD'), 'years');
+            //    if (years < 15) return 'Donor must be at least 15 years old';
+            //    if (years > 65) return 'Donor age must not exceed 65 years';
+            //    return true; // Valid
+            //},
+            atLeastOneIdRequired: (value: string) => {
+                const ids = [
+                    this.newDonor.SchoolIdNo,
+                    this.newDonor.CompanyIdNo,
+                    this.newDonor.PRCNo,
+                    this.newDonor.DriverLicenseNo,
+                    this.newDonor.SssGsisBirNo,
+                    this.newDonor.OtherNo
+                ];
+                const hasAnyValue = ids.some(id => id && id.trim() !== '');
+                return hasAnyValue || 'At least one (1) valid ID is required';
+            }
+
+            
+
 
         }
         protected genderOptions: any = CommonOptions.GenderOptions;
@@ -346,6 +379,13 @@
 
             return false;
         }
+
+        protected get BirthdayYears(): number {
+            let years = moment().diff(moment(this.newDonor.BirthDate, 'YYYY-MM-DD'), 'years');
+            console.log("Years",years);
+            return years;
+        }
+
 
         @Watch('newDonor.BirthDate')
         protected onChangeModelBirthDate(): void {

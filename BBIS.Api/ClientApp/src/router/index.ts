@@ -263,7 +263,7 @@ const routes: Array<RouteConfig> = [
                     {
                         path: 'questionnare',
                         name: 'Questionnare',
-                        component: () => import('@/components/ApplicationSetting/TestOrderType.vue')
+                        component: () => import('@/components/Libraries/QuestionnareManagementSetting.vue')
                     }
                 ]
             },

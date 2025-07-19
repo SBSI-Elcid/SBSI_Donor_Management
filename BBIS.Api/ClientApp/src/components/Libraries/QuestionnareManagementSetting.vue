@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <RoleManagementUpsertModal v-if="showUpsertRoleManagement" :toggle="showUpsertRoleManagement" :id="selectedId" :role-name="selectedRoleName"  @onClose="onCreateDialogClose" />
+        <!--<RoleManagementUpsertModal v-if="showUpsertRoleManagement" :toggle="showUpsertRoleManagement" :id="selectedId" :role-name="selectedRoleName" @onClose="onCreateDialogClose" />-->
         <v-card>
             <v-row class="mx-3 pt-3">
                 <v-col cols="6">
@@ -26,14 +26,14 @@
                 </template>
 
                 <template v-slot:[`item.Actions`]="{ item }">
-                    <v-icon @click="onEdit(item)"  class="mr-3">mdi-pencil</v-icon>
+                    <v-icon @click="onEdit(item)" class="mr-3">mdi-pencil</v-icon>
                 </template>
 
                 <!--<template v-slot:[`item.SettingValue`]="{ item }">
-    <v-text-field
-                  v-model="editedItem.SettingValue"
+                <v-text-field
+                              v-model="editedItem.SettingValue"
 
-                  outlined dense />-->
+                              outlined dense />-->
                 <!--<span v-else>{{item.SettingValue}}</span>-->
                 <!--</template>-->
 
@@ -63,8 +63,13 @@
         protected showError: boolean = false;
         protected errorMessage: string = 'Error while loading records';
         protected columnHeaders: any = [
-            { text: 'Role Name', value: 'RoleName', sortable: true, width: '90%' },
-            { text: '', value: 'Actions', sortable: false, width: '10%' }
+            { text: 'Header Text', value: 'HeaderText', sortable: true, width: '20%' },
+            { text: 'Tagalog Text', value: 'QuestionTagalogText', sortable: true, width: '20%' },
+            { text: 'English Text', value: 'QuestionEnglishText', sortable: true, width: '20%' },
+            { text: 'Other Dialect Text', value: 'QuestionOtherDialectText', sortable: true, width: '15%' },
+            { text: 'Gender Option', value: 'GenderOption', sortable: true, width: '10%' },
+            { text: 'Order No', value: 'OrderNo', sortable: true, width: '10%' },
+            { text: '', value: 'Actions', sortable: false, width: '5%' }
         ];
         protected records: Array<IApplicationSettingDto> = [];
         protected pagedSearchDto: PagedSearchDto = new PagedSearchDto();
@@ -89,7 +94,7 @@
         protected async onCreateDialogClose(refreshRecord: boolean): Promise<void> {
             this.showUpsertRoleManagement = false;
             this.selectedId = '';
-      
+
 
             if (refreshRecord) {
                 await this.loadrecords();
@@ -141,7 +146,7 @@
             this.showError = false;
 
             try {
-                this.pagedResult = await this.librariesService.getLibrariesRoleSettings(this.pagedSearchDto);
+                /*this.pagedResult = await this.librariesService.getLibrariesRoleSettings(this.pagedSearchDto);*/
                 this.loading = false;
                 this.records = this.pagedResult.Results;
                 this.dataLoaded = true;

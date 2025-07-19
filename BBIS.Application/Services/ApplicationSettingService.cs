@@ -2,7 +2,7 @@
 using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.Common;
-using BBIS.Application.DTOs.DonorScreening;
+using BBIS.Application.DTOs.DonorRegistration;
 using BBIS.Common.Enums;
 using BBIS.Common.Exceptions;
 using BBIS.Database;
@@ -55,6 +55,7 @@ namespace BBIS.Application.Services
                 .Select(x =>
                         new RoleDto
                         {
+                           RoleId = x.RoleId,
                            RoleName = x.RoleName
                         }
                     ).ToListAsync();
@@ -70,6 +71,69 @@ namespace BBIS.Application.Services
 
             return pagedResult;
         }
+
+        public async Task<PagedSearchResultDto<MedicalQuestionnaireDto>> GetQuestionnaireSettings(PagedSearchDto searchDto)
+        {
+            if (searchDto == null)
+                throw new ArgumentNullException(nameof(PagedSearchDto));
+
+            var sortBy = string.IsNullOrEmpty(searchDto.SortBy)
+                ? "OrderNo asc" // Default sort by OrderNo ascending
+                : searchDto.SortBy + (searchDto.SortDesc ? " desc" : " asc");
+
+            var pagedResult = new PagedSearchResultDto<MedicalQuestionnaireDto>(searchDto);
+
+            var searchText = searchDto.SearchText;
+
+            var query = dbContext.MedicalQuestionnaires.AsQueryable();
+
+            // Filter if searchText is provided
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                query = query.Where(x =>
+                    x.HeaderText.Contains(searchText) ||
+                    x.QuestionEnglishText.Contains(searchText) ||
+                    x.QuestionTagalogText.Contains(searchText) ||
+                    x.QuestionOtherDialectText.Contains(searchText)
+                );
+            }
+
+            var totalRecords = await query.CountAsync();
+
+            // If "All" is selected (PageSize == -1), use total count
+            if (searchDto.PageSize == -1)
+            {
+                searchDto.PageSize = totalRecords;
+            }
+
+            var results = await query
+                .Skip((searchDto.PageNumber - 1) * searchDto.PageSize)
+                .Take(searchDto.PageSize)
+                .Select(x => new MedicalQuestionnaireDto
+                {
+                    HeaderText = x.HeaderText,
+                    MedicalQuestionnaireId = x.MedicalQuestionnaireId,
+                    OrderNo = x.OrderNo,
+                    QuestionEnglishText = x.QuestionEnglishText,
+                    QuestionOtherDialectText = x.QuestionOtherDialectText,
+                    QuestionTagalogText = x.QuestionTagalogText,
+                    GenderOption = x.GenderOption
+                })
+                .ToListAsync();
+
+            if (results == null || !results.Any())
+                return pagedResult;
+
+            pagedResult.TotalCount = totalRecords;
+
+            // Dynamic ordering on paged results
+            pagedResult.Results = results.AsQueryable()
+                                         .OrderBy(sortBy)
+                                         .ToList();
+
+            return pagedResult;
+        }
+
 
 
 

@@ -37,7 +37,7 @@
                 </v-col>
             </v-row>
 
-            <v-row no-gutters v-if ="isBloodDonator">
+            <v-row no-gutters v-if="isBloodDonator">
                 <v-col align-self="center" cols="12" class="py-0 text-center">
                     <v-btn large
                            :disabled="apiRequestActive"
@@ -60,7 +60,7 @@
 
             <!-- BUTTON -->
             <div v-if="showRefreshButton" class="section-outer-container mt-8">
-                <v-btn color="default" class="mr-2" depressed v-if="showNextButton" @click="onNext">Next <v-icon size="25" color="primary" right>mdi-chevron-right</v-icon></v-btn> 
+                <v-btn color="default" class="mr-2" depressed v-if="showNextButton" @click="onNext">Next <v-icon size="25" color="primary" right>mdi-chevron-right</v-icon></v-btn>
                 <v-btn color="default" class="mr-2" depressed v-if="showRefreshButton" @click="onReset"><v-icon size="25" color="primary" left>mdi-refresh</v-icon> Reset Form</v-btn>
             </div>
 
@@ -116,7 +116,7 @@
                 }
 
 
-/*                const allStatuses = Object.values(DonorStatus);*/
+                /*                const allStatuses = Object.values(DonorStatus);*/
 
                 //if (!allStatuses.includes(this.verifyDonorResult.DeferralStatus)) {
                 //    this.$router.push({ path: `/donor/info/${this.verifyDonorResult.donorRegistrationId}`});
@@ -137,13 +137,36 @@
                 this.showRefreshButton = !this.showNextButton;
             }
             catch (error: any) {
-                if (error.StatusCode != 500) {
-                    this.errorMessage = error.Message;
+                if (error.response) {
+                    const apiError = error.response.data;
+
+                    this.errorMessage = apiError.title || "An unexpected error occurred.";
+
+                    if (apiError.errors) {
+                        // Clean each error message
+                        const validationMessages = Object.values(apiError.errors)
+                            .flat()
+                            .map((msg: string) => {
+                                // Remove "Path ..." or anything after a period
+                                return msg.replace(/\. Path.*/i, '.').trim();
+                            })
+                            .join('\n');
+
+                        this.errorMessage += "\n" + validationMessages;
+                    }
+
+                    this.notify_error(this.errorMessage);
+                } else if (error.request) {
+                    this.errorMessage = "No response from server. Please check your network.";
+                    this.notify_error(this.errorMessage);
+                } else {
+                    this.errorMessage = error.message || "Unexpected error.";
                     this.notify_error(this.errorMessage);
                 }
 
                 this.showRefreshButton = true;
             }
+
             finally {
                 this.apiRequestActive = false;
             }
