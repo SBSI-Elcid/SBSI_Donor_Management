@@ -1,6 +1,7 @@
 ﻿using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.Common;
+using BBIS.Application.DTOs.DonorRegistration;
 using BBIS.Common;
 using BBIS.Common.Exceptions;
 using BBIS.Common.Logging;
@@ -34,6 +35,21 @@ namespace BBIS.Api.Controllers
             try
             {
                 var results = await this.applicationSettingService.GetRoleSettings(dto);
+                return this.Json(results);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Something went wrong retrieving the list of application settings: {ex.Message}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost("questionnare")]
+        public async Task<ActionResult<RequestResult<PagedSearchResultDto<MedicalQuestionnaireDto>>>> GetQuestionnareSettings([FromBody] PagedSearchDto dto)
+        {
+            try
+            {
+                var results = await this.applicationSettingService.GetQuestionnaireSettings(dto);
                 return this.Json(results);
             }
             catch (Exception ex)
@@ -318,6 +334,25 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpPost("upsert-librariesquestionnare")]
+        public async Task<ActionResult<RequestResult<int>>> UpsertLibrariesQuestionnare([FromBody] MedicalQuestionnaireDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await this.applicationSettingService.UpsertLibrariesQuestionnare(dto);
+                return this.Json(result);
+            }
+
+            catch (Exception ex)
+            {
+                return this.JsonError(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
 
         /// <summary>
         /// This adds a new or updates an existing institution.

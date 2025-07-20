@@ -2,7 +2,7 @@
 {
     public class MedicalQuestionnaireDto
     {
-        public int MedicalQuestionnaireId { get; set; }
+        public int? MedicalQuestionnaireId { get; set; }
         public string HeaderText { get; set; }
         public string QuestionTagalogText { get; set; }
         public string QuestionEnglishText { get; set; }

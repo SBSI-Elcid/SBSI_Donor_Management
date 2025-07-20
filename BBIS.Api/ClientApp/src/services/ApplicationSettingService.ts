@@ -10,6 +10,7 @@ import { ITestOrderTypeSettingDto } from "@/models/ApplicationSetting/ITestOrder
 import { PagedSearchDto, PagedSearchResultDto } from "@/models/PagedSearchDto";
 import { ApiClient } from "./ApiClient";
 import { IRoleDto } from "../models/ApplicationSetting/RoleDto";
+import { IMedicalQuestionnaireDto } from "../models/DonorRegistration/MedicalQuestionnaireDto";
 
 export default class ApplicationSettingService {
 	baseUrl: string = 'api/applicationSetting/';
@@ -25,6 +26,10 @@ export default class ApplicationSettingService {
 
 	async getLibrariesRoleSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IRoleDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IRoleDto>>(`roles`, dto);
+	}
+
+	async getLibrariesQuestionnareSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IMedicalQuestionnaireDto>> {
+		return this.apiClient.getPostData<PagedSearchResultDto<IMedicalQuestionnaireDto>>(`questionnare`, dto);
 	}
 
 	async getBloodComponentSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IBloodComponentSettingDto>> {
@@ -75,6 +80,11 @@ export default class ApplicationSettingService {
 	async upsertLibrariesRole(dto: IRoleDto): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-librariesrole`, dto);
 		return response.Data as Guid;
+	}
+
+	async upsertLibrariesQuestionnare(dto: IMedicalQuestionnaireDto): Promise<number> {
+		let response = await this.apiClient.postJson(`upsert-librariesquestionnare`, dto);
+		return response.Data as number;
 	}
 
 	async upsertInstitutionSetting(dto: IInstitutionDto): Promise<Guid>  {

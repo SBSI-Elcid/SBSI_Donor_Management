@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <!--<RoleManagementUpsertModal v-if="showUpsertRoleManagement" :toggle="showUpsertRoleManagement" :id="selectedId" :role-name="selectedRoleName" @onClose="onCreateDialogClose" />-->
+        <QuestionnareUpsertModal v-if="showUpsertQuestionnareManagement" :toggle="showUpsertQuestionnareManagement" :questionnareDto ="passedObjectDto" @onClose="onCreateDialogClose" />
         <v-card>
             <v-row class="mx-3 pt-3">
                 <v-col cols="6">
@@ -10,7 +10,7 @@
                     <v-btn class="pr-2" color="default" @click="loadrecords" depressed><v-icon left>mdi-magnify</v-icon> Search</v-btn>
                 </v-col>
                 <v-col cols="3" class="mx-1 text-right ">
-                    <v-btn class="pr-2" color="default" @click="onAdd" depressed><v-icon size="25" color="primary" left>mdi-playlist-plus</v-icon>Add New Role</v-btn>
+                    <v-btn class="pr-2" color="default" @click="onAdd" depressed><v-icon size="25" color="primary" left>mdi-playlist-plus</v-icon>Add New Questionnare</v-btn>
                 </v-col>
             </v-row>
 
@@ -30,10 +30,10 @@
                 </template>
 
                 <!--<template v-slot:[`item.SettingValue`]="{ item }">
-                <v-text-field
-                              v-model="editedItem.SettingValue"
+            <v-text-field
+                          v-model="editedItem.SettingValue"
 
-                              outlined dense />-->
+                          outlined dense />-->
                 <!--<span v-else>{{item.SettingValue}}</span>-->
                 <!--</template>-->
 
@@ -53,9 +53,10 @@
     import { IRoleDto, RoleDto } from '../../models/ApplicationSetting/RoleDto';
     import LibrariesService from '../../services/LibrariesService';
 
-    import RoleManagementUpsertModal from './RoleManagementUpsertModal.vue';
+    import QuestionnareUpsertModal from './QuestionnareUpsertModal.vue';
+import { IMedicalQuestionnaireDto, MedicalQuestionnaireDto } from '../../models/DonorRegistration/MedicalQuestionnaireDto';
 
-    @Component({ components: { RoleManagementUpsertModal } })
+    @Component({ components: { QuestionnareUpsertModal } })
     export default class RoleManagementSettings extends VueBase {
         protected librariesService: ApplicationSettingService = new ApplicationSettingService();
         protected dataLoaded: boolean = false;
@@ -73,12 +74,13 @@
         ];
         protected records: Array<IApplicationSettingDto> = [];
         protected pagedSearchDto: PagedSearchDto = new PagedSearchDto();
-        protected pagedResult!: PagedSearchResultDto<IRoleDto>;
+        protected pagedResult!: PagedSearchResultDto<IMedicalQuestionnaireDto>;
         protected options: any = {};
         protected selectedId: Guid | null = null;
         protected selectedRoleName: string = "";
-        protected showUpsertRoleManagement: boolean = false;
+        protected showUpsertQuestionnareManagement: boolean = false;
         protected rules: any = { ...Common.ValidationRules }
+        protected passedObjectDto: IMedicalQuestionnaireDto = new MedicalQuestionnaireDto();
 
         @Watch('options')
         protected async optionChange(): Promise<void> {
@@ -86,14 +88,13 @@
         }
 
         protected onAdd(): void {
-            this.showUpsertRoleManagement = true;
-            this.selectedId = "";
-            this.selectedRoleName = "";
+            this.showUpsertQuestionnareManagement = true;
+            this.passedObjectDto = new MedicalQuestionnaireDto();
         }
 
         protected async onCreateDialogClose(refreshRecord: boolean): Promise<void> {
-            this.showUpsertRoleManagement = false;
-            this.selectedId = '';
+            this.showUpsertQuestionnareManagement = false;
+            this.passedObjectDto = new MedicalQuestionnaireDto();
 
 
             if (refreshRecord) {
@@ -101,11 +102,9 @@
             }
         }
 
-        protected onEdit(item: IRoleDto): void {
-            console.log("RoleID", item);
-            this.selectedId = item.RoleId;
-            this.selectedRoleName = item.RoleName;
-             this.showUpsertRoleManagement = true;
+        protected onEdit(item: IMedicalQuestionnaireDto): void {
+            this.passedObjectDto = item;
+             this.showUpsertQuestionnareManagement = true;
         }
 
         //protected close(): void {
@@ -146,7 +145,7 @@
             this.showError = false;
 
             try {
-                /*this.pagedResult = await this.librariesService.getLibrariesRoleSettings(this.pagedSearchDto);*/
+                this.pagedResult = await this.librariesService.getLibrariesQuestionnareSettings(this.pagedSearchDto);
                 this.loading = false;
                 this.records = this.pagedResult.Results;
                 this.dataLoaded = true;

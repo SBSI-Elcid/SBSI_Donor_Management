@@ -546,6 +546,27 @@ namespace BBIS.Application.Services
             return entity.RoleId;
         }
 
+        public async Task<int> UpsertLibrariesQuestionnare(MedicalQuestionnaireDto dto)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+
+            var entity = mapper.Map<MedicalQuestionnaire>(dto);
+
+            if (dto.MedicalQuestionnaireId.HasValue)
+            {
+                repository.MedicalQuestionnare.Update(entity);
+            }
+            else
+            {
+                repository.MedicalQuestionnare.Create(entity);
+            }
+
+            await repository.SaveAsync();
+            return entity.MedicalQuestionnaireId;
+        }
+
+
 
         public async Task<Guid> UpsertInstitution(InstitutionDto dto)
         {

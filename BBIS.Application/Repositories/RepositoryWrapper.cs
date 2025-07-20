@@ -25,6 +25,7 @@ namespace BBIS.Application.Repositories
         private IDonorDeferralRepository _donorDeferral;
         private IDonorRegistrationRepository _donorRegistration;
         private ILibrariesRole _role;
+        private ILibraryQuestionnareRepository _MedicalQuestionnare;
         private IApplicationSettingRepository _applicationSetting;
         private IBloodComponentRespository _bloodComponent;
         private IInstitutionRepository _institution;
@@ -277,6 +278,19 @@ namespace BBIS.Application.Repositories
                 return _role;
             }
         }
+
+        public ILibraryQuestionnareRepository MedicalQuestionnare
+        {
+            get
+            {
+                if (_MedicalQuestionnare == null)
+                {
+                    _MedicalQuestionnare = new LibrariesQuestionnareRepository(_dbContext);
+                }
+                return _MedicalQuestionnare;
+            }
+        }
+
 
 
         public IApplicationSettingRepository ApplicationSetting

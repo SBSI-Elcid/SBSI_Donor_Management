@@ -1,11 +1,13 @@
 ﻿using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.Common;
+using BBIS.Application.DTOs.DonorRegistration;
 
 namespace BBIS.Application.Contracts
 {
     public interface IApplicationSettingService
     {
         Task<PagedSearchResultDto<RoleDto>> GetRoleSettings(PagedSearchDto searchDto);
+        Task<PagedSearchResultDto<MedicalQuestionnaireDto>> GetQuestionnaireSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<ApplicationSettingDto>> GetApplicationSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<BloodComponentSettingDto>> GetBloodComponentSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<InstitutionDto>> GetInstitutions(PagedSearchDto searchDto);
@@ -19,6 +21,7 @@ namespace BBIS.Application.Contracts
         Task<Guid> UpdateApplicationSetting(ApplicationSettingDto dto);
         Task<Guid> UpsertBloodComponentSetting(BloodComponentSettingDto dto);
         Task<Guid> UpsertLibrariesRole(RoleDto dto);
+        Task<int> UpsertLibrariesQuestionnare(MedicalQuestionnaireDto dto);
         Task<Guid> UpsertInstitution(InstitutionDto dto);
         Task<Guid> UpsertBloodComponentChecklist(BloodComponentChecklistDto dto);
         Task<Guid> UpsertTestOrderType(TestOrderTypeSettingDto dto);

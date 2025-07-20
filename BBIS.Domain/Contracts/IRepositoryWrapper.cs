@@ -21,6 +21,7 @@
         IDonorDeferralRepository DonorDeferral { get; }
         IDonorRegistrationRepository DonorRegistration { get; }
         ILibrariesRole Role { get; }
+        ILibraryQuestionnareRepository MedicalQuestionnare { get; }
         IApplicationSettingRepository ApplicationSetting { get; }
         IBloodComponentRespository BloodComponent { get; }
         IInstitutionRepository Institution { get; }
