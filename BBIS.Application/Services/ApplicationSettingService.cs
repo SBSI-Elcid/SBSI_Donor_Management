@@ -553,7 +553,7 @@ namespace BBIS.Application.Services
 
             var entity = mapper.Map<MedicalQuestionnaire>(dto);
 
-            if (dto.MedicalQuestionnaireId.HasValue)
+            if (dto.MedicalQuestionnaireId > 0)
             {
                 repository.MedicalQuestionnare.Update(entity);
             }

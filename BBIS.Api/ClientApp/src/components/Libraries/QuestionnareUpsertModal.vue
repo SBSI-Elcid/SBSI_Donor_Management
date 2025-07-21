@@ -132,7 +132,7 @@ export default class QuestionnareUpsertModal extends VueBase {
         let loader = this.showLoader();
         try {
             //this.donorVitalSigns.RecentDonations = this.recentDonations;
-            await this.librariesService.upsertLibrariesQuestionnare(/*this.librariesRole*/);
+            await this.librariesService.upsertLibrariesQuestionnare(this.librariesQuestionnare);
             this.notify_success('Form successfully submitted.');
 
 
