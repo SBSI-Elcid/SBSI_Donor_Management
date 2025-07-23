@@ -3,6 +3,7 @@ using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.Common;
 using BBIS.Application.DTOs.DonorRegistration;
+using BBIS.Application.DTOs.DonorScreening;
 using BBIS.Common.Enums;
 using BBIS.Common.Exceptions;
 using BBIS.Database;
@@ -134,7 +135,14 @@ namespace BBIS.Application.Services
             return pagedResult;
         }
 
+        public async Task<List<UserRoleScreeningAccessDto>> GetAllUserRoleAccess()
+        {
+            var accessList = await dbContext.UserRoleScreeningAccess
+                .AsNoTracking()
+                .ToListAsync();
 
+            return mapper.Map<List<UserRoleScreeningAccessDto>>(accessList);
+        }
 
 
         public async Task<PagedSearchResultDto<ApplicationSettingDto>> GetApplicationSettings(PagedSearchDto searchDto)

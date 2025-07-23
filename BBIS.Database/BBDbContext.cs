@@ -12,6 +12,7 @@ namespace BBIS.Database
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<MedicalQuestionnaire> MedicalQuestionnaires { get; set; }
+        public DbSet<UserRoleScreeningAccess> UserRoleScreeningAccess { get; set; }
         public DbSet<Donor> Donors { get; set; }
         public DbSet<DonorRegistration> DonorRegistrations { get; set; }
         public DbSet<DonorTransaction> DonorTransactions { get; set; }
@@ -65,6 +66,23 @@ namespace BBIS.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.Entity<UserRoleScreeningAccess>(entity =>
+            //{
+            //    entity.ToTable(nameof(UserRoleScreeningAccess));
+            //    entity.HasKey(e => e.UserRoleScreeningAccessId);
+            //    entity.Property(e => e.RoleName).HasColumnType("VARCHAR(50)");
+            //});
+            modelBuilder.Entity<UserRoleScreeningAccess>(entity =>
+            {
+                entity.ToTable(nameof(UserRoleScreeningAccess));
+                entity.HasKey(e => e.UserRoleScreeningAccessId);
+
+                entity.Property(e => e.ScreeningTabName).HasColumnType("VARCHAR(50)");
+                entity.Property(e => e.CreatedAt).HasColumnType("DATETIME");
+
+                entity.HasOne(e => e.Role).WithMany(r => r.UserRoleScreeningAccesses).HasForeignKey(e => e.RoleId);
+            });
 
             modelBuilder.Entity<Role>(entity =>
             {

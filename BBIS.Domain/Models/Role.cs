@@ -6,5 +6,6 @@
         public string RoleName { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<UserRoleScreeningAccess> UserRoleScreeningAccesses { get; set; }
     }
 }
