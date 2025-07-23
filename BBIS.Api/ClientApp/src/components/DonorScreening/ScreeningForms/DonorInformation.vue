@@ -48,6 +48,8 @@
     import { Roles } from '@/models/Enums/Roles';
     import Common from '@/common/Common';
     import { DonorStatus } from '@/models/Enums/DonorStatus';
+    import moment from 'moment';
+
 
     @Component({
         components: { PersonalData, MedicalHistoryForm, ConsentData }

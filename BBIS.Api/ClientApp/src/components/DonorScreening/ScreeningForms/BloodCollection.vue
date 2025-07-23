@@ -7,6 +7,7 @@
                 <v-text-field dense
                               outlined
                                :disabled="isEditingValue"
+                              :rules ="[rules.required]"
                               type="time"
                               label="Start Time of Blood Collection"
                               v-model ="startTime"/>
@@ -19,6 +20,7 @@
                               dense 
                               outlined 
                                :disabled="isEditingValue"
+                              :rules ="[rules.required]"
                               type="time" 
                               label="End Time of Blood Collection"
                               v-model = "endTime"
@@ -32,6 +34,8 @@
                               dense 
                               outlined
                                :disabled="isEditingValue"
+                               :rules ="[rules.required]"
+
                               label="Donor Reaction" 
                               v-model ="donorBloodCollection.UnwellReason"
                               />

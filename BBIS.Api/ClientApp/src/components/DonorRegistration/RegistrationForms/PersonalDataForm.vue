@@ -34,8 +34,7 @@
                 <v-col cols="12" lg="2" md="2" sm="12" class="py-0">
                     <label class="caption font-weight-medium">* Birthdate</label>
                     <!--<BirthdatePicker v-model="newDonor.BirthDate" :rules="[rules.required, rules.birthDateRules()]" :disabled="inReviewPage" />-->
-                    <v-text-field :rules="[rules.required]" v-model="newDonor.BirthDate" type="date"
-                                  label="BirthDate"
+                    <v-text-field :rules="[rules.required]" v-model="formattedBirthDate" type="date"
                                   :disabled="inReviewPage" 
                                   dense
                                   outlined></v-text-field>
@@ -209,7 +208,7 @@
             <!-- SEVENTH SECTION: IDENTIFICATION NO -->
             <v-row><h4>* Provide Atleast One (1) Valid ID</h4><v-divider></v-divider></v-row>
             <v-text-field v-model="dummyIdValidator"
-                          :rules="[rules.atLeastOneIdProvided]"
+                          :rules="[rules.atLeastOneIdRequired]"
                           style="display: none" />
             <v-row>
                 <v-col cols="12" lg="3" md="3" sm="12" class="py-0">
@@ -289,6 +288,7 @@
     import { LookupKeys } from '@/models/Enums/LookupKeys';
     import BirthdatePicker from '@/components/Common/FormInputs/BirthdatePicker.vue';
     import { ILookupOptions } from '@/models/Lookups/LookupOptions';
+    import moment from 'moment';
 
     @Component({ components: { BirthdatePicker } })
     export default class PersonalData extends VueBase {
@@ -308,7 +308,26 @@
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
 
+        protected get formattedBirthDate(): string {
+            return this.newDonor.BirthDate
+                ? moment(this.newDonor.BirthDate).format('YYYY-MM-DD')
+                : '';
+        }
+
         protected formValid: boolean = true;
+        protected atLeastOneIdRequired(): string | true {
+            const ids = [
+                this.newDonor.SchoolIdNo,
+                this.newDonor.CompanyIdNo,
+                this.newDonor.PRCNo,
+                this.newDonor.DriverLicenseNo,
+                this.newDonor.SssGsisBirNo,
+                this.newDonor.OtherNo
+            ];
+            const hasAnyValue = ids.some(id => id && id.trim() !== '');
+            return hasAnyValue || 'At least one (1) valid ID is required';
+        };
+
         protected rules: any = {
             ...Common.ValidationRules,
             validMobile: (value: string) => {
@@ -326,23 +345,11 @@
             //    if (years > 65) return 'Donor age must not exceed 65 years';
             //    return true; // Valid
             //},
-            atLeastOneIdRequired: (value: string) => {
-                const ids = [
-                    this.newDonor.SchoolIdNo,
-                    this.newDonor.CompanyIdNo,
-                    this.newDonor.PRCNo,
-                    this.newDonor.DriverLicenseNo,
-                    this.newDonor.SssGsisBirNo,
-                    this.newDonor.OtherNo
-                ];
-                const hasAnyValue = ids.some(id => id && id.trim() !== '');
-                return hasAnyValue || 'At least one (1) valid ID is required';
-            }
+            atLeastOneIdRequired: this.atLeastOneIdRequired
 
-            
+        };
 
-
-        }
+       
         protected genderOptions: any = CommonOptions.GenderOptions;
 
         protected get newDonor(): IDonorDto {

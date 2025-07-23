@@ -55,7 +55,7 @@
                 <!--<label class="font-weight-bold">Segment Serial Number</label>-->
                 <v-text-field dense
                               outlined
-                               :rules="[rules.required]"
+                               :rules="[rules.required,rules.noSpaces]"
                               :disabled="isEditingValue"
                               label="Segment Serial Number"
                               v-model="donorBloodBagInfo.SegmentSerialNumber" />
@@ -67,7 +67,7 @@
                 <!--<label class="font-weight-bold">Unit Serial Number</label>-->
                 <v-text-field dense
                               outlined
-                               :rules="[rules.required]"
+                               :rules="[rules.required,rules.noSpaces]"
                               :disabled="isEditingValue"
                               label="Unit Serial Number"
                               v-model="donorBloodBagInfo.UnitSerialNumber" />
@@ -129,7 +129,7 @@ import { IDonorIssuedBloodBags,DonorIssuedBloodBagsDto } from '../../../models/D
         protected donorScreeningService: DonorScreeningService = new DonorScreeningService();
 
         protected formValid: boolean = true;
-        protected rules: any = { ...Common.ValidationRules }
+        protected rules: any = { ...Common.ValidationRules, noSpaces: v => (v ?? '') === (v ?? '').trim() || 'No leading or trailing spaces allowed'}
 
         protected generatedSerialNumber: string = '';
         protected errorMessage: string = '';
