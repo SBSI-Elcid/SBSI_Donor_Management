@@ -10,6 +10,7 @@ namespace BBIS.Common.Enums
     {
         DonorInformation,
         DonorVitalSigns,
+        InitialScreening,
         PhysicalExam,
         Counseling,
         ConsentForm,

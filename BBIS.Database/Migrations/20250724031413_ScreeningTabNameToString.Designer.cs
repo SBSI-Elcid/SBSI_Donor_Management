@@ -3,6 +3,7 @@ using System;
 using BBIS.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BBIS.Database.Migrations
 {
     [DbContext(typeof(BBDbContext))]
-    partial class BBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250724031413_ScreeningTabNameToString")]
+    partial class ScreeningTabNameToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2401,7 +2403,7 @@ namespace BBIS.Database.Migrations
                             ModuleId = new Guid("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"),
                             Icon = "mdi-library",
                             IsActive = true,
-                            IsParentMenu = false,
+                            IsParentMenu = true,
                             Link = "/libraries/roles",
                             Menu = "Libraries",
                             OrderNo = 13,

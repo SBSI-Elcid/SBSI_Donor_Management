@@ -35,7 +35,7 @@ namespace BBIS.Database.Migrations
                 keyColumn: "ModuleId",
                 keyValue: new Guid("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"),
                 column: "IsParentMenu",
-                value: true);
+                value: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoleScreeningAccess_RoleId",

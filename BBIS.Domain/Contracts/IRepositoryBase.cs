@@ -9,6 +9,7 @@ namespace BBIS.Domain.Contracts
         Task<T> FindOneByConditionAsync(Expression<Func<T, bool>> expression);
         void Create(T entity);
         void AddRange(List<T> entities);
+        void RemoveRange(IEnumerable<T> entities);
         void Update(T entity);
         void Delete(T entity);
     }

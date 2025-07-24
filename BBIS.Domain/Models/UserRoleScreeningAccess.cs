@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,9 @@ namespace BBIS.Domain.Models
     {
         public Guid UserRoleScreeningAccessId { get; set; }
         public Guid RoleId { get; set; }
-        public TabNames ScreeningTabName { get; set; }
+
+        [Column(TypeName = "varchar(255)")]
+        public string ScreeningTabName { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public virtual Role Role { get; set; }

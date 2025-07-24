@@ -45,6 +45,8 @@ namespace BBIS.Application.Repositories
         private ITransfusionRepository _transfusion;
         private ISignatoryRepository _signatory;
 
+        private IUserRoleScreeningAccessRepository _userrolescreeningaccess;
+
         public RepositoryWrapper(BBDbContext bloodbankDbContext)
         {
             _dbContext = bloodbankDbContext;
@@ -288,6 +290,18 @@ namespace BBIS.Application.Repositories
                     _MedicalQuestionnare = new LibrariesQuestionnareRepository(_dbContext);
                 }
                 return _MedicalQuestionnare;
+            }
+        }
+
+        public IUserRoleScreeningAccessRepository UserRoleScreeningAccess
+        {
+            get
+            {
+                if (_userrolescreeningaccess == null)
+                {
+                    _userrolescreeningaccess = new UserRoleScreeningAccessRepository(_dbContext);
+                }
+                return _userrolescreeningaccess;
             }
         }
 

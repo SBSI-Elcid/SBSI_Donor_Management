@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BBIS.Application.Contracts;
 using BBIS.Application.DTOs.ApplicationSetting;
 using BBIS.Application.DTOs.Common;
@@ -50,25 +51,38 @@ namespace BBIS.Application.Services
                 searchDto.PageSize = query.Count();
             }
 
-            var results = await query
-                .Skip((searchDto.PageNumber - 1) * searchDto.PageSize)
-                .Take(searchDto.PageSize)
-                .Select(x =>
-                        new RoleDto
-                        {
-                           RoleId = x.RoleId,
-                           RoleName = x.RoleName
-                        }
-                    ).ToListAsync();
+                var resultsEntities = await query
+            .Skip((searchDto.PageNumber - 1) * searchDto.PageSize)
+            .Take(searchDto.PageSize)
+            .ToListAsync();
 
             var totalRecords = query.Count();
 
-            if (results == null || !results.Any()) return pagedResult;
+            if (resultsEntities == null || !resultsEntities.Any()) return pagedResult;
+
+            var results = mapper.Map<List<RoleDto>>(resultsEntities);
+
+
+            var roleIds = results.Select(r => r.RoleId).ToList();
+
+            var screeningAccesses = await dbContext.UserRoleScreeningAccess
+            .Where(u => roleIds.Contains(u.RoleId))
+            .ToListAsync();
+
+            foreach (var roleDto in results)
+            {
+                var matchingAccesses = screeningAccesses
+                    .Where(a => a.RoleId == roleDto.RoleId)
+                    .ToList();
+
+                roleDto.UserRoleAccesses = mapper.Map<List<UserRoleScreeningAccessDto>>(matchingAccesses);
+            }
+
 
             pagedResult.TotalCount = totalRecords;
             pagedResult.Results = results.AsQueryable()
-                                         .OrderBy(sortBy)
-                                         .ToList();
+                .OrderBy(sortBy)
+                .ToList();
 
             return pagedResult;
         }
@@ -531,28 +545,85 @@ namespace BBIS.Application.Services
             }
         }
 
+        //public async Task<Guid> UpsertLibrariesRole(RoleDto dto)
+        //{
+        //    if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+        //    var librariesDto = await repository.Role.FindOneByConditionAsync(
+        //        x => x.RoleId == dto.RoleId);
+
+
+        //    var entity = mapper.Map<Role>(dto);
+
+        //    if (dto.RoleId.HasValue)
+        //    {
+        //        repository.Role.Update(entity);
+        //    }
+        //    else
+        //    {
+        //        repository.Role.Create(entity);
+        //    }
+
+        //    await repository.SaveAsync();
+        //    return entity.RoleId;
+        //}
         public async Task<Guid> UpsertLibrariesRole(RoleDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            var librariesDto = await repository.Role.FindOneByConditionAsync(
-                x => x.RoleId == dto.RoleId);
-    
+            var existingRole = await repository.Role
+                .FindOneByConditionAsync(x => x.RoleId == dto.RoleId);
 
             var entity = mapper.Map<Role>(dto);
-           
-            if (dto.RoleId.HasValue)
+
+            if (dto.RoleId.HasValue && existingRole != null)
             {
                 repository.Role.Update(entity);
+
+                // --- Update UserRoleScreeningAccess ---
+                // Remove existing accesses
+                var existingAccesses = await repository.UserRoleScreeningAccess
+                    .FindByConditionAsync(x => x.RoleId == dto.RoleId.Value);
+                repository.UserRoleScreeningAccess.RemoveRange(existingAccesses);
+
+                // Add new accesses
+                var newAccesses = dto.UserRoleAccesses?.Select(access => new UserRoleScreeningAccess
+                {
+                    RoleId = entity.RoleId,
+                    ScreeningTabName = access.ScreeningTabName
+                }).ToList();
+
+                if (newAccesses?.Any() == true)
+                {
+                     repository.UserRoleScreeningAccess.AddRange(newAccesses);
+                }
             }
             else
             {
+                // Create new Role
                 repository.Role.Create(entity);
+
+                // Accesses will be added after save when RoleId is generated
             }
 
             await repository.SaveAsync();
+
+            // In case of new insert, insert accesses after RoleId is available
+            if (!dto.RoleId.HasValue && dto.UserRoleAccesses?.Any() == true)
+            {
+                var newAccesses = dto.UserRoleAccesses.Select(access => new UserRoleScreeningAccess
+                {
+                    RoleId = entity.RoleId,
+                    ScreeningTabName = access.ScreeningTabName
+                }).ToList();
+
+                repository.UserRoleScreeningAccess.AddRange(newAccesses);
+                await repository.SaveAsync();
+            }
+
             return entity.RoleId;
         }
+
 
         public async Task<int> UpsertLibrariesQuestionnare(MedicalQuestionnaireDto dto)
         {

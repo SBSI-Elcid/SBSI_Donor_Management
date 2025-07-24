@@ -10,5 +10,7 @@ namespace BBIS.Application.DTOs.ApplicationSetting
     {
         public Guid? RoleId { get; set; }
         public string RoleName { get; set; }
+
+        public List<UserRoleScreeningAccessDto> UserRoleAccesses { get; set; }
     }
 }

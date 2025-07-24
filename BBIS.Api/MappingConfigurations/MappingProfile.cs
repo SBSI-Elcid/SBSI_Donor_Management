@@ -51,6 +51,7 @@ namespace BBIS.Api.MappingConfigurations
 
             //Libraries
             CreateMap<RoleDto, Role>().ReverseMap();
+            CreateMap<UserRoleScreeningAccessDto, Role>().ReverseMap();
             CreateMap<UserRoleScreeningAccessDto, UserRoleScreeningAccess>().ReverseMap();
         }
     }

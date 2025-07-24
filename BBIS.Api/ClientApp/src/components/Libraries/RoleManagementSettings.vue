@@ -1,17 +1,24 @@
 <template>
     <v-container fluid>
-        <RoleManagementUpsertModal v-if="showUpsertRoleManagement" :toggle="showUpsertRoleManagement" :id="selectedId" :role-name="selectedRoleName"  @onClose="onCreateDialogClose" />
+        <RoleManagementUpsertModal v-if="showUpsertRoleManagement" :toggle="showUpsertRoleManagement" :id="selectedId" :roleObject="editedRoleDto"  @onClose="onCreateDialogClose" />
         <v-card>
             <v-row class="mx-3 pt-3">
                 <v-col cols="6">
                     <v-text-field class="pr-2" type="text" label="Search" v-model.trim="pagedSearchDto.SearchText" dense outlined />
                 </v-col>
                 <v-col cols="2">
-                    <v-btn class="pr-2" color="default" @click="loadrecords" depressed><v-icon left>mdi-magnify</v-icon> Search</v-btn>
+                    <v-btn class="pr-2" color="default" @click="loadrecords"><v-icon left>mdi-magnify</v-icon> Search</v-btn>
                 </v-col>
                 <v-col cols="3" class="mx-1 text-right ">
-                    <v-btn class="pr-2" color="default" @click="onAdd" depressed><v-icon size="25" color="primary" left>mdi-playlist-plus</v-icon>Add New Role</v-btn>
-                </v-col>
+                    <v-btn class="pr-2" color="default" @click="onAdd"><v-icon size="25" color="primary" left>mdi-playlist-plus</v-icon>Add New Role</v-btn>
+                    
+                    <v-btn color="default" class="ml-2" @click="loadrecords">
+                        <v-icon color="primary" size="25">mdi-refresh</v-icon> Refresh
+                    </v-btn>
+
+              </v-col>
+
+                   
             </v-row>
 
             <v-data-table :headers="columnHeaders"
@@ -73,6 +80,8 @@
         protected selectedId: Guid | null = null;
         protected selectedRoleName: string = "";
         protected showUpsertRoleManagement: boolean = false;
+
+        protected editedRoleDto: IRoleDto = new RoleDto();
         protected rules: any = { ...Common.ValidationRules }
 
         @Watch('options')
@@ -82,8 +91,9 @@
 
         protected onAdd(): void {
             this.showUpsertRoleManagement = true;
-            this.selectedId = "";
-            this.selectedRoleName = "";
+            //this.selectedId = "";
+            //this.selectedRoleName = "";
+            this.editedRoleDto = new RoleDto();
         }
 
         protected async onCreateDialogClose(refreshRecord: boolean): Promise<void> {
@@ -98,8 +108,9 @@
 
         protected onEdit(item: IRoleDto): void {
             console.log("RoleID", item);
-            this.selectedId = item.RoleId;
-            this.selectedRoleName = item.RoleName;
+            //this.selectedId = item.RoleId;
+            //this.selectedRoleName = item.RoleName;
+            this.editedRoleDto = item;
              this.showUpsertRoleManagement = true;
         }
 
@@ -144,6 +155,7 @@
                 this.pagedResult = await this.librariesService.getLibrariesRoleSettings(this.pagedSearchDto);
                 this.loading = false;
                 this.records = this.pagedResult.Results;
+                console.log("Records",this.records);
                 this.dataLoaded = true;
             }
             catch (error) {

@@ -3,16 +3,18 @@
         <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
             <v-row>
                 <v-col cols="6">
-                    <v-combobox label="Type of Reaction"
-                                 :disabled ="!isEditable"
+                    <label class="label-container black--text">Type of Reaction</label>
+                    <v-combobox 
+                                :disabled="!isEditable"
                                 :items="['Local', 'Vasovagal', 'Apheresis related', 'Allergic']"
                                 solo
                                 v-model="donorPostDonationCare.TypeOfReaction"
                                 append-icon="mdi-menu-down" />
                 </v-col>
                 <v-col cols="6">
-                    <v-combobox label="Severity of Reaction"
-                                 :disabled ="!isEditable"
+                    <label class="label-container black--text">Severity of Reaction</label>
+                    <v-combobox 
+                                :disabled="!isEditable"
                                 :items="['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5']"
                                 solo
                                 v-model="donorPostDonationCare.SeverityOfReaction"
@@ -22,16 +24,18 @@
 
             <v-row>
                 <v-col cols="6">
-                    <v-combobox label="Reaction Manifestation"
-                                 :disabled ="!isEditable"
+                    <label class="label-container black--text">Reaction Manifestation</label>
+                    <v-combobox 
+                                :disabled="!isEditable"
                                 :items="['Dizziness','Fainting','Convulsion']"
                                 solo
                                 v-model="donorPostDonationCare.ReactionManifestation"
                                 append-icon="mdi-menu-down" />
                 </v-col>
                 <v-col cols="6">
-                    <v-combobox label="Action / Interventions"
-                                 :disabled ="!isEditable"
+                    <label class="label-container black--text">Action / Interventions</label>
+                    <v-combobox
+                                :disabled="!isEditable"
                                 :items="['Positioned Supine','Leg Elevated','Muscle Contraction','Oxygen Inhalation','Iv Fluids']"
                                 solo
                                 v-model="donorPostDonationCare.ActionInterventions"
@@ -79,31 +83,39 @@
                 </v-col>
 
                 <v-col>
-                    <v-textarea :disabled ="!isEditable" v-model="donorPostDonationCare.DoctorsNote" label="Doctor's Notes" rows="4" outlined />
-                    <v-text-field :disabled ="!isEditable" v-model="donorPostDonationCare.DischargeStatus" label="Discharge Status" />
+                    <label class="label-container black--text">Doctor's Notes</label>
+                    <v-textarea :disabled="!isEditable" v-model="donorPostDonationCare.DoctorsNote" rows="4" outlined />
+
+                    <label class="label-container black--text">Discharge Status</label>
+                    <v-text-field :disabled="!isEditable" v-model="donorPostDonationCare.DischargeStatus"/>
+
                     <v-row>
-                        <!--<v-col>
-                            <v-text-field v-model = "donorPostDonationCare.DoctorsNote" label="Monitored By" />
-                        </v-col>-->
                         <v-col>
-                            <v-text-field :disabled ="!isEditable" v-model="donorPostDonationCare.DoctorName" label="Doctor's Name" />
+                            <label class="label-container black--text">Doctor's Name</label>
+                            <v-text-field :disabled="!isEditable" v-model="donorPostDonationCare.DoctorName"/>
                         </v-col>
                     </v-row>
                 </v-col>
             </v-row>
 
-            <v-row v-if="postDonationDetail.length >= 3">
+            <v-row v-if="postDonationDetail.length >= 3" class="mt-11">
                 <v-col>
-                    <v-textarea :disabled ="!isEditable" v-model="postDonationDetail[0].Details" label="Day 1 Post Donation" rows="2" outlined />
+                    <label class="label-container black--text">Day 1 Post Donation</label>
+                    <v-textarea :disabled="!isEditable" v-model="postDonationDetail[0].Details" rows="2" outlined />
                 </v-col>
                 <v-col>
-                    <v-textarea :disabled ="!isEditable" v-model="postDonationDetail[1].Details" label="Day 2 Post Donation" rows="2" outlined />
+                    <label class="label-container black--text">Day 2 Post Donation</label>
+                    <v-textarea :disabled="!isEditable" v-model="postDonationDetail[1].Details" rows="2" outlined />
                 </v-col>
+                
                 <v-col>
-                    <v-textarea :disabled ="!isEditable" v-model="postDonationDetail[2].Details" label="Day 3 Post Donation" rows="2" outlined />
+                    <label class="label-container black--text">Day 3 Post Donation</label>
+                    <v-textarea :disabled="!isEditable" v-model="postDonationDetail[2].Details" rows="2" outlined />
                 </v-col>
+                
                 <v-col>
-                    <v-textarea :disabled ="!isEditable" label="Supervisor's Note" rows="2" outlined />
+                    <label class="label-container black--text">Supervisor's Note</label>
+                    <v-textarea :disabled="!isEditable" rows="2" outlined />
                 </v-col>
             </v-row>
 

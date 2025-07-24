@@ -41,6 +41,8 @@
         ITransfusionRepository Transfusion { get; }
         ISignatoryRepository Signatory { get; }
 
+        IUserRoleScreeningAccessRepository UserRoleScreeningAccess { get; }
+
         void Save();
 
         Task SaveAsync();

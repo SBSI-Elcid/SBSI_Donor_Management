@@ -68,8 +68,8 @@ export default class RoleManagementUpsertModal extends VueBase {
     @Prop({ default: '' })
     public id!: string;
 
-    @Prop({ default: '' })
-    public roleName!: string;
+    @Prop({ default: new RoleDto() })
+    public roleObject!: string;
 
   
     protected selectedTabs: Array<TabNames> = [];
@@ -77,7 +77,6 @@ export default class RoleManagementUpsertModal extends VueBase {
     protected librariesService: ApplicationSettingService = new ApplicationSettingService();
 
     protected librariesRole: IRoleDto = new RoleDto();
-
 
     protected rules: any = {
         ...Common.ValidationRules, camelCase: (v: string) => {
@@ -118,8 +117,10 @@ export default class RoleManagementUpsertModal extends VueBase {
     }
 
     created() {
-        this.librariesRole.RoleId = this.id;
-        this.librariesRole.RoleName = this.roleName;
+        //this.librariesRole.RoleId = this.id;
+        //this.librariesRole.RoleName = this.roleName;
+        this.librariesRole = this.roleObject;
+        this.selectedTabs = this.librariesRole.UserRoleAccesses.map(a => a.ScreeningTabName);
     }
 
     public async onSubmit(): Promise<void> {
@@ -127,6 +128,11 @@ export default class RoleManagementUpsertModal extends VueBase {
         let loader = this.showLoader();
         try {
             //this.donorVitalSigns.RecentDonations = this.recentDonations;
+            this.librariesRole.UserRoleAccesses = this.selectedTabs.map((tab: string) => ({
+                RoleId: this.librariesRole.RoleId,
+                ScreeningTabName: tab
+            }));
+
             await this.librariesService.upsertLibrariesRole(this.librariesRole);
             this.notify_success('Form successfully submitted.');
 

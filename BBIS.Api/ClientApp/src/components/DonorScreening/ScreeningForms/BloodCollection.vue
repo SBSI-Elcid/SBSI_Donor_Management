@@ -136,7 +136,7 @@
 
         <div class="section-outer-container text-right pt-3 pb-2" v-if="!isEditingValue">
             <!--<v-btn color="default" large tile class="mr-2" v-if="" @click=""><v-icon color="success" size="25" left>mdi-content-save</v-icon> Save</v-btn>-->
-            <v-btn color="default" large tile class="mr-2" @click="showIssuanceDialog = true"><v-icon color="success" size="25" left>mdi-blood-bag</v-icon> Add Bloog Bag</v-btn>
+            <v-btn color="default" large tile class="mr-2" @click="showIssuanceDialog = true"><v-icon color="success" size="25" left>mdi-blood-bag</v-icon> Add Blood Bag</v-btn>
             <v-btn color="default" large tile class="mr-2" @click="onSubmit"><v-icon color="success" size="25" left>mdi-check</v-icon> Approve</v-btn>
             <v-btn color="default" large tile class="mr-2" @click=""><v-icon color="warning" size="25" left>mdi-cancel</v-icon> Mark as Deferred</v-btn>
         </div>

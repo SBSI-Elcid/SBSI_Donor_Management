@@ -13,7 +13,7 @@
                         <label class="subtitle-1 pa-2">
                             <div class="pr-2 pl-2 text-center">
                                 <p>
-                                    I certify that I am the person referred to in all entries which wre read and well understood by me. I am made aware of the advantages of voluntary blood donation and that it has to be done out of my free will,
+                                    I certify that I am the person referred to in all entries which are read and well understood by me. I am made aware of the advantages of voluntary blood donation and that it has to be done out of my free will,
                                     aware of risks during and after extraction. The same have been explained to me in an undestandable language and dialect that I speak.
                                 </p>
                                 <p>
@@ -44,10 +44,6 @@
                         <label class="subtitle-1 pa-2">
                             <div class="pr-2 pl-2 text-center">
                                 <p>
-                                    I certify that I am the person referred to in all entries which wre read and well understood by me. I am made aware of the advantages of voluntary blood donation and that it has to be done out of my free will,
-                                    aware of risks during and after extraction. The same have been explained to me in an undestandable language and dialect that I speak.
-                                </p>
-                                <p>
                                     I am informed that the donated blood will be given through <b>VSMMC-BLOOD SERVICE UNIT</b>. Furthermore, the following have been explained to and understood by me:
                                 </p>
                                 <p>
@@ -74,7 +70,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td v-if="DonorInformation.Age >= 18">
+                    <td v-if="DonorInformation.Age <= 18">
                     </td>
                     <td v-else>
                         <label class="subtitle-1 pa-2">
@@ -142,9 +138,23 @@
                                     </v-col>
                                     <v-col cols="12" lg="4" md="4" sm="12" class="pt-0 pb-0">
                                         <p><b>RELATION TO THE BLOOD DONOR</b></p>
-                                        <v-autocomplete :items="relationsOptions"
+                                        <v-autocomplete v-model ="selectedRelation"
+                                                        :items="relationsOptions"
+                                                        item-text="text"
+                                                        item-value="value"
                                                         :rules="[rules.required]"
-                                                        dense outlined />
+                                                        label="Relation to Donor"
+                                                        dense
+                                                        outlined
+                                                        />
+
+                           
+                                            <v-text-field v-if= "selectedRelation === 'Other'"
+                                                          label="Please specify"
+                                                          :rules="[rules.required]"
+                                                          dense
+                                                          outlined />
+                                      
                                     </v-col>
                                 </v-row>
                             </div>
@@ -192,6 +202,7 @@
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected lookupModule: LookupModule = getModule(LookupModule, this.$store);
         protected isDisabled: boolean = false;
+        protected selectedRelation: string = "";
         /*protected donorInfo?: IDonorDto;*/
 
         protected async created() {
@@ -249,24 +260,47 @@
 
         protected get relationsOptions(): Array<{ text: string, value: string }> {
             /*let options = this.options(LookupKeys.RelationsToDonor  arguments);*/
-            let options = this.options(LookupKeys.RelationsToDonor);
-            return options.map(x => { return { text: x.Text, value: x.Value } });
+            /*let options = this.options(LookupKeys.RelationsToDonor);*/
+            /*return */
+            return [
+                { text: 'Father', value: 'Father' },
+                { text: 'Mother', value: 'Mother' },
+                { text: 'Brother', value: 'Brother' },
+                { text: 'Sister', value: 'Sister' },
+                { text: 'Wife', value: 'Wife' },
+                { text: 'Husband', value: 'Husband' },
+                { text: 'Guardian', value: 'Guardian' },
+                { text: 'Other', value: 'Other' } // This triggers the textbox
+            ];
+        
         }
 
-        protected async onApprove(): void {
-         
-            let dto: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
-            let transactionId = await this.donorScreeningService.uMethodBloodCollection(dto);
+            protected async onApprove(): Promise<void> {
+            const formIsValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
 
+            if (!formIsValid) {
+                this.notify_warning('Please complete all required fields before submitting.');
+                return;
+            }
+         
+            const dto: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
+            const transactionId = await this.donorScreeningService.uMethodBloodCollection(dto);
             this.notify_success('Donor is now ready For Blood Collection.');
             this.$router.push({ path: '/donors' });
+        }
+
+            //let dto: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.$route.params.reg_id);
+            //let transactionId = await this.donorScreeningService.uMethodBloodCollection(dto);
+
+            //this.notify_success('Donor is now ready For Blood Collection.');
+            //this.$router.push({ path: '/donors' });
             //this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
             //if (this.formValid === false) {
             //    return;
             //}
 
             //this.confirm(`Are you sure you want to proceed with approving this donor?`, 'Approve Donor', 'Approve', 'Cancel', this.onSubmit);
-        }
+        
 
 
         //@Emit('goToStep')

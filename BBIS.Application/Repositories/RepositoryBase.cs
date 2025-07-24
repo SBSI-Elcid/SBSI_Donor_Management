@@ -41,5 +41,10 @@ namespace BBIS.Application.Repositories
         {
             dbContext.Set<T>().AddRange(entities);
         }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            dbContext.Set<T>().RemoveRange(entities);
+        }
     }
 }
