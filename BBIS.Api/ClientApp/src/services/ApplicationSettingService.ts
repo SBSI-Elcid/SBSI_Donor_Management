@@ -9,7 +9,7 @@ import { IInstitutionDto } from "@/models/ApplicationSetting/InstitutionDto";
 import { ITestOrderTypeSettingDto } from "@/models/ApplicationSetting/ITestOrderTypeSettingDto";
 import { PagedSearchDto, PagedSearchResultDto } from "@/models/PagedSearchDto";
 import { ApiClient } from "./ApiClient";
-import { IRoleDto } from "../models/ApplicationSetting/RoleDto";
+import { IRoleDto, RoleDto } from "../models/ApplicationSetting/RoleDto";
 import { IMedicalQuestionnaireDto } from "../models/DonorRegistration/MedicalQuestionnaireDto";
 
 export default class ApplicationSettingService {
@@ -31,6 +31,14 @@ export default class ApplicationSettingService {
 	async getLibrariesQuestionnareSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IMedicalQuestionnaireDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IMedicalQuestionnaireDto>>(`questionnare`, dto);
 	}
+
+	//async getAllRoleSettings(): Promise<RoleDto[]> {
+	//	return this.apiClient.get<RoleDto[]>(`all-roles`);
+	//}
+	async getAllRoleSettings(): Promise<Array<RoleDto>> {
+		return this.apiClient.get<Array<RoleDto>>(`all-roles`);
+	}
+
 
 	async getBloodComponentSettings(dto: PagedSearchDto): Promise<PagedSearchResultDto<IBloodComponentSettingDto>> {
 		return this.apiClient.getPostData<PagedSearchResultDto<IBloodComponentSettingDto>>(`settings/bloodComponents`, dto);

@@ -149,13 +149,13 @@ namespace BBIS.Application.Services
             return pagedResult;
         }
 
-        public async Task<List<UserRoleScreeningAccessDto>> GetAllUserRoleAccess()
+        public async Task<List<RoleDto>> GetAllRoles()
         {
-            var accessList = await dbContext.UserRoleScreeningAccess
+            var accessList = await dbContext.Roles
                 .AsNoTracking()
                 .ToListAsync();
 
-            return mapper.Map<List<UserRoleScreeningAccessDto>>(accessList);
+            return mapper.Map<List<RoleDto>>(accessList);
         }
 
 

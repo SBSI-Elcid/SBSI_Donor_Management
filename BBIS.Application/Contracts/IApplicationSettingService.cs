@@ -8,7 +8,7 @@ namespace BBIS.Application.Contracts
     {
         Task<PagedSearchResultDto<RoleDto>> GetRoleSettings(PagedSearchDto searchDto);
         //GetAllUserRoleAccess
-        Task<List<UserRoleScreeningAccessDto>> GetAllUserRoleAccess();
+        Task<List<RoleDto>> GetAllRoles();
         Task<PagedSearchResultDto<MedicalQuestionnaireDto>> GetQuestionnaireSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<ApplicationSettingDto>> GetApplicationSettings(PagedSearchDto searchDto);
         Task<PagedSearchResultDto<BloodComponentSettingDto>> GetBloodComponentSettings(PagedSearchDto searchDto);

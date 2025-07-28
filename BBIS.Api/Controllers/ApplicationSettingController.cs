@@ -44,6 +44,22 @@ namespace BBIS.Api.Controllers
             }
         }
 
+        [HttpGet("all-roles")]
+        public async Task<ActionResult<List<RoleDto>>> GetAllRoles()
+        {
+            try
+            {
+                var results = await this.applicationSettingService.GetAllRoles();
+                return this.Json(results);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error retrieving roles: {ex}");
+                return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+
         [HttpPost("questionnare")]
         public async Task<ActionResult<RequestResult<PagedSearchResultDto<MedicalQuestionnaireDto>>>> GetQuestionnareSettings([FromBody] PagedSearchDto dto)
         {

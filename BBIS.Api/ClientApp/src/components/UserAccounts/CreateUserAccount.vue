@@ -86,19 +86,25 @@ import CommonOptions from '@/common/CommonOptions';
 import Common from '@/common/Common';
 import { ModuleDto } from '@/models/UserAccounts/ModuleDto';
 import SelectUserModule from './SelectUserModule.vue';
+import { IRoleDto, RoleDto } from '../../models/ApplicationSetting/RoleDto';
+    import ApplicationSettingService from '../../services/ApplicationSettingService';
+    import axios from 'axios';
+
 
 @Component({ components: { SelectUserModule } })
 export default class CreateUserAccount extends VueBase {
   @Prop({ required: true })
   public toggle!: boolean;
-
+   private roleService: ApplicationSettingService = new ApplicationSettingService();
   private userAccountService: UserAccountsService = new UserAccountsService();
   private formValid: boolean = true;
   private rules: any = {...Common.ValidationRules }
-  private errorMessage: string = '';
-  private roleOptions: any = CommonOptions.RoleOptions;
+    private errorMessage: string = '';
+ 
+    private roleOptions: Array = [];
   private model: ICreateUserAccountDto = new CreatUserAccountDto();
-  private modules: Array<ModuleDto> = [];
+    private modules: Array<ModuleDto> = [];
+    private roleSettings: IRoleDto[] = [];
   private selectedModules: Array<ModuleDto> = [];
 
   private get showDialog(): boolean {
@@ -149,8 +155,17 @@ export default class CreateUserAccount extends VueBase {
     return refresh;
   }
 
-  protected async mounted(): Promise<void> {
-    this.modules = await this.userAccountService.getAllModules();
-  }
+    protected async mounted(): Promise<void> {
+        try {
+            this.roleSettings = await this.roleService.getAllRoleSettings();
+            this.roleOptions = this.roleSettings.map(x => x.RoleName);
+            //const result = await axios.get('/api/applicationSetting/all-roles');
+            console.log(this.roleSettings);
+            this.modules = await this.userAccountService.getAllModules();
+        } catch (err: any) {
+            console.error("Caught error:", err);           
+
+        }
+    }
 }
 </script>
