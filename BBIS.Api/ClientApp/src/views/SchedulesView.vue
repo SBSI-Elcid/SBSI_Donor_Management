@@ -130,6 +130,8 @@
             this.isEditing = false;
             this.scheduleId = null;
             this.showCreateDialog = false;
+
+            this.fetchSchedules();
         }
 
         private async fetchSchedules(): Promise<void> {

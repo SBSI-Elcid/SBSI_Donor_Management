@@ -96,19 +96,38 @@ export default class SelectUserModule extends VueBase {
 		this.$emit('onChange', this.selectedModules);
   }
 
-  protected onSelectAll(): void {
-    if (this.selectAll) {
-      this.modules.forEach(m => {
-        this.selectedModules.push(m);
-        if (m.SubMenuItems.length > 0) {
-          this.selectedModules.push(...m.SubMenuItems);
+  //protected onSelectAll(): void {
+  //  if (this.selectAll) {
+  //    this.modules.forEach(m => {
+  //      this.selectedModules.push(m);
+  //      if (m.SubMenuItems.length > 0) {
+  //        this.selectedModules.push(...m.SubMenuItems);
+  //      }
+  //    });
+  //  }
+  //  else {
+  //    this.selectedModules = [];
+  //  }
+    //}
+    protected onSelectAll(): void {
+        if (this.selectAll) {
+         
+            const allModules: ModuleDto[] = [];
+            this.modules.forEach(m => {
+                allModules.push(m);
+                if (m.SubMenuItems.length > 0) {
+                    allModules.push(...m.SubMenuItems);
+                }
+            });
+
+            this.selectedModules = allModules;
+        } else {
+            this.selectedModules = [];
         }
-      });
+
+        
+        this.$emit('onChange', [...this.selectedModules]);
     }
-    else {
-      this.selectedModules = [];
-    }
-  }
 
 	protected mounted(): void {
 		this.selectedModules = [...this.selectedModulesProp];

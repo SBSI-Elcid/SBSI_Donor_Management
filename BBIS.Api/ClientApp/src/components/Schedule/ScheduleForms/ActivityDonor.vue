@@ -52,7 +52,7 @@
             </v-card-text>
 
             <v-card-actions class="justify-end">
-                <v-btn color="red darken-2" @click="" class="white--text">Save</v-btn>
+                <!--<v-btn color="red darken-2" @click="" class="white--text">Save</v-btn>-->
                 <v-btn color="red darken-2" @click="goSchedulesView" class="white--text">Back</v-btn>
             </v-card-actions>
         </v-card>

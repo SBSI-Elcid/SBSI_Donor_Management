@@ -13,7 +13,8 @@ namespace BBIS.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
+    [Authorize(Policy = ApplicationRoles.AdminPolicy)]
     public class ApplicationSettingController : ApiControllerBase
     {
         private readonly IApplicationSettingService applicationSettingService;

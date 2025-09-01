@@ -176,6 +176,10 @@
         //        this.isBloodDonator = true;
         //    }
         //}
+        private clearFormInformation(): void {
+            this.$refs.form.reset();          
+            this.$refs.form.resetValidation(); 
+        }
         public backToActDonor(): void {
             let schedId = this.$route.params.schedule_id;
             this.$router.push({ path: `/schedules/activitydonor/${schedId}` });
@@ -187,6 +191,7 @@
                 this.activityDonor.ScheduleId = schedId;
                 const id = await this.scheduleService.upsertActivityDonor(this.activityDonor);
                 this.notify_success('Form successfully submitted.');
+                this.clearFormInformation();
                 this.$emit('close'); // Close dialog
             } catch (err: any) {
                 if (err.StatusCode != 500) {

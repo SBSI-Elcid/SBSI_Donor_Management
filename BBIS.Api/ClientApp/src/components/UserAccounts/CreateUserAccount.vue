@@ -40,7 +40,17 @@
                   <v-row no-gutters>
                     <v-col cols="12">
                       <label>Roles</label>
-                      <v-autocomplete outlined dense multiple chips small-chips v-model="model.RoleIds" :items="roleOptions" :rules="[rules.arrayRequired]" required>
+                      <v-autocomplete 
+                                      outlined
+                                      dense 
+                                      multiple chips 
+                                      small-chips 
+                                      v-model="model.RoleIds" 
+                                      :items="roleOptions"
+                                      item-value="RoleId"
+                                      item-text="RoleName"
+                                      :rules="[rules.arrayRequired]" 
+                                      required>
                       </v-autocomplete>
                     </v-col>
                   </v-row>
@@ -158,7 +168,10 @@ export default class CreateUserAccount extends VueBase {
     protected async mounted(): Promise<void> {
         try {
             this.roleSettings = await this.roleService.getAllRoleSettings();
-            this.roleOptions = this.roleSettings.map(x => x.RoleName);
+            this.roleOptions = this.roleSettings.map(x => ({
+                RoleId: x.RoleId,
+                RoleName: x.RoleName
+            }));
             //const result = await axios.get('/api/applicationSetting/all-roles');
             console.log(this.roleSettings);
             this.modules = await this.userAccountService.getAllModules();

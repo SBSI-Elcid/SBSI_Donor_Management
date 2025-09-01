@@ -2,75 +2,96 @@
     <div>
 
         <v-dialog v-model="dialog" max-width="900px" persistent>
-            <v-card>
-                <v-card-title class="white--text justify-center" style="background-color: rgb(185, 47, 47);">
-                    <strong>{{headerTitle}} Schedule</strong>
-                </v-card-title>
+            <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
 
-                <v-card-actions v-if="isEditing" class="text-left; ml-5">
-                    <v-btn style="background-color: rgb(185, 47, 47);" class="white--text" @click ="openActivityDonor">VIEW DONORS</v-btn>
-                    <v-btn style="background-color: rgb(185, 47, 47);" class="white--text" @click="openChecklist">
-                        VIEW CHECKLIST
-                    </v-btn>
-                </v-card-actions>
+                <v-card>
+                    <v-card-title class="white--text justify-center" style="background-color: rgb(185, 47, 47);">
+                        <strong>{{headerTitle}} Schedule</strong>
+                    </v-card-title>
 
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field :disabled ="isDisabled" v-model="schedule.ActivityName" label="Name of Activity" dense outlined></v-text-field>
-                            </v-col>
-                        </v-row>
+                    <v-card-actions v-if="isEditing" class="text-left; ml-5">
+                        <v-btn style="background-color: rgb(185, 47, 47);" class="white--text" @click="openActivityDonor">VIEW DONORS</v-btn>
+                        <v-btn style="background-color: rgb(185, 47, 47);" class="white--text" @click="openChecklist">
+                            VIEW CHECKLIST
+                        </v-btn>
+                    </v-card-actions>
 
-                        <v-row>
-                            <v-col cols="12">
-                                <label class="font-weight-bold mb-2">Type of Voluntary Non-Remunerated Blood Donation</label>
-                                <v-radio-group :disabled ="isDisabled" v-model="schedule.ActivityType" row>
-                                    <v-radio label="Walk-In" value="Walk-In"></v-radio>
-                                    <v-radio label="In-House" value="In-House"></v-radio>
-                                    <v-radio label="Mobile Blood Donation" value="Mobile"></v-radio>
-                                    <v-radio label="Advocacy" value="Advocacy"></v-radio>
-                                </v-radio-group>
-                            </v-col>
-                        </v-row>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field 
+                                                  :disabled="isDisabled" 
+                                                  v-model="schedule.ActivityName" 
+                                                  :rules="[rules.required]"
+                                                  label="Name of Activity" dense outlined></v-text-field>
+                                </v-col>
+                            </v-row>
 
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                <v-text-field :disabled ="isDisabled" v-model="schedule.ScheduleDateTime" type="datetime-local"
-                                              label="Date and Time"
-                                              dense
-                                              outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field :disabled ="isDisabled" v-model="schedule.ActivityVenue" label="Venue" dense outlined></v-text-field>
-                            </v-col>
-                        </v-row>
+                            <v-row>
+                                <v-col cols="12">
+                                    <label class="font-weight-bold mb-2">Type of Voluntary Non-Remunerated Blood Donation</label>
+                                    <v-radio-group :disabled="isDisabled" v-model="schedule.ActivityType" :rules="[rules.required]" row>
+                                        <v-radio label="Walk-In" value="Walk-In"></v-radio>
+                                        <v-radio label="In-House" value="In-House"></v-radio>
+                                        <v-radio label="Mobile Blood Donation" value="Mobile"></v-radio>
+                                        <v-radio label="Advocacy" value="Advocacy"></v-radio>
+                                    </v-radio-group>
+                                </v-col>
+                            </v-row>
 
-                        <v-row>
-                            <v-col cols="12" md="6">
-                                <v-text-field :disabled ="isDisabled" v-model="schedule.PartnerInstitutionName" label="Name of Partner Institution" dense outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field :disabled ="isDisabled" v-model="schedule.PointPersonName" label="Name of Point Person" dense outlined></v-text-field>
-                            </v-col>
-                        </v-row>
+                            <v-row>
+                                <v-col cols="12" md="6">
+                                    <v-text-field :disabled="isDisabled" v-model="schedule.ScheduleDateTime" type="datetime-local"
+                                                  label="Date and Time"
+                                                  :rules="[rules.required]"
+                                                  dense
+                                                  outlined></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-text-field 
+                                                  :disabled="isDisabled"
+                                                  v-model="schedule.ActivityVenue" 
+                                                  :rules="[rules.required]"
+                                                  label="Venue" dense outlined></v-text-field>
+                                </v-col>
+                            </v-row>
 
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field :disabled ="isDisabled" label="Expected Number of Donors / Audience"
-                                              dense
-                                              v-model="schedule.ExpectedDonorNumber"
-                                              outlined></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
+                            <v-row>
+                                <v-col cols="12" md="6">
+                                    <v-text-field 
+                                                  :disabled="isDisabled" 
+                                                  v-model="schedule.PartnerInstitutionName" 
+                                                  :rules="[rules.required]"
+                                                  label="Name of Partner Institution" dense outlined></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-text-field 
+                                                  :disabled="isDisabled" 
+                                                  v-model="schedule.PointPersonName" 
+                                                  :rules="[rules.required]"
+                                                  label="Name of Point Person" dense outlined></v-text-field>
+                                </v-col>
+                            </v-row>
 
-                <v-card-actions class="justify-end">
-                    <v-btn v-if ="!isDisabled" color="red darken-2" @click="createSchedule" class="white--text">{{labelUpdate}}</v-btn>
-                    <v-btn color="red darken-2" @click="$emit('close')" class="white--text">CANCEL</v-btn>
-                </v-card-actions>
-            </v-card>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field :disabled="isDisabled" label="Expected Number of Donors / Audience"
+                                                  dense
+                                                  :rules="[rules.required]"
+                                                  v-model="schedule.ExpectedDonorNumber"
+                                                  outlined></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+
+                    <v-card-actions class="justify-end">
+                        <v-btn v-if="!isDisabled" color="red darken-2" @click="createSchedule" class="white--text">{{labelUpdate}}</v-btn>
+                        <v-btn color="red darken-2" @click="$emit('close')" class="white--text">CANCEL</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-form>
         </v-dialog>
         <CheckList v-if="showChecklist"
                    :value="showChecklist"
@@ -94,6 +115,7 @@
     import { ScheduleDto, ISchedule } from '../../models/Schedules/ScheduleDto';
     import ScheduleService from '@/services/ScheduleService';
     import moment from 'moment';
+    import Common from '@/common/Common';
 
     @Component({ components: { CheckList } })
     export default class CreateSchedule extends VueBase {
@@ -112,8 +134,15 @@
         protected scheduleService = new ScheduleService();
         protected showChecklist: boolean = false;
         protected showActivityDonor: boolean = false;
+        protected formValid: boolean = true;
+        protected rules: any = {
+            ...Common.ValidationRules
+        }
 
         mounted() {
+
+          
+
             this.loadScheduleById();
             this.dialog = this.value;
         }
@@ -175,6 +204,18 @@
 
         protected async createSchedule(): Promise<void> {
             try {
+
+                const form = this.$refs.form as any;
+
+                if (!form) {
+                    this.notify_error('Form is not ready yet.');
+                    return;
+                }
+
+                this.formValid = form.validate();
+                if (this.formValid === false) {
+                    return;
+                }
                 
                 moment(this.schedule.ScheduleDateTime).format("YYYY-MM-DD");
                 const id = await this.scheduleService.upsertSchedule(this.schedule);
