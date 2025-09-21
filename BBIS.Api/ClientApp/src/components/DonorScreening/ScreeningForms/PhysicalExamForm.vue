@@ -137,10 +137,10 @@
         }
 
         protected onDeferred(): void {
-            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
-            if (this.formValid === false) {
-                return;
-            }
+            //this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
+            //if (this.formValid === false) {
+            //    return;
+            //}
 
             this.mark_deferred(`Are you sure you want to tag this donor as deffered?`, 'Mark Donor as Deferred', 'Mark as Deferred', 'Cancel', this.onDeferralConfirmation);
         }

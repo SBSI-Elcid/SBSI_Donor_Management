@@ -70,7 +70,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td v-if="DonorInformation.Age <= 18">
+                    <td v-if="DonorInformation.Age >= 18">
                     </td>
                     <td v-else>
                         <label class="subtitle-1 pa-2">

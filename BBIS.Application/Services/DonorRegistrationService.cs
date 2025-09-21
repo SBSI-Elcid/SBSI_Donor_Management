@@ -136,21 +136,30 @@ namespace BBIS.Application.Services
                 var donorTransactionByDonorId = await repository.DonorTransaction
                                             .FindByConditionAsync(x => x.DonorId == donor.DonorId);
 
-                var previousTransaction = donorTransactionByDonorId
-                    .Where(x => x.DateOfDonation < donorTransaction.DateOfDonation)
-                    .OrderByDescending(x => x.DateOfDonation)
-                    .FirstOrDefault();
+                //var previousTransaction = donorTransactionByDonorId
+                //    .Where(x => x.DateOfDonation < donorTransaction.DateOfDonation)
+                //    .OrderByDescending(x => x.DateOfDonation)
+                //    .FirstOrDefault();
+                //var previousTransaction = donorTransaction.DateOfDonation == null
+                //                                        ? donorTransactionByDonorId
+                //                                            .Where(x => x.DateOfDonation != null)
+                //                                            .OrderByDescending(x => x.DateOfDonation)
+                //                                            .FirstOrDefault()
+                //                                        : donorTransactionByDonorId
+                //                                            .Where(x => x.DateOfDonation < donorTransaction.DateOfDonation)
+                //                                            .OrderByDescending(x => x.DateOfDonation)
+                //                                            .FirstOrDefault();
 
-                var resultTransaction = previousTransaction ?? donorTransaction;
+                //var resultTransaction = previousTransaction ?? donorTransaction;
 
-                if (donor != null && donorTransaction.DonorTransactionId != resultTransaction.DonorTransactionId)
-                {
+                //if (donor != null && donorTransaction.DonorTransactionId != resultTransaction.DonorTransactionId)
+                //{
 
-                    if (resultTransaction != null)
-                    {
-                        dto.DonorStatus = resultTransaction.DonorStatus;
-                    }
-                }
+                //    if (resultTransaction != null)
+                //    {
+                //        dto.DonorStatus = resultTransaction.DonorStatus;
+                //    }
+                //}
             }
             
             //if (donor != null && donorTransaction != null)
@@ -165,7 +174,7 @@ namespace BBIS.Application.Services
             dto.MedicalHistories = donorRegistration.DonorMedicalHistories
                 .Select(x =>
                     new DonorMedicalHistoryViewDto
-                    {
+                    {  
                         Answer = x.Answer,
                         HeaderText = x.MedicalQuestionnaire.HeaderText,
                         MedicalQuestionnaireId = x.MedicalQuestionnaireId,
@@ -258,13 +267,22 @@ namespace BBIS.Application.Services
                     return result;
                 }
                 else 
-                { 
+                {
                     // Donor has existing record, then check donor latest history
+                    //var donorLatestTransaction = await dbContext.DonorTransactions
+                    //       .Where(x => x.DonorId == donor.DonorId)
+                    //       .OrderByDescending(x => x.DateOfDonation)
+                    //       .AsNoTracking()
+                    //       .FirstOrDefaultAsync();
                     var donorLatestTransaction = await dbContext.DonorTransactions
-                           .Where(x => x.DonorId == donor.DonorId)
-                           .OrderByDescending(x => x.DateOfDonation)
-                           .AsNoTracking()
-                           .FirstOrDefaultAsync();
+                                                .Join(dbContext.DonorRegistrations,
+                                                      t => t.DonorRegistrationId,
+                                                      r => r.DonorRegistrationId,
+                                                      (t, r) => new { Transaction = t, Registration = r })
+                                                .Where(x => x.Transaction.DonorId == donor.DonorId)
+                                                .OrderByDescending(x => x.Registration.RegistrationDate)
+                                                .Select(x => x.Transaction)   // return only the transaction
+                                                .FirstOrDefaultAsync();
 
                     var donorDto = mapper.Map<DonorDto>(donor);
 

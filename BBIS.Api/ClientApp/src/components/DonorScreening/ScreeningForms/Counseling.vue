@@ -2,7 +2,9 @@
   <div>
       <v-form class="form-container" ref="form" v-model="formValid" lazy-validation>
           <v-row>
-              <v-col cols="12" md="12" class="d-flex justify-end align-center">
+             
+              <v-col cols="12" md="12" class="d-flex justify-space-between align-center">
+                  <span v-if="DeferredStatus" class="pl-3 mt-2" ><strong class="red--text">Deferred: {{ DeferredStatus }}</strong></span>
                   <v-radio-group v-model="selectedLanguage" row class="justify-end">
                       <v-radio label="Tagalog" value="tagalog"></v-radio>
                       <v-radio label="English" value="english"></v-radio>
@@ -75,6 +77,7 @@ import DonorScreeningService from '@/services/DonorScreeningService';
 import moment from 'moment';
 import { DonorStatus } from '@/models/Enums/DonorStatus';
 import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScreening/DonorCounselingDto';
+import { IVerifyDonorResultDto, VerifyDonorResultDto } from '../../../models/DonorRegistration/VerifyDonorResultDto';
 
     @Component
     export default class MedicalHistoryForm extends VueBase {
@@ -89,6 +92,8 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
         protected donorCounseling: IDonorCounseling = new DonorCounselingDto();
 
         protected donorInfo?: IDonorDto;
+
+        protected verifyDonorResult: IVerifyDonorResultDto = new VerifyDonorResultDto();
 
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
         protected isDisabled: boolean = false;
@@ -107,6 +112,7 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             this.selectedLanguage = "english";
             await this.loadDonorInfo(); // Load donor info before mounting
             await this.donorModule.loadMedicalQuestionnaire(); // Fetch medical questionnaires
+            await this.verifyDonor();
             this.donorModule.fetchDonorActivityType(this.$route.params.reg_id);
         }
 
@@ -138,6 +144,16 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
             // If needed, you can force recomputation or trigger other logic here
         }
 
+        protected get DeferredStatus(): string{
+            console.log("HellloWorld", this.verifyDonorResult);
+            return `${this.verifyDonorResult?.DeferralStatus ?? ""}`;
+        }
+
+        protected async verifyDonor(): Promise<void> {
+            this.verifyDonorResult = await this.donorRegistrationService.verifyDonor({ FirstName: this.newDonor.Firstname.trim(), MiddleName: this.newDonor.Middlename.trim(), LastName: this.newDonor.Lastname.trim(), BirthDate: this.newDonor.BirthDate })
+
+        }
+
         protected async loadDonorInfo(): Promise<void> {
             if (this.$route.params.reg_id && typeof this.$route.params.reg_id === 'string') {
                 this.donorRegistrationId = this.$route.params.reg_id;
@@ -146,13 +162,15 @@ import { DonorCounselingDto, IDonorCounseling } from '../../../models/DonorScree
                     const donorInfo: IRegisteredDonorInfoDto = await this.donorRegistrationService.getRegisteredDonorInfo(this.donorRegistrationId);
 
                     this.donorModule.setTransactionId(donorInfo.DonorTransactionId);
+                    
                     if (Common.hasValue(donorInfo.DonorStatus) && donorInfo.DonorStatus !== DonorStatus.Deferred && donorInfo.DonorStatus !== DonorStatus.ForCounseling) {
                         this.isDisabled = true;
+                        console.log(this.isDisabled);
                     }
                    
                     donorInfo.BirthDate = moment(donorInfo.BirthDate).toDate();
                     this.donorModule.setDonorInformation(donorInfo);
-
+                  
                 } catch (error) {
                     console.error(error);
                 }

@@ -385,6 +385,7 @@ namespace BBIS.Application.Services
             dto.PostDonationListDetails = mapper.Map<List<PostDonationDetailsDto>>(postDonationDetail);
 
             dto.VitalSignsMonitoringDetails = mapper.Map<List<VitalSignsMonitoringDto>>(vitalSignsMonitoring);
+            dto.DonorStatus = query?.DonorStatus;
 
             return dto;
         }
