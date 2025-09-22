@@ -814,7 +814,8 @@ namespace BBIS.Application.Services
                     donorTransaction.BloodIsSafeToTransfuse = false;
                     donorTransaction.DateOfDonation = DateTime.UtcNow;
                 }
-
+                donorTransaction.BloodType = dto.BloodType?.Replace("+", "").Replace("-", "");
+                donorTransaction.BloodRh = dto.BloodType.EndsWith("+") ? "+" :dto.BloodType.EndsWith("-") ? "-" : null;
                 donorTransaction.DonorStatus = dto.DonorStatus;
                 //donorTransaction.PRCBloodDonorNumber = dto.PRCBloodDonorNumber;
                 repository.DonorTransaction.Update(donorTransaction);

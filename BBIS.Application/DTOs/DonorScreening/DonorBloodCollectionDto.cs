@@ -27,5 +27,6 @@
         public string DonorStatus { get; set; } // Status of the Donor application (e.g. 'For Initial Screening', 'For Physical Exam', 'Success', 'Deferred', etc)
         public string DeferralStatus { get; set; } // Whether the Donor was marked as temporary or permanent deferred by Screener
         public string Remarks { get; set; }
+        public string BloodType { get; set; }
     }
 }

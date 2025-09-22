@@ -18,6 +18,7 @@ export interface IDonorBloodCollectionDto {
     DeferralStatus: string,
     Remarks: string,
     UnitSerialNumber: string
+    BloodType:string
 }
 
 export class DonorBloodCollectionDto implements IDonorBloodCollectionDto {
@@ -40,4 +41,5 @@ export class DonorBloodCollectionDto implements IDonorBloodCollectionDto {
     DeferralStatus: string = "";
     Remarks: string = "";
     UnitSerialNumber: string = "";
+    BloodType: string = "";
 }

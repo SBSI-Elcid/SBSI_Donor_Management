@@ -280,7 +280,7 @@ namespace BBIS.Application.Services
                                                       r => r.DonorRegistrationId,
                                                       (t, r) => new { Transaction = t, Registration = r })
                                                 .Where(x => x.Transaction.DonorId == donor.DonorId)
-                                                .OrderByDescending(x => x.Registration.RegistrationDate)
+                                                .OrderByDescending(x => x.Transaction.DateOfDonation)
                                                 .Select(x => x.Transaction)   // return only the transaction
                                                 .FirstOrDefaultAsync();
 

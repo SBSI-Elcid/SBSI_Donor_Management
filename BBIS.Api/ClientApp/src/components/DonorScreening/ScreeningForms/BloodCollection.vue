@@ -53,13 +53,15 @@
             </v-col>
 
             <!-- Blood Type -->
-            <!--<v-col cols="12" md="2">
+            <v-col cols="12" md="2">
                 <label class="font-weight-bold">Blood Type</label>
                 <v-select :items="bloodTypesOptions"
                           label="Blood Type"
+                          :rules ="[rules.required]"
+                          v-model ="donorBloodCollection.BloodType"
                           dense
                           outlined />
-            </v-col>-->
+            </v-col>
 
             <!-- Collected Blood Amount -->
             <v-col cols="12" md="4"  v-if ="isSuccess">
@@ -200,9 +202,19 @@
             return (key) => this.lookupModule.getOptionsByKey(key);
         }
 
-        protected get bloodTypesOptions(): Array<{ text: string, value: string }> {
-            return this.options(LookupKeys.BloodTypes).map(x => { return { text: x.Text, value: x.Value } });
-        }
+       protected get bloodTypesOptions(): Array<{ text: string }> {
+           return [
+               { text: "A+" },
+               { text: "A-" },
+               { text: "B+" },
+               { text: "B-" },
+               { text: "AB+" },
+               { text: "AB-" },
+               { text: "O+" },
+               { text: "O-" },
+           ];
+       }
+
 
        protected handleIssued(segmentSerialNumber: string): void {
            this.approvedSegmentSerialNumber = segmentSerialNumber;
