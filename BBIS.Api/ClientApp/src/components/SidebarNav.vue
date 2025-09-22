@@ -88,7 +88,7 @@ export default class Sidebar extends VueBase {
  
     protected async mounted(): Promise<void> {
         console.log(this.isOffline);
-    if (!this.isOffline) {
+    //if (!this.isOffline) {
         if (this.authState.userModules.length == 0) {
             console.log("FirstIF");
           const userModules = await this.userAccountService.getUserModules(this.authState.userId);
@@ -101,14 +101,14 @@ export default class Sidebar extends VueBase {
             console.log("SecondIF");
         this.userModules = this.authState.userModules;
       }
-    }
-    else {
-      this.userModules =  [
-        { Menu: 'Dashboard', Icon: 'mdi-table', Link: '/home', IsParentMenu: false, ModuleId: '', OrderNo: 1, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null },
-        { Menu: 'Registrations', Icon: 'mdi-account-details-outline', Link: '/registrations', IsParentMenu: false, ModuleId: '', OrderNo: 1, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null },
-        { Menu: 'Donors', Icon: 'mdi-account-group-outline', Link: '/donors', IsParentMenu: false, ModuleId: '', OrderNo: 1, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null },
-      ];
-    }
+    
+   // else {
+      //this.userModules =  [
+      //  { Menu: 'Dashboard', Icon: 'mdi-table', Link: '/home', IsParentMenu: false, ModuleId: '', OrderNo: 1, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null },
+      //  { Menu: 'Registrations', Icon: 'mdi-account-details-outline', Link: '/registrations', IsParentMenu: false, ModuleId: '', OrderNo: 1, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null },
+      //  { Menu: 'Donors', Icon: 'mdi-account-group-outline', Link: '/donors', IsParentMenu: false, ModuleId: '', OrderNo: 1, SubMenuItems: [], Toggle: false, ToggleChild: false, ParentModuleId: null },
+      //];
+    //}
   }
 }
 </script>
