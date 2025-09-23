@@ -314,6 +314,10 @@
                 : '';
         }
 
+        protected set formattedBirthDate(value: string): string {
+            this.newDonor.BirthDate = value ? new Date(value) : null;
+        }
+
         protected formValid: boolean = true;
         protected atLeastOneIdRequired(): string | true {
             const ids = [

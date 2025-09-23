@@ -145,7 +145,7 @@ import { IVerifyDonorResultDto, VerifyDonorResultDto } from '../../../models/Don
         }
 
         protected get DeferredStatus(): string{
-            console.log("HellloWorld", this.verifyDonorResult);
+            console.log("HellloWorld", this.verifyDonorResult.DeferralStatus);
             return `${this.verifyDonorResult?.DeferralStatus ?? ""}`;
         }
 
