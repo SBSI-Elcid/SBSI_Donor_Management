@@ -291,7 +291,7 @@ namespace BBIS.Application.Services
                     {
                         if (!hasPassedThreshold)
                         {
-                            result = GetVerificationResultForRegisteredDonor(donorLatestTransaction.DonorStatus, registrant.RegistrationNumber);
+                            //result = GetVerificationResultForRegisteredDonor(donorLatestTransaction.DonorStatus, registrant.RegistrationNumber);
                         }
                         result.Donor = donorDto;
                         result.donorRegistrationId = donorLatestTransaction?.DonorRegistrationId;
