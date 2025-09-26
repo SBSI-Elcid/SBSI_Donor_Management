@@ -13,6 +13,7 @@ namespace BBIS.Application.DTOs.ApplicationSetting
         public Guid UserRoleScreeningAccessId { get; set; }
         public Guid RoleId { get; set; }
         public string ScreeningTabName { get; set; }
+        public string ScreeningStatus { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 

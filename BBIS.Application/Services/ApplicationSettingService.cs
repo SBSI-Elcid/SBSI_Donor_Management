@@ -590,7 +590,8 @@ namespace BBIS.Application.Services
                 var newAccesses = dto.UserRoleAccesses?.Select(access => new UserRoleScreeningAccess
                 {
                     RoleId = entity.RoleId,
-                    ScreeningTabName = access.ScreeningTabName
+                    ScreeningTabName = access.ScreeningTabName,
+                    ScreeningStatus = access.ScreeningStatus
                 }).ToList();
 
                 if (newAccesses?.Any() == true)

@@ -19,6 +19,7 @@ namespace BBIS.Application.Repositories
                 .Include(x => x.UserRefreshToken)
                 .Include(x => x.UserRoles)
                     .ThenInclude(x => x.Role)
+                     .ThenInclude(r => r.UserRoleScreeningAccesses)
                 .FirstOrDefaultAsync(x => x.Username == username && x.IsDeleted == false && x.IsActive == true);
                
             return user;

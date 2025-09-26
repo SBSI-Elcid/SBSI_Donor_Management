@@ -20,9 +20,10 @@
     import AuthModule from '@/store/AuthModule';
     import Common from '@/common/Common';
     import { Roles } from '@/models/Enums/Roles';
+    import VueBase from '../VueBase';
 
     @Component
-    export default class BloodDonorProcess extends Vue {
+    export default class BloodDonorProcess extends VueBase {
         protected authModule: AuthModule = getModule(AuthModule, this.$store);
         protected donorModule: DonorModule = getModule(DonorModule, this.$store);
 
@@ -48,20 +49,20 @@
 
         protected get tabs(): Array<{ name: string, icon: string, route: string, isShow: boolean, isDisabled: boolean }> {
 
-
+            console.log("Testing",this.authModule.userRoles);
             return [
                 {
                     name: this.getTabDisplayName(TabNames.DonorInformation),
                     icon: 'mdi-account',
                     route: this.tabRoutes(TabNames.DonorInformation),
-                    isShow: Common.hasValue(this.donorRegistrationId) && this.showTab([Roles.DonorAdmin, Roles.InitialScreener, Roles.PhysicalExamScreener, Roles.BloodCollector]),
+                    isShow: Common.hasValue(this.donorRegistrationId),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.DonorVitalSigns),
                     icon: 'mdi-badge-account',
                     route: this.tabRoutes(TabNames.DonorVitalSigns),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.InitialScreener, Roles.PhysicalExamScreener, Roles.BloodCollector]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.DonorVitalSigns),
                     isDisabled: this.tabDisabled
                 },
                 {
@@ -160,8 +161,20 @@
             return this.tabs.filter(x => x.isShow === true);
         }
 
-        protected get showTab(): (roles: Array<string>) => boolean {
-            return (roles) => this.authModule.userHasAnyRole(roles);
+        //protected get showTab(): (roles: Array<string>) => boolean {
+        //    console.log("RolesLang", roles);
+        //    return (roles) => this.authModule.userHasAnyRole(roles);
+        //}
+        //protected get showTab(): (roles: Array<string>) => boolean {
+        //    return (roles) => {
+
+        //        return this.authModule.userHasAnyRole(roles);
+        //    };
+        //}
+        protected get showTab(): (tabName: string) => boolean {
+            return (tabName: string) => {
+                return this.authModule.userRoles.some(role => role === tabName);
+            };
         }
 
         protected async mounted(): Promise<void> {

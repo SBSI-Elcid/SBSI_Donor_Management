@@ -23,5 +23,20 @@ export enum TabNames {
     MethodBloodCollection = "MethodBloodCollection",
     IssuanceOfBloodBag = "IssuanceOfBloodBag",
     BloodCollection = "BloodCollection",
-    PostDonationCare = "PostDonationCare"
+    PostDonationCare = "PostDonationCare",
+    Deferred = "Deferred"
 }
+
+export const TabAliases: Record<TabNames, string> = {
+    [TabNames.DonorVitalSigns]: "ForVitalSigns",
+    [TabNames.DonorInformation]: "ForDonorInformation",
+    [TabNames.InitialScreening]: "ForInitialScreening",
+    [TabNames.PhysicalExam]: "ForPhysicalExamination",
+    [TabNames.Counseling]: "ForCounseling",
+    [TabNames.ConsentForm]: "ForConsent",
+    [TabNames.MethodBloodCollection]: "ForMethodBloodCollection",
+    [TabNames.IssuanceOfBloodBag]: "ForBloodIssuance",
+    [TabNames.BloodCollection]: "ForBloodCollection",
+    [TabNames.PostDonationCare]: "ForPostDonationCare",
+    [TabNames.Deferred]: "Deferred",
+};

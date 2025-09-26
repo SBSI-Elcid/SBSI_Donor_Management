@@ -7,7 +7,9 @@ using BBIS.Common.Exceptions;
 using BBIS.Common.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Text;
 
 namespace BBIS.Api.Controllers
 {
@@ -17,6 +19,7 @@ namespace BBIS.Api.Controllers
     public class DonorScreeningController : ApiControllerBase
     {
         private readonly IDonorScreeningService donorScreeningService;
+        private readonly HttpClient _httpClient;
 
         public DonorScreeningController(IDonorScreeningService donorScreeningService, ILoggerManager logger, IConfiguration configuration) : base(logger, configuration)
         {
@@ -24,7 +27,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("donors")]
-        [Authorize(Policy = ApplicationRoles.DonorScreeningPolicy)]
+        //[Authorize(Policy = ApplicationRoles.DonorScreeningPolicy)]
         public async Task<ActionResult<RequestResult<PagedSearchResultDto<DonorListDto>>>> GetDonors([FromBody] DonorPagedSearchDto dto)
         {
             try
@@ -40,7 +43,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("initialscreening/{id}")]
-        [Authorize(Policy = ApplicationRoles.MethodBloodCollectionPolicy)]
+        //[Authorize(Policy = ApplicationRoles.MethodBloodCollectionPolicy)]
         public async Task<ActionResult<RequestResult<DonorInitialScreeningDto>>> GetInitialScreeningInfo(Guid id)
         {
             try
@@ -81,7 +84,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("vitalsigns/{id}")]
-        [Authorize(Policy = ApplicationRoles.VitalSignsPolicy)]
+        //[Authorize(Policy = ApplicationRoles.VitalSignsPolicy)]
         public async Task<ActionResult<RequestResult<DonorVitalSignsDto>>> GetDonorVitalSignsInfo(Guid id)
         {
             try
@@ -102,7 +105,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("issuanceofbloodbag/{id}")]
-        [Authorize(Policy = ApplicationRoles.IssuanceOfBloodBagPolicy)]
+        //[Authorize(Policy = ApplicationRoles.IssuanceOfBloodBagPolicy)]
         public async Task<ActionResult<RequestResult<DonorBloodBagIssuanceDto>>> getDonorBloodBagIssuance(Guid id)
         {
             try
@@ -123,7 +126,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("counseling/{id}")]
-        [Authorize(Policy = ApplicationRoles.CounselorPolicy)]
+        //[Authorize(Policy = ApplicationRoles.CounselorPolicy)]
         public async Task<ActionResult<RequestResult<DonorCounselingDto>>> GetDonorCounselingInfo(Guid id)
         {
             try
@@ -164,7 +167,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("physicalexam/{id}")]
-        [Authorize(Policy = ApplicationRoles.PhysicalExaminationPolicy)]
+       // [Authorize(Policy = ApplicationRoles.PhysicalExaminationPolicy)]
         public async Task<ActionResult<RequestResult<DonorPhysicalExaminationDto>>> GetPhysicalExamInfo(Guid id)
         {
             try
@@ -185,7 +188,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("bloodcollection/{id}")]
-        [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
+        //[Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
         public async Task<ActionResult<RequestResult<DonorBloodCollectionDto>>> GetBloodCollectionInfo(Guid id)
         {
             try
@@ -206,7 +209,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpGet("postdonationcare/{id}")]
-        [Authorize(Policy = ApplicationRoles.PostDonationCarePolicy)]
+        //[Authorize(Policy = ApplicationRoles.PostDonationCarePolicy)]
         public async Task<ActionResult<RequestResult<DonorBloodCollectionDto>>> GetPostDonationCare(Guid id)
         {
             try
@@ -227,7 +230,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-initialscreening")]
-        [Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
+        //[Authorize(Policy = ApplicationRoles.InitialScreeningPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateInitialScreening([FromBody] DonorInitialScreeningDto dto)
         {
             try
@@ -279,7 +282,7 @@ namespace BBIS.Api.Controllers
         //}
 
         [HttpPost("upsert-counseling/")]
-        [Authorize(Policy = ApplicationRoles.CounselorPolicy)]
+        //[Authorize(Policy = ApplicationRoles.CounselorPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorCounseling([FromBody] DonorCounselingDto dto, Guid id)
         {
             Console.WriteLine("Hit endpoint");
@@ -307,7 +310,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-vitalsigns")]
-        [Authorize(Policy = ApplicationRoles.VitalSignsPolicy)]
+        //[Authorize(Policy = ApplicationRoles.VitalSignsPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorVitalSigns([FromBody] DonorVitalSignsDto dto)
         {
             try
@@ -333,7 +336,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-bloodbagissuance")]
-        [Authorize(Policy = ApplicationRoles.IssuanceOfBloodBagPolicy)]
+       //[Authorize(Policy = ApplicationRoles.IssuanceOfBloodBagPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorBloodBagIssuance([FromBody] DonorBloodBagIssuanceDto dto)
         {
             try
@@ -384,7 +387,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-physicalexamination")]
-        [Authorize(Policy = ApplicationRoles.PhysicalExaminationPolicy)]
+        //[Authorize(Policy = ApplicationRoles.PhysicalExaminationPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdatePhysicalExamination([FromBody] DonorPhysicalExaminationDto dto)
         {
             try
@@ -410,7 +413,7 @@ namespace BBIS.Api.Controllers
         }
 
         [HttpPost("upsert-bloodcollection")]
-        [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
+       // [Authorize(Policy = ApplicationRoles.BloodCollectionPolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateBloodCollection([FromBody] DonorBloodCollectionDto dto)
         {
             try
@@ -435,7 +438,7 @@ namespace BBIS.Api.Controllers
             }
         }
         [HttpPost("upsert-donorpostdonationcare")]
-        [Authorize(Policy = ApplicationRoles.PostDonationCarePolicy)]
+        //[Authorize(Policy = ApplicationRoles.PostDonationCarePolicy)]
         public async Task<ActionResult<RequestResult<Guid>>> CreateUpdateDonorPostDonationCare([FromBody] DonorPostDonationCareDto dto)
         {
             try
@@ -457,6 +460,25 @@ namespace BBIS.Api.Controllers
             {
                 logger.LogError($"Something went wrong during blood collection: {ex.Message}");
                 return this.JsonError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost("bb-inventory")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateBBInventory([FromBody] Guid TransactionID)
+        {
+            try
+            {
+                var result = await this.donorScreeningService.CreateBBInventory(TransactionID);
+                return this.Json(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "Integration Forwarding failed",
+                    details = ex.Message
+                });
             }
         }
     }

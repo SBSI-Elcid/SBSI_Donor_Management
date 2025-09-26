@@ -130,7 +130,22 @@ namespace BBIS.Application.Services
         private string CreateNewAccessToken(UserAccount user)
         {
             var fullName = $"{user.Firstname} {user.Lastname}";
-            var roles = user?.UserRoles?.Select(x => x.Role.RoleName).ToList();
+            //var roles = user?.UserRoles?.Select(x => x.Role.RoleName).ToList();
+            //var roles = user?.UserRoles?
+            //.Where(x => x.UserAccountId == user.UserAccountId) // ensure only roles for this user
+            //.Select(x => x.Role.RoleName)
+            //.Distinct() // remove duplicates
+            //.ToList();
+
+            var roles = user?.UserRoles?
+                 .Where(x => x.UserAccountId == user.UserAccountId && x.Role != null)
+                 .SelectMany(x => x.Role.UserRoleScreeningAccesses ?? new List<UserRoleScreeningAccess>())
+                 .Where(a => !string.IsNullOrEmpty(a.ScreeningTabName))
+                 .Select(a => a.ScreeningTabName)
+                 .Distinct()
+                 .ToList() 
+                 ?? 
+                 new List<string>();
 
             // generate token
             var newAccessToken = this.jwtHandler.Create(user.UserAccountId, user.Username, fullName, roles);

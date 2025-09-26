@@ -80,7 +80,7 @@
           </template>
 
           <template v-slot:[`item.DonorStatus`]="{ item }">
-            <v-chip small :color="statusColor(item.DonorStatus)" outlined>{{ hasAccess(['DonorAdmin']) || hasManyRoles() ? addSpaceBetweenUpperCaseLetters(item.DonorStatus) : 'In Progress'}}</v-chip>
+            <v-chip small :color="statusColor(item.DonorStatus)" outlined>{{addSpaceBetweenUpperCaseLetters(item.DonorStatus)}}</v-chip>
           </template>
 
           <template v-slot:[`item.BirthDate`]="{ item }">

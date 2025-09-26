@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using NinjaNye.SearchExtensions;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Net.Http.Json;
 
 namespace BBIS.Application.Services
 {
@@ -23,12 +24,14 @@ namespace BBIS.Application.Services
         private readonly BBDbContext dbContext;
         private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
+        private readonly HttpClient httpClient;
 
-        public DonorScreeningService(BBDbContext dbContext, IRepositoryWrapper repository, IMapper mapper)
+        public DonorScreeningService(BBDbContext dbContext, IRepositoryWrapper repository, IMapper mapper, HttpClient httpClient)
         {
             this.dbContext = dbContext;
             this.repository = repository;
             this.mapper = mapper;
+            this.httpClient = httpClient;
         }
 
         public async Task<PagedSearchResultDto<DonorListDto>> GetDonors(DonorPagedSearchDto searchDto, List<string> roles)
@@ -41,18 +44,25 @@ namespace BBIS.Application.Services
             var sortBy = string.IsNullOrEmpty(searchDto.SortBy) ? "RegistrationDate desc" : searchDto.SortBy + (searchDto.SortDesc ? " desc" : " asc");
             var pagedResult = new PagedSearchResultDto<DonorListDto>(searchDto);
 
-            var statuses = roles.GetDonorStatusByRoles();
+            var screeningStatuses = dbContext.UserRoleScreeningAccess
+            .Include(ura => ura.Role)
+            .Where(ura => roles.Contains(ura.ScreeningTabName))
+            .Select(ura => ura.ScreeningStatus)
+            .ToList();
 
-            if (searchDto.DonorStatus == DonorStatus.Inventory)
-            {
-                statuses.Add(DonorStatus.Inventory);
-            }
+            //var statuses = roles.GetDonorStatusByRoles();
+
+            //if (searchDto.DonorStatus == DonorStatus.Inventory)
+            //{
+            //    statuses.Add(DonorStatus.Inventory);
+            //}
+
 
             var queryresults = dbContext.DonorTransactions
                 .Include(x => x.Donor)
                 .Include(x => x.DonorRegistration)
                 .Include(x => x.DonorTestOrder)
-                .Where(x => statuses.Contains(x.DonorStatus))
+                .Where(x => screeningStatuses.Contains(x.DonorStatus))
                 .Search(t => t.Donor.Firstname, t => t.Donor.Lastname, t => t.Donor.Middlename)
                     .Containing(searchDto.Name)
                 .Search(t => t.DonorRegistration.RegistrationNumber)
@@ -916,5 +926,76 @@ namespace BBIS.Application.Services
 
             return serialNumber;
         }
+
+        public async Task<string> CreateBBInventory(Guid TranasctionID)
+        {
+            // Use PostAsJsonAsync → simplest way
+
+            //var bbinventoryDTO = new BBInventoryDTO
+
+            var transaction = await dbContext.DonorTransactions
+                .FirstOrDefaultAsync(x => x.DonorRegistrationId == TranasctionID);
+
+            var bag = await dbContext.DonorBloodBagIssuances
+            .FirstOrDefaultAsync(x => x.DonorTransactionId == transaction.DonorTransactionId);
+
+
+            var screening = await dbContext.DonorInitialScreenings
+                .FirstOrDefaultAsync(x => x.DonorTransactionId == transaction.DonorTransactionId);
+
+            var collection = await dbContext.DonorBloodCollections
+                .FirstOrDefaultAsync(x => x.DonorTransactionId == transaction.DonorTransactionId);
+
+            if (transaction == null)
+                throw new InvalidOperationException($"No transaction found for ID {TranasctionID}");
+
+            if (bag == null)
+                throw new InvalidOperationException($"No bag found for transaction {transaction.DonorTransactionId}");
+
+            if (collection == null)
+                throw new InvalidOperationException($"No collection found for transaction {transaction.DonorTransactionId}");
+
+            // Screening can be optional, so you’re safe with null-conditional
+
+
+            var dto = new BBInventoryDTO
+            {
+                bag_no = bag?.UnitSerialNumber ?? string.Empty,
+                reg_no = bag?.SegmentSerialNumber ?? string.Empty,
+                segmentserialno = bag?.SegmentSerialNumber ?? string.Empty,
+                blood_group = transaction != null
+                ? $"{transaction.BloodType} {(transaction.BloodRh == "+" ? "Positive" : "Negative")}"
+                : string.Empty,
+                bgroup = transaction?.BloodType ?? string.Empty,
+                rh = transaction?.BloodRh == "+" ? "Positive" : "Negative",
+                component = screening?.MethodOfBloodCollection ?? string.Empty,
+                volume = collection?.CollectedBloodAmount.ToString() ?? "0",
+                collection_date = collection?.EndTime ?? DateTime.UtcNow,
+                expiry = (collection?.EndTime ?? DateTime.UtcNow).AddDays(35),
+                has_allocation = collection != null && (
+                !string.IsNullOrWhiteSpace(collection.PatientFirstName) ||
+                !string.IsNullOrWhiteSpace(collection.PatientMiddleName) ||
+                !string.IsNullOrWhiteSpace(collection.PatientLastName)),
+                firstname_alloc = collection?.PatientFirstName,
+                middlename_alloc = collection?.PatientMiddleName,
+                lastname_alloc = collection?.PatientLastName,
+                source = "VSMMC",
+                bp_statusid = "017"
+            };
+
+
+
+            var response = await httpClient.PostAsJsonAsync("http://192.168.1.246:8080/api/bb-inventory", dto);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Laravel rejected the request: {responseContent}");
+            }
+
+            return responseContent;
+        }
+
     }
 }

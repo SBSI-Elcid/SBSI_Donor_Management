@@ -79,6 +79,7 @@ namespace BBIS.Database
                 entity.HasKey(e => e.UserRoleScreeningAccessId);
 
                 entity.Property(e => e.ScreeningTabName).HasColumnType("VARCHAR(50)");
+                entity.Property(e => e.ScreeningStatus).HasColumnType("VARCHAR(255)");
                 entity.Property(e => e.CreatedAt).HasColumnType("DATETIME");
 
                 entity.HasOne(e => e.Role).WithMany(r => r.UserRoleScreeningAccesses).HasForeignKey(e => e.RoleId);

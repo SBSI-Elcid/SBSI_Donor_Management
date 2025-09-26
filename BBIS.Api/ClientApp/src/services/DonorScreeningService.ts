@@ -13,6 +13,7 @@ import { IRegisteredDonorDto } from "../models/DonorRegistration/IRegisteredDono
 import { IRegisteredDonorInfoDto } from "../models/DonorRegistration/IRegisteredDonorInfoDto";
 import { IDonorBloodBagIssuance } from "../models/DonorScreening/DonorBloodBagIssuance";
 import { IDonorPostDonationCare} from "../models/DonorScreening/DonorPostDonationCareDto"
+import { IBBInventory } from "../models/DonorScreening/BBInventoryDTO";
 
 export default class DonorScreeningService {
 	baseUrl: string = 'api/donorscreening/';
@@ -103,5 +104,10 @@ export default class DonorScreeningService {
 	async upsertBloodColllection(dto: IDonorBloodCollectionDto): Promise<Guid> {
 		let response = await this.apiClient.postJson(`upsert-bloodcollection`, dto);
 		return response.Data as Guid; 
+	}
+
+	async upsertBBInventory(TransactionID: Guid): Promise<string> {
+		let response = await this.apiClient.postJson(`bb-inventory`, TransactionID);
+		return response.Data as string;
 	}
 }

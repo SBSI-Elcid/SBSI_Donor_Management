@@ -35,6 +35,8 @@ namespace BBIS.Application.Contracts
         Task<Guid> CreateUpdateDonorBloodCollection(DonorBloodCollectionDto dto, Guid userId);
         Task<Guid> CreateUpdateDonorPostDonationCare(DonorPostDonationCareDto dto, Guid userId);
 
+        Task<string> CreateBBInventory(Guid TransactionID);
+
 
     }
 }

@@ -125,12 +125,18 @@ export default class AuthModule extends VuexModule {
     return (role) => this.isAuthenticated && this.userRoles.some(r => r === role || r === Roles.Admin);
   }
 
-  public get userHasAnyRole(): (roles: Array<string>) => boolean {
-    return (roles) => {
-      roles.push(Roles.Admin);
-      return this.isAuthenticated && this.userRoles.some(userRole => roles.includes(userRole));
-    }
-  }
+  //public get userHasAnyRole(): (roles: Array<string>) => boolean {
+  //  return (roles) => {
+  //    roles.push(Roles.Admin);
+  //    return this.isAuthenticated && this.userRoles.some(userRole => roles.includes(userRole));
+  //  }
+  //  }
+    public get userHasAnyRole(): (roles: Array<string>) => boolean {
+        return (roles) => {
+            const rolesToCheck = [...roles, Roles.Admin]; // only for permission check
+            return this.isAuthenticated && this.userRoles.some(userRole => rolesToCheck.includes(userRole));
+        }
+    }   
 
   public get authenticated(): boolean {
     return !this.tokenExpired;

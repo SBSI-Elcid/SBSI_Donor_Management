@@ -163,6 +163,8 @@
     import IssuanceOfBloodBagModal from '@/components/DonorScreening/ScreeningForms/IssuanceOfBloodBagModal.vue';
     import moment from 'moment';
     import JsBarcode from 'jsbarcode';
+    import axios from "axios";
+import { BBInventoryDTO, IBBInventory } from '../../../models/DonorScreening/BBInventoryDTO';
 
    @Component({
       components: {
@@ -189,6 +191,8 @@
        protected isDisabled: boolean = true;
        protected startTime: string = '';
        protected endTime: string = '';
+
+       protected bbInventoryDto: IBBInventory = new BBInventoryDTO
 
        
        protected approvedSegmentSerialNumber: string = "";
@@ -285,8 +289,40 @@
            }
        }
 
+       protected async sendBagNo(bagNo: string): Promise<void> {
+             try {
+                    const res = await axios.post("/api/donorscreening/bb-inventory", {
+                      bag_no: "HappyBirthday",
+                    });
+                    console.log("ASP.NET Laravel response:", res.data);
+                  } catch (err) {
+                    this.notify_error("Error sending bag_no:", err);
+                 }
+    }
+
+       //protected async onSubmit(): Promise<void>{
+       //    await this.sendBagNo("Testing")
+       //   //    try {
+       //   //      const response = await axios.post("https://192.168.1.136:8080/api/bb-inventory", {
+       //   //    // payload data here
+       //   //          bag_no: "TestTing"
+              
+       //   //         });
+
+       //   //     console.log("API Response:", response.data);
+
+       //   //  // ...Some Code (e.g., show success, reset form, etc.)
+       //   //} catch (error) {
+       //   //  console.error("API Error:", error);
+       //   //}
+
+
+       //}
+
 
        protected async onSubmit(): Promise<void> {
+           let transactionId = this.$route.params.reg_id;
+
            this.formValid = (this.$refs.form as Vue & { validate: () => boolean }).validate();
            if (this.formValid === false) {
                return;
@@ -310,6 +346,7 @@
            try {
                console.log(this.donorBloodCollection);
                await this.donorScreeningService.upsertBloodColllection(this.donorBloodCollection);
+               await this.donorScreeningService.upsertBBInventory(transactionId);
                this.notify_success('Form successfully submitted.');
 
                this.$router.push(`/donors`);
@@ -322,6 +359,7 @@
            }
            finally {
                loader.hide();
+
            }
        }
 

@@ -15,6 +15,8 @@ namespace BBIS.Domain.Models
 
         [Column(TypeName = "varchar(255)")]
         public string ScreeningTabName { get; set; }
+
+        public string ScreeningStatus { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public virtual Role Role { get; set; }

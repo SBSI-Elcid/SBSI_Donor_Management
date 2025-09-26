@@ -11,14 +11,14 @@
                 </v-col>
                 <v-col cols="3" class="mx-1 text-right ">
                     <v-btn class="pr-2" color="default" @click="onAdd"><v-icon size="25" color="primary" left>mdi-playlist-plus</v-icon>Add New Role</v-btn>
-                    
+                </v-col>
+                <v-col cols="2">
                     <v-btn color="default" class="ml-2" @click="loadrecords">
                         <v-icon color="primary" size="25">mdi-refresh</v-icon> Refresh
                     </v-btn>
+                </v-col>
 
-              </v-col>
 
-                   
             </v-row>
 
             <v-data-table :headers="columnHeaders"

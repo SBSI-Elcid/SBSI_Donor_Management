@@ -18,7 +18,7 @@ builder.Services.ConfigureRepositories();
 builder.Services.ConfigureServices();
 builder.Services.ConfigureTimedHostedService();
 builder.Services.ConfigureMailSetting(builder.Configuration);
-
+builder.Services.AddHttpClient();
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 

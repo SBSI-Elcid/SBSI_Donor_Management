@@ -56,7 +56,7 @@ import ApplicationSettingService from '@/services/ApplicationSettingService';
 import { BloodComponentChecklistDto, IBloodComponentChecklistDto } from '@/models/ApplicationSetting/BloodComponentChecklistDto';
 import { IBloodComponentDto } from '@/models/ApplicationSetting/IBloodComponentDto';
 import { IRoleDto, RoleDto } from '../../models/ApplicationSetting/RoleDto';
-    import { TabNames } from '@/models/Enums/TabNames';
+import { TabAliases, TabNames } from '@/models/Enums/TabNames';
 
 
 @Component({ components: { } })
@@ -124,13 +124,14 @@ export default class RoleManagementUpsertModal extends VueBase {
     }
 
     public async onSubmit(): Promise<void> {
-        console.log(this.librariesRole);
+        //console.log(this.librariesRole);
         let loader = this.showLoader();
         try {
             //this.donorVitalSigns.RecentDonations = this.recentDonations;
-            this.librariesRole.UserRoleAccesses = this.selectedTabs.map((tab: string) => ({
+            this.librariesRole.UserRoleAccesses = this.selectedTabs.map(tab => ({
                 RoleId: this.librariesRole.RoleId,
-                ScreeningTabName: tab
+                ScreeningTabName: tab,
+                ScreeningStatus: TabAliases[tab] 
             }));
 
             await this.librariesService.upsertLibrariesRole(this.librariesRole);
@@ -142,6 +143,7 @@ export default class RoleManagementUpsertModal extends VueBase {
         catch (error: any) {
             if (error.StatusCode != 500) {
                 let errorMessage = error.Message ?? "An error occured while processing your request.";
+                console.log(errorMessage);
                 this.notify_error(errorMessage);
             }
         }

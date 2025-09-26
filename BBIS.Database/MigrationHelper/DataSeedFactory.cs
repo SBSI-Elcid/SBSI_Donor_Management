@@ -18,6 +18,7 @@ namespace BBIS.Database.MigrationHelper
             LookupDataSeed.Setup(modelBuilder);
             LookupDataSeed.SetupLookupOptions(modelBuilder);
             AddModules(modelBuilder);
+            defaultAdminUserRoles(modelBuilder);
         }
 
         private static void AddRoles(ModelBuilder modelBuilder)
@@ -488,7 +489,24 @@ namespace BBIS.Database.MigrationHelper
                 new Module { OrderNo = 10, ModuleId = Guid.Parse("53223248-2221-4d48-a551-8477a33e96c4"), Menu = "Users", Icon = "mdi-account-cog-outline", Link = "/users", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") },    
                 new Module { OrderNo = 11, ModuleId = Guid.Parse("22a8eb15-168c-470a-a680-71e85b8514c6"), Menu = "App Setting", Icon = "mdi-cogs", Link = "/app-settings/unit-of-measurement", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") },   
                 new Module { OrderNo = 12, ModuleId = Guid.Parse("68b94e71-abf0-4989-aa29-9ec6d6419a9c"), Menu = "Signatories", Icon = "mdi-draw", Link = "/signatories", IsActive = false, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") },
-                new Module { OrderNo = 13, ModuleId = Guid.Parse("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"), Menu = "Libraries", Icon = "mdi-library", Link = "/libraries/roles", IsActive = true, IsParentMenu = true, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") }
+                new Module { OrderNo = 13, ModuleId = Guid.Parse("d4a1b8a7-14f3-4c6d-9fd2-1e7b8c4f0b93"), Menu = "Libraries", Icon = "mdi-library", Link = "/libraries/roles", IsActive = true, IsParentMenu = false, ParentModuleId = Guid.Parse("f0fa95f2-2288-434f-8df6-71f00e9be302") }
+            );
+        }
+
+        private static void defaultAdminUserRoles(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserRoleScreeningAccess>().HasData(
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "DonorVitalSigns", ScreeningStatus = "ForVitalSigns", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "DonorInformation", ScreeningStatus = "ForDonorInformation", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "InitialScreening", ScreeningStatus = "ForInitialScreening", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "PhysicalExam", ScreeningStatus = "ForPhysicalExamination", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "Counseling", ScreeningStatus = "ForCounseling", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "ConsentForm", ScreeningStatus = "ForConsent", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "MethodBloodCollection", ScreeningStatus = "ForMethodBloodCollection", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "IssuanceOfBloodBag", ScreeningStatus = "ForBloodIssuance", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "BloodCollection", ScreeningStatus = "ForBloodCollection", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "PostDonationCare", ScreeningStatus = "ForPostDonationCare", CreatedAt = DateTime.Now },
+                new UserRoleScreeningAccess { UserRoleScreeningAccessId = Guid.NewGuid(), RoleId = Guid.Parse("489abc53-af8a-4914-bd21-7d99c26e2e33"), ScreeningTabName = "Deferred", ScreeningStatus = "Deferred", CreatedAt = DateTime.Now }
             );
         }
     }
