@@ -69,49 +69,49 @@
                     name: this.getTabDisplayName(TabNames.PhysicalExam),
                     icon: 'mdi-doctor',
                     route: this.tabRoutes(TabNames.PhysicalExam),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.PhysicalExam),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.Counseling),
                     icon: 'mdi-clipboard-pulse',
                     route: this.tabRoutes(TabNames.Counseling),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.Counseling),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.ConsentForm),
                     icon: 'mdi-clipboard',
                     route: this.tabRoutes(TabNames.ConsentForm),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.ConsentForm),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.MethodBloodCollection),
                     icon: 'mdi-medical-bag',
                     route: this.tabRoutes(TabNames.MethodBloodCollection),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.MethodBloodCollection),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.IssuanceOfBloodBag),
                     icon: 'mdi-blood-bag',
                     route: this.tabRoutes(TabNames.IssuanceOfBloodBag),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.PhysicalExamScreener]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.IssuanceOfBloodBag),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.BloodCollection),
                     icon: 'mdi-blood-bag',
                     route: this.tabRoutes(TabNames.BloodCollection),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.BloodCollection),
                     isDisabled: this.tabDisabled
                 },
                 {
                     name: this.getTabDisplayName(TabNames.PostDonationCare),
                     icon: '',
                     route: this.tabRoutes(TabNames.PostDonationCare),
-                    isShow: this.showScreeningTabs && this.showTab([Roles.DonorAdmin, Roles.BloodCollector]),
+                    isShow: this.showScreeningTabs && this.showTab(TabNames.PostDonationCare),
                     isDisabled: this.tabDisabled
                 }
             ];

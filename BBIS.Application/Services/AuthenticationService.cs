@@ -131,13 +131,13 @@ namespace BBIS.Application.Services
         {
             var fullName = $"{user.Firstname} {user.Lastname}";
             //var roles = user?.UserRoles?.Select(x => x.Role.RoleName).ToList();
-            //var roles = user?.UserRoles?
-            //.Where(x => x.UserAccountId == user.UserAccountId) // ensure only roles for this user
-            //.Select(x => x.Role.RoleName)
-            //.Distinct() // remove duplicates
-            //.ToList();
-
             var roles = user?.UserRoles?
+            .Where(x => x.UserAccountId == user.UserAccountId) // ensure only roles for this user
+            .Select(x => x.Role.RoleName)
+            .Distinct() // remove duplicates
+            .ToList();
+
+            var rolesAccess = user?.UserRoles?
                  .Where(x => x.UserAccountId == user.UserAccountId && x.Role != null)
                  .SelectMany(x => x.Role.UserRoleScreeningAccesses ?? new List<UserRoleScreeningAccess>())
                  .Where(a => !string.IsNullOrEmpty(a.ScreeningTabName))
@@ -148,7 +148,7 @@ namespace BBIS.Application.Services
                  new List<string>();
 
             // generate token
-            var newAccessToken = this.jwtHandler.Create(user.UserAccountId, user.Username, fullName, roles);
+            var newAccessToken = this.jwtHandler.Create(user.UserAccountId, user.Username, fullName, roles, rolesAccess);
 
             return newAccessToken;
         }

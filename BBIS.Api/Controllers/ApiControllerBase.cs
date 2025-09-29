@@ -47,6 +47,14 @@ namespace BBIS.Api.Controllers
                 return roles == null ? new List<string>() : roles;
             }
         }
+        protected List<string> UserRoleAccess
+        {
+            get
+            {
+                var roles = CurrentAccount.Claims.Where(c => c.Type == AuthClaimTypes.RoleAccess).Select(c => c.Value).ToList();
+                return roles == null ? new List<string>() : roles;
+            }
+        }
 
         protected JsonResult Json(object data = null, string message = "", bool success = true, HttpStatusCode statusCode = HttpStatusCode.OK)
         {

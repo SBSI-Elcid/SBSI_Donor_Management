@@ -104,14 +104,17 @@ export default class AuthModule extends VuexModule {
 
   public get userJwtData(): JwtData {
     if (!this.isAuthenticated) {
-      return { Name: '', roles: [], UserId: 0, Username: ''};
+        return { Name: '', roles: [], RoleAccess: [], UserId: 0, Username: ''};
     }
-    const data = jwt_decode(this.authToken) as JwtData;
+      const data = jwt_decode(this.authToken) as JwtData;
+      console.log("data",data);
     return data;
   }
 
-  public get userRoles(): Array<string> {
-    let userRoles = this.userJwtData.roles;
+    public get userRoles(): Array<string> {
+        
+        let userRoles = this.userJwtData.RoleAccess;
+        console.log("roleAccessx", this.userJwtData.RoleAccess);
     if (Common.isArray(userRoles)) {
       return userRoles as Array<string>;
     }

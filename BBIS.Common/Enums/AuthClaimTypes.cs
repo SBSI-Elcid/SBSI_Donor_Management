@@ -7,5 +7,6 @@
         public const string Name = nameof(Name);
         public const string Username = nameof(Username);
         public const string Role = nameof(Role);
+        public const string RoleAccess = nameof(RoleAccess);
     }
 }

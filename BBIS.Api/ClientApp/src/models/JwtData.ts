@@ -3,4 +3,5 @@ export interface JwtData {
     Name: string,
     Username: string,
     roles: string[] | string;
+    RoleAccess: string[] | string;
 } 

@@ -4,6 +4,8 @@ using BBIS.Common.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.IO;
+using System.Linq;
 
 namespace BBIS.Common.Jwt
 {
@@ -25,7 +27,7 @@ namespace BBIS.Common.Jwt
             this.InitJwt(configuration);
         }
                
-        public string Create(Guid userId, string username, string fullName, List<string> roles)
+        public string Create(Guid userId, string username, string fullName, List<string> roles, List<string> roleaccess)
         {
             var nowUtc = DateTime.UtcNow;
             var expires = nowUtc.AddMinutes(_tokenExpirationMinutes);
@@ -40,6 +42,11 @@ namespace BBIS.Common.Jwt
             if (roles != null && roles.Any())
             {
                 claims.AddRange(roles.Select(r => new Claim(AuthClaimTypes.roles, r)));
+            }
+
+            if (roleaccess != null && roleaccess.Any())
+            {
+                claims.AddRange(roleaccess.Select(a => new Claim(AuthClaimTypes.RoleAccess, a)));
             }
 
             var jwt = new JwtSecurityToken(_jwtHeader, new JwtPayload(_issuer, _audience, claims, nowUtc, expires));

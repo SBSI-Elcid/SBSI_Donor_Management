@@ -32,7 +32,7 @@ namespace BBIS.Api.Controllers
         {
             try
             {
-                var results = await this.donorScreeningService.GetDonors(dto, this.UserRoles);
+                var results = await this.donorScreeningService.GetDonors(dto, this.UserRoleAccess);
                 return this.Json(results);
             }
             catch (Exception ex)
