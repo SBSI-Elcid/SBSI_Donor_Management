@@ -338,8 +338,11 @@ router.beforeEach((to, from, next) => {
     let storage: BrowserStorageService = new BrowserStorageService();
     const token = storage.getItem(StorageKeysEnum.Token);
 
+    
+
     if (to.name?.toLowerCase() === 'login' && token) {
-        next({ path: 'home' });
+        next({ path: '/home' });
+        return;
     }
     else {
         const requiredAuth = to.matched.some(x => x.meta?.requiresAuth == true);

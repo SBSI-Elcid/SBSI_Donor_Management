@@ -10,7 +10,7 @@ export default class BrowserStorageService implements Storage {
   }
 
   public getItem(key: string): string {
-    let result = localStorage.getItem(key)
+      let result = sessionStorage.getItem(key)
     return result ? result : "";
   }
 
@@ -19,10 +19,10 @@ export default class BrowserStorageService implements Storage {
   }
   
   public removeItem(key: string): void | boolean {
-    localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
   }
 
   public setItem(key: string, value: string): void {    
-    localStorage.setItem(key, value);
+      sessionStorage.setItem(key, value);
   }
 }

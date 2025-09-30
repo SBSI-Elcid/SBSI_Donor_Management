@@ -12,6 +12,7 @@ using BBIS.Domain.Contracts;
 using BBIS.Domain.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NinjaNye.SearchExtensions;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -25,13 +26,15 @@ namespace BBIS.Application.Services
         private readonly IRepositoryWrapper repository;
         private readonly IMapper mapper;
         private readonly HttpClient httpClient;
+        private readonly IConfiguration _configuration;
 
-        public DonorScreeningService(BBDbContext dbContext, IRepositoryWrapper repository, IMapper mapper, HttpClient httpClient)
+        public DonorScreeningService(BBDbContext dbContext, IRepositoryWrapper repository, IMapper mapper, HttpClient httpClient, IConfiguration configuration)
         {
             this.dbContext = dbContext;
             this.repository = repository;
             this.mapper = mapper;
             this.httpClient = httpClient;
+            this._configuration = configuration;
         }
 
         public async Task<PagedSearchResultDto<DonorListDto>> GetDonors(DonorPagedSearchDto searchDto, List<string> roles)
@@ -984,8 +987,8 @@ namespace BBIS.Application.Services
             };
 
 
-
-            var response = await httpClient.PostAsJsonAsync("http://192.168.1.246:8080/api/bb-inventory", dto);
+            var baseUrl = _configuration["ApiSettings:BbInventoryUrl"];
+            var response = await httpClient.PostAsJsonAsync($"{baseUrl}/api/bb-inventory", dto);
 
             var responseContent = await response.Content.ReadAsStringAsync();
 

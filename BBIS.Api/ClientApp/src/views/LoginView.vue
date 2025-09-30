@@ -101,8 +101,9 @@ export default class Login extends VueBase {
       if (authResultDto.Success && authResultDto.Data?.Success) {
         this.storage.setItem("currentPath", "");
         await this.authState.setAuthenticationResult(authResultDto.Data);
-     
-        this.$router.push({ path: '/home' });
+          
+          //this.$router.push({ path: '/home' });
+          this.$router.push({ path: '/home' }).catch(() => { });
       }
       else {
         //display error message
