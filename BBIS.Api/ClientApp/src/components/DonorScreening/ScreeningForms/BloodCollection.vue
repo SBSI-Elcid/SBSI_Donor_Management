@@ -300,26 +300,6 @@ import { BBInventoryDTO, IBBInventory } from '../../../models/DonorScreening/BBI
                  }
     }
 
-       //protected async onSubmit(): Promise<void>{
-       //    await this.sendBagNo("Testing")
-       //   //    try {
-       //   //      const response = await axios.post("https://192.168.1.136:8080/api/bb-inventory", {
-       //   //    // payload data here
-       //   //          bag_no: "TestTing"
-              
-       //   //         });
-
-       //   //     console.log("API Response:", response.data);
-
-       //   //  // ...Some Code (e.g., show success, reset form, etc.)
-       //   //} catch (error) {
-       //   //  console.error("API Error:", error);
-       //   //}
-
-
-       //}
-
-
        protected async onSubmit(): Promise<void> {
            let transactionId = this.$route.params.reg_id;
 

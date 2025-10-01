@@ -13,8 +13,8 @@ namespace BBIS.Application.DTOs.DonorScreening
         public string blood_group { get; set; } = string.Empty;    // required|string
         public string component { get; set; } = string.Empty;     // required|string
         public string volume { get; set; } = string.Empty;     // required|string|max:25
-        public DateTime? collection_date { get; set; }             // nullable|date
-        public DateTime expiry { get; set; }                      // required|date
+        public string? collection_date { get; set; }             // nullable|date
+        public string expiry { get; set; }                      // required|date
         public string source { get; set; } = string.Empty;        // required|string
         public string? bgroup { get; set; }                       // nullable|string
         public string? rh { get; set; }                           // nullable|string

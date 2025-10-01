@@ -973,8 +973,8 @@ namespace BBIS.Application.Services
                 rh = transaction?.BloodRh == "+" ? "Positive" : "Negative",
                 component = screening?.MethodOfBloodCollection ?? string.Empty,
                 volume = collection?.CollectedBloodAmount.ToString() ?? "0",
-                collection_date = collection?.EndTime ?? DateTime.UtcNow,
-                expiry = (collection?.EndTime ?? DateTime.UtcNow).AddDays(35),
+                collection_date = (collection?.EndTime ?? DateTime.UtcNow).ToString("yyyy-MM-dd"),
+                expiry = (collection?.EndTime ?? DateTime.UtcNow).AddDays(35).ToString("yyyy-MM-dd"),
                 has_allocation = collection != null && (
                 !string.IsNullOrWhiteSpace(collection.PatientFirstName) ||
                 !string.IsNullOrWhiteSpace(collection.PatientMiddleName) ||
@@ -983,8 +983,11 @@ namespace BBIS.Application.Services
                 middlename_alloc = collection?.PatientMiddleName,
                 lastname_alloc = collection?.PatientLastName,
                 source = "VSMMC",
-                bp_statusid = "017"
+                bp_statusid = "015"
             };
+
+            var json = System.Text.Json.JsonSerializer.Serialize(dto);
+            Console.WriteLine(json);
 
 
             var baseUrl = _configuration["ApiSettings:BbInventoryUrl"];
